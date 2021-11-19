@@ -2,6 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 
-npm run stylelint
+npx stylelint **/*.{css,less} --fix
 npx lint-staged
 
