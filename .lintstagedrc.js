@@ -4,7 +4,7 @@ module.exports = {
       .map((file) => file.split(process.cwd())[1])
       .join(' --file ')}`,
   '**/*.less': (filenames) =>
-    ` stylelint --fix --allow-empty-input .${filenames
+    ` stylelint --fix .${filenames
       .map((file) => file.split(process.cwd())[1])
       .join(' --file ')}`,
 }
