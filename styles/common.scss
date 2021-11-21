@@ -1,7 +1,11 @@
-@header-height: 46px;
+@import './var.scss';
+
+.position-sticky {
+  top: $header-height;
+}
 
 .main {
-  margin-top: calc(@header-height + 10px);
+  margin-top: calc($header-height + 10px);
 
   .main-left {
     background-color: #fff;
@@ -31,12 +35,3 @@
 
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
-
-.flex-between {
-  display: flex;
-  justify-content: space-between;
-}

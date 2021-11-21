@@ -1,16 +1,15 @@
-@header-height: 46px;
-@header-zIndex: 9;
+@import './../../styles/var.scss';
 
 .header {
   background: #fff;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: @header-zIndex;
+  z-index: $header-zIndex;
   border-bottom: 1px solid #f6f6f6;
 
   .logo {
-    line-height: @header-height;
+    line-height: $header-height;
     margin-left: 20px;
   }
   .descrtion {

@@ -6,7 +6,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons'
 import Link from 'next/link'
-import styles from './index.module.less'
+import styles from './index.module.scss'
 
 const Header: FunctionComponent = function () {
   return (
