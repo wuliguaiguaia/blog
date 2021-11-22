@@ -10,8 +10,6 @@ interface IProps {
 }
 
 const Category: FunctionComponent<IProps> = ({ data }) => {
-  console.log('-data-', data)
-  
   const router = useRouter()
   const handleClick = (id: number) => {
     router.push({
@@ -31,7 +29,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
         renderItem={item => (
           <List.Item
             onClick={() => handleClick(item.id)}
-          >{item.name}</List.Item>
+          >{item.name} ({item.articlesLen})</List.Item>
         )}
       />
     </div>

@@ -14,6 +14,7 @@ import $http from '../../common/api'
 export interface ICategory {
   id: number;
   name: string;
+  articlesLen: number;
 }
 interface IProps {
   acticles: object[]
@@ -98,21 +99,21 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
 
 
 const getCategory = async () => {
-  const response = await $http.getcategory()
+  const response = await $http.getcategorylist()
   const { data: { list } } = response
   return list
 }
 
 
 const getArticle = async (params) => {
-  const response = await $http.getarticle(params)
+  const response = await $http.getarticlelist(params)
   const { data: { list, total } } = response
   return [list, total]
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const category = await getCategory()
-  const [acticles, articlesLength] = await getArticle({page: 1})
-  
+  const { query: {category} } = context
+  const categoryList = await getCategory()
+  const [acticles, articlesLength] = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
   /* const data = [
     { id: 1, value: 'javascript' },
     { id: 2, value: 'html/css' },
@@ -125,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       allPostsData: [],
-      category,
+      category: categoryList,
       acticles,
       articlesLength,
     }

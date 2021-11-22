@@ -14,102 +14,31 @@ import Link from 'next/link'
 import Head from '../../components/Head'
 import styles from './index.module.scss'
 import cns from 'classnames'
+import { GetServerSideProps } from 'next'
+import $http from '../../common/api'
 
 interface WithRouterProps {
   router: NextRouter
 }
 
-interface IProps extends WithRouterProps { }
+interface IArticle {
+  id: number;
+  title: string;
+  content: string;
+  keywords: string;
+  createTime: string;
+  viewCount: number;
+}
+interface IProps extends WithRouterProps {
+  article: IArticle
+}
 
 
 const Detail = (props: IProps) => {
-  const { router } = props
-  // console.log(router)
+  const { router, article } = props
+  console.log(router)
   
   const renderer = new marked.Renderer()
-
-  const title= 'chicken chicken'
-
-  const article = `
- 
-## 二级标题Chicken Chicken
- 
-Chicken Chicken Chicken Chicken Chicken.
-
-* Chicken Chicken Chicken Chicken Chicken.
-* Chicken Chicken Chicken Chicken Chicken.
-* Chicken Chicken Chicken Chicken Chicken.
-
-
-### 三级标题 Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken.
-
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-
-
-## 二级标题Chicken Chicken
-
-Chicken Chicken Chicken Chicken Chicken.
-
-* Chicken Chicken Chicken Chicken Chicken.
-* Chicken Chicken Chicken Chicken Chicken.
-* Chicken Chicken Chicken Chicken Chicken.
-
-
-### 三级标题 Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken.
-
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-### 三级标题 Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken.
-
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-### 三级标题 Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken.
-
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-
-#### 四级标题 Chicken Chicken Chicken Chicken
-
-
-Chicken Chicken Chicken Chicken Chicken Chicken.
-
-
-`
   marked.setOptions({
     renderer: renderer,
     gfm: true,
@@ -122,10 +51,10 @@ Chicken Chicken Chicken Chicken Chicken Chicken.
       return hljs.highlightAuto(code).value
     } 
   })
-  let html = marked.parse(article)
+  let html = marked.parse(article.content)
   return (
     <>
-      <Head title={title} />
+      <Head title={article.title} />
       <Header/>
       <Row className="main" justify="center">
         <Col className="main-left" xs={24} sm={24} md={16} lg={18} xl={14}>
@@ -138,13 +67,13 @@ Chicken Chicken Chicken Chicken Chicken Chicken.
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="article">
-            <div className="article-title">title</div>
+            <div className="article-title">{article.title}</div>
             <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} ></div>
           </div>
           <div className="article-keys">
-            <span>2019-06-28</span>
-            <span>视频教程</span>
-            <span>5498人</span>
+            <span>{article.keywords}</span>
+            <span>{article.createTime}</span>
+            <span>{article.viewCount}</span>
           </div>
           <Divider>留言区</Divider>
         </Col>
@@ -152,7 +81,7 @@ Chicken Chicken Chicken Chicken Chicken Chicken.
           <Author />
           <MarkdownNavbar
             className={cns(styles.articleMenu, 'position-sticky')}
-            source={article}
+            source={article.content}
             ordered={false}
             headingTopOffset={80}
             declarative={true}
@@ -164,5 +93,19 @@ Chicken Chicken Chicken Chicken Chicken Chicken.
   )
 }
 
-export default withRouter(Detail)
 
+const getArticle = async (params) => {
+  const { data } = await $http.getarticle(params)
+  return data
+}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { query: { id } } = context
+  const article = await getArticle({ id })
+  return {
+    props: {
+      article
+    }
+  }
+}
+
+export default withRouter(Detail)
