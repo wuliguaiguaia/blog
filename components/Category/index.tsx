@@ -3,13 +3,14 @@ import { List, Divider } from 'antd'
 import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
 import { ICategory } from '../../pages/home'
-
+import cns from 'classnames'
 
 interface IProps {
-  data: ICategory[]
+  data: ICategory[],
+  current: number
 }
 
-const Category: FunctionComponent<IProps> = ({ data }) => {
+const Category: FunctionComponent<IProps> = ({ data, current }) => {
   const router = useRouter()
   const handleClick = (id: number) => {
     router.push({
@@ -20,7 +21,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
     })
   }
   return (
-    <div className="position-sticky">
+    <div className={cns(['position-sticky card', styles['list-wrapper']])}>
       <Divider orientation="left">Category</Divider>
       <List
         className={styles.list}
@@ -28,6 +29,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
         loading={data.length === 0}
         renderItem={item => (
           <List.Item
+            className={cns(current === +item.id && styles.active)}
             onClick={() => handleClick(item.id)}
           >{item.name} ({item.articlesLen})</List.Item>
         )}

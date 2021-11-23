@@ -1,26 +1,19 @@
 @import './var.scss';
 
-.position-sticky {
-  top: $header-height;
-}
-
 .main {
-  margin-top: calc($header-height + 10px);
-
+  padding-top: calc($header-height + $header-margin);
+  min-height: calc(100vh - $footer-height);
   .main-left {
-    background-color: #fff;
-    padding: 14px;
-    border-radius: 0.3rem;
-    border-bottom: 1px solid #eee;
   }
 
   .main-right {
-    background-color: #fff;
     margin-left: 0.5rem;
-    padding: 0.3rem;
-    border-radius: 0.3rem;
-    border-bottom: 1px solid #eee;
   }
+}
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 0.3rem;
 }
 
 .list-title {

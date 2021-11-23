@@ -1,3 +1,9 @@
-.list {
-  padding: 0px 20px;
+@import './../../styles/var.scss';
+
+.list-wrapper {
+  top: calc($header-margin + $header-height);
+  margin-top: $header-margin;
+}
+.active {
+  color: red;
 }

@@ -1,6 +1,8 @@
 import { Divider, Avatar, Statistic, Row, Col, Popover, Tooltip  } from 'antd'
 import {
-  UserOutlined, WechatOutlined, ZhihuOutlined, GithubOutlined,
+  WechatOutlined,
+  ZhihuOutlined,
+  GithubOutlined,
 } from '@ant-design/icons'
 import cns from 'classnames'
 import styles from './index.module.scss'
@@ -11,13 +13,11 @@ interface IProps {
   articlesLength: number
 }
 const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
-  const zhihuContent = <div>
-    
-    <Image src="/images/zh.png" width="100" height="100" alt="" />
-  </div>
   return (
-    <div className={styles['anthor-wrapper']}>
-      <div className="jus-center"><Avatar shape="circle" size={80} src='/images/avator.jpg' /></div>
+    <div className={cns([styles['author-wrapper'], 'card'])}>
+      <div className='jus-center'>
+        <Avatar shape="circle" size={130} src='/images/avator.jpg' />
+      </div>
       <Row gutter={15} className={styles.data}>
         <Col span={12}>
           <Statistic title="Article" value={articlesLength} />
@@ -26,10 +26,10 @@ const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
           <Statistic title="Message" value={112893} />
         </Col>
       </Row>
-      <Divider>About</Divider>
-      <div className={cns('jus-center', styles.icons)}>
+      <Divider />
+      <div className='jus-center'>
         <Popover
-          content={<Image src="/images/vx.png" width="100" height="100" alt="" />}
+          content={<Image src="/images/vx.png" width="120" height="120" alt="" />}
           color="rgb(200, 186, 99)"
           placement="bottom">
           <Avatar className={styles.icon} icon={<WechatOutlined />} />

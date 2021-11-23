@@ -1,4 +1,4 @@
-import { Col, Row, Breadcrumb, Divider } from 'antd'
+import { Col, Row, Breadcrumb, Divider, BackTop, Button } from 'antd'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Author from '../../components/Author'
@@ -16,19 +16,13 @@ import styles from './index.module.scss'
 import cns from 'classnames'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
+import { IArticle } from '../home'
+import { getDate } from '../../common/utils'
 
 interface WithRouterProps {
   router: NextRouter
 }
 
-interface IArticle {
-  id: number;
-  title: string;
-  content: string;
-  keywords: string;
-  createTime: string;
-  viewCount: number;
-}
 interface IProps extends WithRouterProps {
   article: IArticle
 }
@@ -36,6 +30,7 @@ interface IProps extends WithRouterProps {
 
 const Detail = (props: IProps) => {
   const { router, article } = props
+  const category = article.categories?.[0]
   console.log(router)
   
   const renderer = new marked.Renderer()
@@ -57,37 +52,43 @@ const Detail = (props: IProps) => {
       <Head title={article.title} />
       <Header/>
       <Row className="main" justify="center">
-        <Col className="main-left" xs={24} sm={24} md={16} lg={18} xl={14}>
-          <Breadcrumb>
+        <Col className="main-left" xs={22} sm={23} md={16} lg={17} xl={14} xxl={12}>
+          <Breadcrumb className="card">
             <Breadcrumb.Item>
               <Link href="/"><a >首页</a></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <a href="">Application Center</a>
+              <Link href={`/?category=${category.id}`}>{category.name}</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <div className="article">
-            <div className="article-title">{article.title}</div>
+          <div className={cns(styles.article ,'card')}>
+            <div className={styles['article-title']}>{article.title}</div>
+            <div className={styles['article-time']}>{getDate(article.createTime)}</div>
+            <div className="article-keys">
+              <span>{/* {article.keywords} */}</span>
+            </div>
             <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} ></div>
           </div>
           <div className="article-keys">
             <span>{article.keywords}</span>
-            <span>{article.createTime}</span>
             <span>{article.viewCount}</span>
           </div>
           <Divider>留言区</Divider>
         </Col>
-        <Col className="main-right" xs={24} sm={24} md={7} lg={5} xl={5}>
+        <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
           <Author />
-          <MarkdownNavbar
-            className={cns(styles.articleMenu, 'position-sticky')}
-            source={article.content}
-            ordered={false}
-            headingTopOffset={80}
-            declarative={true}
-          />
+          <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
+            <Divider orientation="left">Directory</Divider>
+            <MarkdownNavbar
+              source={article.content}
+              ordered={false}
+              headingTopOffset={0}
+              declarative={true}
+            />
+          </div>
         </Col>
       </Row>
+      <BackTop />
       <Footer/>
     </>
   )

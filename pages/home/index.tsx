@@ -6,18 +6,29 @@ import Author from '../../components/Author'
 import Footer from '../../components/Footer'
 import { useRouter } from 'next/dist/client/router'
 import Category from '../../components/Category'
-
+import Link from 'next/link'
 import { BackTop } from 'antd'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
-
+import styles from './index.module.scss'
+import cns from 'classnames'
 export interface ICategory {
   id: number;
   name: string;
   articlesLen: number;
 }
+
+export interface IArticle {
+  id: number;
+  title: string;
+  content: string;
+  keywords: string;
+  createTime: string;
+  viewCount: number;
+  categories: ICategory[]
+}
 interface IProps {
-  acticles: object[]
+  acticles: IArticle[]
   category: ICategory[],
   articlesLength: number
 }
@@ -26,39 +37,28 @@ interface IProps {
 // import dynamic from 'next/dynamic'
 // const Eeader = dynamic(import('../components/Header'))
 const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength }) => {
-  const [mylist, setMylist] = useState([])
+  const [curCategory, setCurCategory] = useState(0)
   const router = useRouter()
   const routeChange = (id: number) => {
     router.push({
       pathname: '/detail',
       query: { id }
-    } )
+    })
   }
 
   useEffect(() => {
-    const handleRouteChange = (path: string) => {
-      const pattern = /category=(\d+)/
-      const matches = path.match(pattern)
-      if (!matches) return
-      const categoryId = matches[1]
-      console.log('categoryId', categoryId)
-      // setMylist(() => {
-      //   return initialList.filter(item => item.category === +categoryId)
-      // })
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  },[router.events])
+    const { query: {category: _curCategory}} = router
+    setCurCategory(Number(_curCategory))
+  },[router, router.events])
 
   return (
     <>
-      <Head title={'orange.com'}/>
-      <Header/>
+      <Head title={'orange.com'} />
+      <Header />
       <Row className="main" justify="center">
-        <Col className="main-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+        <Col className="main-left" xs={22} sm={23} md={16} lg={17} xl={14} xxl={12}>
           <List
+            className={cns([styles.list, 'card'])}
             header={<div>最新日志</div>}
             dataSource={acticles}
             itemLayout="vertical"
@@ -67,16 +67,16 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
                 <div className="list-title">{item.title}</div>
                 <div className="list-context">{item.content}</div>
                 <div className="list-keys">
-                  <span>{item.createTime }</span>
-                  <span>{item.keywords }</span>
+                  <span>{item.createTime}</span>
+                  <span>{item.keywords}</span>
                 </div>
               </List.Item>
             )}
           />
         </Col>
-        <Col className="main-right" xs={24} sm={24} md={7} lg={5} xl={5}>
-          <Author articlesLength={articlesLength}/>
-          <Category data={ category }/>
+        <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
+          <Author articlesLength={articlesLength} />
+          <Category data={category} current={curCategory}/>
         </Col>
       </Row>
       <BackTop />
