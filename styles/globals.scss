@@ -4,6 +4,8 @@
 
 html {
   font-size: 14px;
+  /* 增加锚点跳转过度效果 */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -12,6 +14,7 @@ body {
   background: #f6f6f6;
   line-height: 1.5;
   color: #222;
+
 }
 
 h1,

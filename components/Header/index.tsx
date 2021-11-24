@@ -13,7 +13,7 @@ const Header: FunctionComponent = function () {
     <div className={styles.header}>
       <Row justify="space-between">
         <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-          <Link href="/"><a className={styles.logo}>小橘子</a></Link>
+          <Link href="/" passHref><a className={styles.logo}>小橘子</a></Link>
           <span className={styles.descrtion}>哈密瓜花蜜瓜</span>
         </Col>
         {/* TODO: 小于 768 使用图标代替 */}

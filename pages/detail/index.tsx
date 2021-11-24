@@ -1,8 +1,8 @@
-import { Col, Row, Breadcrumb, Divider, BackTop, Button } from 'antd'
+import { Col, Row, Breadcrumb, Divider, BackTop } from 'antd'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Author from '../../components/Author'
-
+import { renderToString} from 'react-dom/server'
 import { marked } from 'marked'
 import * as hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
@@ -18,6 +18,7 @@ import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
 import { IArticle } from '../home'
 import { getDate } from '../../common/utils'
+import { useEffect } from 'react'
 
 interface WithRouterProps {
   router: NextRouter
@@ -46,6 +47,28 @@ const Detail = (props: IProps) => {
       return hljs.highlightAuto(code).value
     } 
   })
+
+  
+  /* markdown 各级标题样式自定义 */
+  renderer.heading = (text, level) => {
+    const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title)}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
+    return markerContents
+  }
+  
+  useEffect(() => {
+    const handleHashChange = () => {
+      const target = document.getElementById(decodeURIComponent(location.hash))
+      if (!target) return
+      const headerPadding = 8
+      document.documentElement.scrollTop = target.offsetTop + headerPadding
+    }
+    handleHashChange()
+    window.addEventListener('hashchange', handleHashChange)
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+  }, [])
+
   let html = marked.parse(article.content)
   return (
     <>
@@ -55,10 +78,10 @@ const Detail = (props: IProps) => {
         <Col className="main-left" xs={22} sm={23} md={16} lg={17} xl={14} xxl={12}>
           <Breadcrumb className="card">
             <Breadcrumb.Item>
-              <Link href="/"><a >首页</a></Link>
+              <Link href="/" passHref><a >首页</a></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link href={`/?category=${category.id}`}>{category.name}</Link>
+              <Link href={`/?category=${category.id}`} passHref>{category.name}</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className={cns(styles.article ,'card')}>

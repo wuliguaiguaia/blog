@@ -13,7 +13,7 @@ export default function Custom404() {
         <h1>
             Something went WRONG!
         </h1>
-        <Link href="/">返回首页</Link>
+        <Link href="/" passHref>返回首页</Link>
       </div>
       <Footer/>
     </div>
