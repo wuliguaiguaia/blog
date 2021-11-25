@@ -276,3 +276,10 @@ input[type="radio"] {
 .position-sticky {
   position: sticky;
 }
+
+
+.text-ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

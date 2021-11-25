@@ -6,9 +6,7 @@ import { renderToString} from 'react-dom/server'
 import { marked } from 'marked'
 import * as hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
-
-import MarkdownNavbar from 'markdown-navbar'
-import 'markdown-navbar/dist/navbar.css'
+import MarkdownNavbar from './../../components/MarkdownNav'
 import { withRouter, NextRouter } from 'next/router'
 import Link from 'next/link'
 import Head from '../../components/Head'
@@ -19,6 +17,12 @@ import $http from '../../common/api'
 import { IArticle } from '../home'
 import { getDate } from '../../common/utils'
 import { useEffect } from 'react'
+
+export interface NavList {
+  level: number;
+  text: string;
+  children: NavList[]
+}
 
 interface WithRouterProps {
   router: NextRouter
@@ -32,7 +36,6 @@ interface IProps extends WithRouterProps {
 const Detail = (props: IProps) => {
   const { router, article } = props
   const category = article.categories?.[0]
-  console.log(router)
   
   const renderer = new marked.Renderer()
   marked.setOptions({
@@ -48,13 +51,20 @@ const Detail = (props: IProps) => {
     } 
   })
 
-  
+
+  const navList: NavList[]= []
   /* markdown 各级标题样式自定义 */
   renderer.heading = (text, level) => {
+    if (level === 2) {
+      navList.push({ text, level, children: [] })
+    } else {
+      let last = navList[navList.length - 1]
+      last.children.push({ text, level, children: [] })
+    }
     const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title)}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
     return markerContents
   }
-  
+
   useEffect(() => {
     const handleHashChange = () => {
       const target = document.getElementById(decodeURIComponent(location.hash))
@@ -64,10 +74,12 @@ const Detail = (props: IProps) => {
     }
     handleHashChange()
     window.addEventListener('hashchange', handleHashChange)
+    router.events.on('hashChangeComplete', handleHashChange) // ???????
     return () => {
+      router.events.off('hashChangeComplete', handleHashChange)
       window.removeEventListener('hashchange', handleHashChange)
     }
-  }, [])
+  }, [router.events])
 
   let html = marked.parse(article.content)
   return (
@@ -102,12 +114,13 @@ const Detail = (props: IProps) => {
           <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            <MarkdownNavbar
+            {/* <MarkdownNavbar
               source={article.content}
               ordered={false}
               headingTopOffset={0}
               declarative={true}
-            />
+            /> */}
+            <MarkdownNavbar data={navList} />
           </div>
         </Col>
       </Row>

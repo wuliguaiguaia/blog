@@ -1,0 +1,40 @@
+.navbar {
+  cursor: pointer;
+}
+
+.icon-title {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 3px solid #bdbdbdd9;
+  margin-right: 15px;
+
+  
+}
+
+.active {
+  color: #0070f3;
+}
+
+.title {
+  line-height: 2;
+  pointer-events: none;
+}
+.title-2 {
+  padding-left: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.title-3 {
+  padding-left: 2em;
+  font-size: 14px;
+}
+
+.title-4 {
+  padding-left: 4em;
+}
+.title-5 {
+  padding-left: 6em;
+}
