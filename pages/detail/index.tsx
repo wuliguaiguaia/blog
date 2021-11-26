@@ -4,7 +4,7 @@ import Footer from '../../components/Footer'
 import Author from '../../components/Author'
 import { renderToString} from 'react-dom/server'
 import { marked } from 'marked'
-import * as hljs from 'highlight.js'
+import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import MarkdownNavbar from './../../components/MarkdownNav'
 import { withRouter, NextRouter } from 'next/router'
@@ -87,7 +87,7 @@ const Detail = (props: IProps) => {
       <Head title={article.title} />
       <Header/>
       <Row className="main" justify="center">
-        <Col className="main-left" xs={22} sm={23} md={16} lg={17} xl={14} xxl={12}>
+        <Col className="main-left" xs={23} sm={23} md={16} lg={17} xl={14} xxl={12}>
           <Breadcrumb className="card">
             <Breadcrumb.Item>
               <Link href="/" passHref><a >首页</a></Link>
@@ -114,12 +114,6 @@ const Detail = (props: IProps) => {
           <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            {/* <MarkdownNavbar
-              source={article.content}
-              ordered={false}
-              headingTopOffset={0}
-              declarative={true}
-            /> */}
             <MarkdownNavbar data={navList} />
           </div>
         </Col>

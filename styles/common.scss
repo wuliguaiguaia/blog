@@ -12,8 +12,22 @@
 }
 .card {
   background-color: #fff;
-  padding: 20px;
+  padding: 10px 15px;
   border-radius: 0.3rem;
+
+  @media screen and (max-width: 992px){
+    padding: 10px 15px;
+  }
+
+  @media screen and (max-width: 768px){
+    padding: 10px 15px;
+
+  }
+
+  @media screen and (max-width: 576px){
+    padding: 8px 12px;
+  }
+
 }
 
 .list-title {

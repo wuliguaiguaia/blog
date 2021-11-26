@@ -3,7 +3,6 @@ import { NavList } from '../../pages/detail'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { useRouter } from 'next/router'
-import { route } from 'next/dist/server/router'
 
 interface IProps {
   data: NavList[]
@@ -42,7 +41,7 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data }) => {
     window.addEventListener('hashchange', handleHashChange)
     router.events.on('hashChangeComplete', handleHashChange)
     return () => {
-      titlesRef.current.removeEventListener('click', handleClick)
+      // titlesRef.current.removeEventListener('click', handleClick)
       window.removeEventListener('hashchange', handleHashChange)
       router.events.off('hashChangeComplete', handleHashChange)
     }
@@ -63,12 +62,13 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data }) => {
               <div className={cns(styles.title, 'text-ellipsis')}>{subText}</div>
             </li>
           })
-          return <li key={text}>
+          return <li key={text} className={styles['title-wrapper']}>
+            <div className={styles.line}></div>
             <div
               className={cns('align-center', active === text && styles.active)}
               data-hash={text}
             >
-              <a><span className={cns(styles['icon-title'])}></span></a>
+              <div className={styles.circle}></div>
               <div className={cns(styles[`title-${level}`], styles.title, 'text-ellipsis')}>{text}</div>
             </div>
             <ul>

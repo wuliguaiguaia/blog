@@ -1,5 +1,24 @@
 .navbar {
   cursor: pointer;
+  .title-wrapper {
+    position: relative;
+  }
+  .line {
+    position: absolute;
+    top: 20px;
+    left: 4px;
+    height: calc(100% - 10px);
+    border-left: 2px solid #f0f0f0;
+  }
+  .circle {
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border: 2px solid transparent;
+    border-radius: 100px;
+    border-color: #1890ff;
+    margin-right: 10px;
+  }
 }
 
 .icon-title {
@@ -8,9 +27,7 @@
   height: 5px;
   border-radius: 50%;
   border: 3px solid #bdbdbdd9;
-  margin-right: 15px;
-
-  
+  margin-right: 10px;
 }
 
 .active {

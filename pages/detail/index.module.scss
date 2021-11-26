@@ -12,6 +12,39 @@
         color: grey;
         margin-bottom: 10px;
     }
+
+    /* markdown - start */
+    .title {
+        line-height: 3;
+    }
+
+    .title-1 {
+        font-size: 24px;
+    }
+    .title-2 {
+        font-size: 22px;
+    }
+    .title-3 {
+        font-size: 18px;
+    }
+    .title-4 {
+        font-size: 15px;
+    }
+    .title-5 {
+        font-size: 14px;
+    }
+    pre {
+        display: block;
+        background-color:#f3f3f3;
+        padding: 10px;
+        overflow-y: auto;
+        font-weight: 300;
+        font-family: Menlo, monospace;
+        border-radius: .3rem;
+        margin: 8px 0;
+    }
+    /* markdown - end */
+
 }
 
 .article-menu{
@@ -19,56 +52,88 @@
     margin-top: $header-margin;
 }
 
-.title {
-    line-height: 3;
-}
-.title-1 {
-    font-size: 24px;
-}
-.title-2 {
-    font-size: 22px;
-}
-.title-3 {
-    font-size: 18px;
-}
-.title-4 {
-    font-size: 15px;
-}
-.title-5 {
-    font-size: 14px;
+@media screen and (max-width: 992px){
+    .article {
+        .article-title {
+            font-size: 28px;
+            margin-bottom: .4em;
+        }
+        .title {
+            line-height: 2.4;
+        }
+        .title-1 {
+            font-size: 24px;
+        }
+        .title-2 {
+            font-size: 22px;
+        }
+        .title-3 {
+            font-size: 18px;
+        }
+        .title-4 {
+            font-size: 15px;
+        }
+        .title-5 {
+            font-size: 14px;
+        }
+    }
 }
 
-/* markdown - start */
-/* markdown - end */
-
-/* pre{
-    display: block;
-    background-color:#f3f3f3;
-     padding: .5rem !important;
-     overflow-y: auto;
-     font-weight: 300;
-     font-family: Menlo, monospace;
-     border-radius: .3rem;
-} */
-/* pre{
-    background-color: #283646 !important;
+@media screen and (max-width: 768px){
+    .article {
+        .article-title {
+            font-size: 24px;
+            margin-bottom: .3em;
+        }
+        .title {
+            line-height: 2.4;
+        }
+        .title-1 {
+            font-size: 24px;
+        }
+        .title-2 {
+            font-size: 22px;
+        }
+        .title-3 {
+            font-size: 18px;
+        }
+        .title-4 {
+            font-size: 15px;
+        }
+        .title-5 {
+            font-size: 14px;
+        }
+    }
 }
-pre >code{
-    border:0px !important;
-    background-color: #283646 !important;
-    color:#FFF;
 
-} */
-/* code {
-    display: inline-block ;
-    background-color:#f3f3f3;
-    border:1px solid #fdb9cc;
-    border-radius:3px;
-    font-size: 12px;
-    padding-left: 5px;
-    padding-right: 5px;
-    color:#4f4f4f;
-    margin: 0px 3px;
+@media screen and (max-width: 576px){
+    .article {
+        .article-title {
+            font-size: 20px;
+            margin-bottom: .2em;
+        }
+        .title {
+            line-height: 2.4;
+        }
+        .title-1 {
+            font-size: 24px;
+        }
+        .title-2 {
+            font-size: 20px;
+        }
+        .title-3 {
+            font-size: 18px;
+        }
+        .title-4 {
+            font-size: 15px;
+        }
+        .title-5 {
+            font-size: 14px;
+        }
+    }
+}
 
-} */
+
+
+
 

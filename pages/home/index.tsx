@@ -56,7 +56,7 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
       <Head title={'orange.com'} />
       <Header />
       <Row className="main" justify="center">
-        <Col className="main-left" xs={22} sm={23} md={16} lg={17} xl={14} xxl={12}>
+        <Col className="main-left" xs={23} sm={23} md={16} lg={17} xl={14} xxl={12}>
           <List
             className={cns([styles.list, 'card'])}
             header={<div>最新日志</div>}

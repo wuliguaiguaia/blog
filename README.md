@@ -6,4 +6,5 @@ export namespace marked { 有 setoptions
 
 
 
-AXIOS:http://axios-js.com/zh-cn/docs/index.html#%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%84
+AXIOS:http://axios-js.com/zh-cn/docs/index.html#%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%84 
+
