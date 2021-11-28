@@ -107,13 +107,13 @@ const getCategory = async () => {
 
 const getArticle = async (params) => {
   const response = await $http.getarticlelist(params)
-  const { data: { list, total } } = response
-  return [list, total]
+  const { data } = response
+  return data
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { query: {category} } = context
+  const { query: { category } } = context
   const categoryList = await getCategory()
-  const [acticles, articlesLength] = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
+  const acticles = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
   /* const data = [
     { id: 1, value: 'javascript' },
     { id: 2, value: 'html/css' },
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       allPostsData: [],
       category: categoryList,
       acticles,
-      articlesLength,
+      articlesLength: 10
     }
   }
 }
