@@ -37,7 +37,6 @@ interface IProps {
 // import dynamic from 'next/dynamic'
 // const Eeader = dynamic(import('../components/Header'))
 const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength }) => {
-  const [curCategory, setCurCategory] = useState(0)
   const router = useRouter()
   const routeChange = (id: number) => {
     router.push({
@@ -45,11 +44,6 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
       query: { id }
     })
   }
-
-  useEffect(() => {
-    const { query: {category: _curCategory}} = router
-    setCurCategory(Number(_curCategory))
-  },[router, router.events])
 
   return (
     <>
@@ -65,7 +59,7 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
                 <div className="list-title">{item.title}</div>
-                <div className="list-context">{item.content}</div>
+                {/* <div className="list-context">{item.content}</div> */}
                 <div className="list-keys">
                   <span>{item.createTime}</span>
                   <span>{item.keywords}</span>
@@ -76,7 +70,7 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
           <Author articlesLength={articlesLength} />
-          <Category data={category} current={curCategory}/>
+          <Category data={category}/>
         </Col>
       </Row>
       <BackTop />
@@ -107,10 +101,14 @@ const getCategory = async () => {
 
 const getArticle = async (params) => {
   const response = await $http.getarticlelist(params)
-  const { data } = response
-  return data
+  // const { data } = response
+  const { data: { list } } = response
+  return list
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // query 不变都会重新请求  TODO:
+  console.log(21321312312312321)
+  
   const { query: { category } } = context
   const categoryList = await getCategory()
   const acticles = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
