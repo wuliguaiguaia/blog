@@ -11,6 +11,7 @@ const Comment = () => {
       placeholder="输入评论（Enter换行，⌘ / Ctrl + Enter发送）"
       autoSize={{ minRows: 2, maxRows: 6 }}
     />
+    {/* 姓名，个人网址 */}
     <div className={cns(['jusBetween-alignCenter'])}>
       <div>
         <span>表情</span>
