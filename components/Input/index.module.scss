@@ -1,0 +1,30 @@
+.inputWrapper {
+  border-bottom: 1px solid #74b7ff;
+  position: relative;
+  max-width: 200px;
+  margin-right: 10px;
+}
+.input {
+  border: 0px;
+  outline: none;
+  color: #686868;
+  font-size: 13px;
+  line-height: 1.3;
+  width: 100%;
+  transition: padding 0.3s ease;
+  padding: 0 20px 0 0;
+}
+.inputActive {
+  padding: 0 0 0 20px;
+}
+.searchIcon {
+  position: absolute;
+  top: 0px;
+  padding: 3px;
+  color: #74b7ff;
+  transition: left 0.3s ease;
+  left: calc(100% - 15px);
+}
+.iconActive {
+  left: 0px;
+}

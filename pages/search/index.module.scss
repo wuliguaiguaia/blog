@@ -1,0 +1,31 @@
+@import "./../../styles/var.scss";
+
+.list {
+  min-height: 100%;
+}
+.header {
+  color: #595959;
+  font-size: 14px;
+  margin: 10px 0;
+}
+.searchText {
+  font-size: 12px;
+  margin-left: 10px;
+  color: #8c8c8c;
+}
+
+.noDate {
+  color: #595959;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.noDateTitle {
+  margin-bottom: 10px;
+}
+
+.noDateList {
+  padding-left: 20px;
+}

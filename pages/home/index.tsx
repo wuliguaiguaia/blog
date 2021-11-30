@@ -1,42 +1,25 @@
-import Head from '../../components/Head'
 import { Col, Row, List } from 'antd'
-import Header from '../../components/Header'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent } from 'react'
 import Author from '../../components/Author'
-import Footer from '../../components/Footer'
 import { useRouter } from 'next/dist/client/router'
 import Category from '../../components/Category'
-import Link from 'next/link'
-import { BackTop } from 'antd'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
-export interface ICategory {
-  id: number;
-  name: string;
-  articlesLen: number;
-}
+import { IArticle, ICategory } from '../../common/interface'
 
-export interface IArticle {
-  id: number;
-  title: string;
-  content: string;
-  keywords: string;
-  createTime: string;
-  viewCount: number;
-  categories: ICategory[]
-}
 interface IProps {
   acticles: IArticle[]
   category: ICategory[],
-  articlesLength: number
+  articlesLength: number,
+  loadingStatus: number
 }
 
 // import axios from 'axios'    
 // import dynamic from 'next/dynamic'
 // const Eeader = dynamic(import('../components/Header'))
-const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength }) => {
+const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength, loadingStatus }) => {
   const router = useRouter()
   const routeChange = (id: number) => {
     router.push({
@@ -47,8 +30,6 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
 
   return (
     <>
-      <Head title={'orange.com'} />
-      <Header />
       <Row className="main" justify="center">
         <Col className="main-left" xs={23} sm={23} md={16} lg={17} xl={14} xxl={12}>
           <List
@@ -73,8 +54,6 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
           <Category data={category}/>
         </Col>
       </Row>
-      <BackTop />
-      <Footer/>
     </>
   )
 }
@@ -107,11 +86,11 @@ const getArticle = async (params) => {
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
-  console.log(21321312312312321)
-  
   const { query: { category } } = context
   const categoryList = await getCategory()
   const acticles = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
+  
+
   /* const data = [
     { id: 1, value: 'javascript' },
     { id: 2, value: 'html/css' },
@@ -126,7 +105,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       allPostsData: [],
       category: categoryList,
       acticles,
-      articlesLength: 10
+      articlesLength: 10,
     }
   }
 }

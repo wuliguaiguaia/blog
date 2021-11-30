@@ -1,5 +1,6 @@
 .navbar {
   cursor: pointer;
+  overflow: hidden;
   .title-wrapper {
     position: relative;
   }
@@ -37,16 +38,16 @@
 .title {
   line-height: 2;
   pointer-events: none;
+  font-size: 13px;
 }
 .title-2 {
   padding-left: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .title-3 {
   padding-left: 2em;
-  font-size: 14px;
 }
 
 .title-4 {

@@ -5,13 +5,14 @@ import cns from 'classnames'
 import { useRouter } from 'next/router'
 
 interface IProps {
-  data: NavList[]
+  data: NavList[],
+  current: string
 }
 
-const MarkdownNavbar: FunctionComponent<IProps> = ({ data }) => {
+const MarkdownNavbar: FunctionComponent<IProps> = ({ data, current }) => {
   const titlesRef = useRef()
   const router = useRouter()
-  const [active, setActive] = useState('')
+  const [active, setActive] = useState(current)
   useEffect(() => {
     const handleClick = (e) => {
       const dataset = e.target.dataset
@@ -25,15 +26,12 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data }) => {
         hash: `${hash}`
       })
       setActive(hash)
-      // if (!matches) return
-      // const hash = e.target.
     }
     const handleHashChange = () => {
       const hash = decodeURIComponent(location.hash)
       const target = document.getElementById(hash)
       if (!target) return
       setActive(hash.slice(1))
-      
     }
     handleHashChange()
 
@@ -46,6 +44,11 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data }) => {
       router.events.off('hashChangeComplete', handleHashChange)
     }
   }, [router])
+
+  useEffect(() => {
+    setActive(current)
+  }, [current])
+
   return <div ref={titlesRef}>
     <ul className={cns(styles.navbar)}>
       {

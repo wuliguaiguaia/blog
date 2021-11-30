@@ -2,7 +2,7 @@ import styles from './index.module.scss'
 import { List, Popover, Radio } from 'antd'
 import { useRouter } from 'next/router'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { ICategory } from '../../pages/home'
+import { ICategory } from './../../common/interface'
 import cns from 'classnames'
 import {QuestionCircleOutlined, CheckOutlined} from '@ant-design/icons'
 import usePrevious from '../../common/utils/hooks/usePrevious'
@@ -64,7 +64,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
   
   
   const handleClick = (id: number) => {
-    let _selected = selected
+    let _selected = JSON.parse(JSON.stringify(selected))
     let index = _selected.indexOf(id)
     switch (mode) {
     case 0:
@@ -87,11 +87,9 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
       }
       break
     }
-    console.log(_selected, 312312312312312312)
+    const changed = JSON.stringify(prevSelected) !== JSON.stringify(_selected)
+    if (!changed) return 
     setSelected(_selected)
-    // const changed = JSON.stringify(prevSelected) !== JSON.stringify(_selected)
-    // console.log(JSON.stringify(prevSelected), JSON.stringify(_selected))
-    // if (!changed) return 
     router.push({
       pathname: '/',
       query: {

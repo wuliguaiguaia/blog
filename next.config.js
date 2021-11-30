@@ -8,4 +8,7 @@ module.exports = {
       },
     ]
   },
+  plugins: [
+    './common/plugins/axios.ts'
+  ]
 }

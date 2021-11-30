@@ -1,29 +1,57 @@
 import { Row, Col } from 'antd'
-import { FunctionComponent } from 'react'
-// import {
-//   HomeOutlined,
-//   SmileOutlined,
-//   VideoCameraOutlined,
-// } from '@ant-design/icons'
+import { FunctionComponent, useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from './index.module.scss'
+import ZInput from '../Input'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import cns from 'classnames'
 
-const Header: FunctionComponent = function () {
+interface IProps {
+  loadingStatus: number
+}
+const Header: FunctionComponent<IProps> = function ({loadingStatus}) {
+  const router = useRouter()
+  const [searchValue, setSearchValue] = useState('')
+
+  useEffect(() => {
+    setSearchValue('')
+  }, [router])
+  
+  const handleSearch = (value: string) => {
+    router.push({
+      pathname: '/search',
+      query: {
+        q: value
+      }
+    })
+  }
+
+  const handleValueChange = (e) => {
+    setSearchValue(e.target.value)
+  }
   return (
     <div className={styles.header}>
-      <Row justify="space-between">
-        <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-          <Link href="/" passHref><a className={styles.logo}>小橘子</a></Link>
+      <Row justify="space-between" className="jusBetween-alignCenter">
+        <Col xs={12} sm={12} md={12} lg={10} xl={10} className={cns(['align-center', styles.left])}>
+          <div className={cns([
+            styles.logo,
+            'align-center',
+            loadingStatus === 1 && styles.logoActive
+          ])}>
+            <Image
+              src="/favicon.svg"
+              alt="logo"
+              width={18}
+              height={18}
+            />
+          </div>
+          <Link href="/" passHref><a className={styles.link}>小橘子</a></Link>
           <span className={styles.descrtion}>哈密瓜花蜜瓜</span>
         </Col>
-        {/* TODO: 小于 768 使用图标代替 */}
-        {/* <Col xs={0} sm={0} md={14} lg={8} xl={6}>
-          <Menu mode="horizontal">
-            <Menu.Item key="home" icon={<HomeOutlined />}>首页</Menu.Item>
-            <Menu.Item key="video" icon={<VideoCameraOutlined />}>视频</Menu.Item>
-            <Menu.Item key="life" icon={<SmileOutlined />}>生活</Menu.Item>
-          </Menu>
-        </Col> */}
+        <Col xs={10} sm={10} md={10} lg={6} xl={6} >
+          <ZInput placeholder="搜索如：我的第一篇" value={searchValue} handleChange= {handleValueChange} handleEnter={handleSearch}></ZInput>
+        </Col>
       </Row>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Col, Row, Breadcrumb, Divider, BackTop } from 'antd'
+import { Col, Row, Breadcrumb, Divider, BackTop, Badge, Avatar } from 'antd'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Author from '../../components/Author'
@@ -14,9 +14,11 @@ import styles from './index.module.scss'
 import cns from 'classnames'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
-import { IArticle } from '../home'
-import { getDate } from '../../common/utils'
-import { useEffect } from 'react'
+import { IArticle } from './../../common/interface'
+import { getDate, throttle } from '../../common/utils/index'
+import { useEffect, useState } from 'react'
+import Comment from '../../components/Comment'
+import { EyeOutlined } from '@ant-design/icons'
 
 export interface NavList {
   level: number;
@@ -29,14 +31,14 @@ interface WithRouterProps {
 }
 
 interface IProps extends WithRouterProps {
-  article: IArticle
+  article: IArticle,
 }
 
 
 const Detail = (props: IProps) => {
   const { router, article } = props
   const category = article.categories?.[0]
-  
+  const [activeCatelog, setActiveCatelog] = useState('')
   const renderer = new marked.Renderer()
   marked.setOptions({
     renderer: renderer,
@@ -50,7 +52,28 @@ const Detail = (props: IProps) => {
       return hljs.highlightAuto(code).value
     } 
   })
-
+  /* 滚动监听 */
+  useEffect(() => {
+    const wrapper = document.getElementById('_article-content')
+    const content = wrapper?.querySelectorAll('[class*="detail_title-"]') || []
+    const offsetArr = []
+    const wrapperTop = wrapper?.offsetTop
+    content.forEach(el => {
+      offsetArr.push(el.offsetTop + wrapperTop)
+    })
+    const handleScroll = () => {
+      const top = window.scrollY
+      let curIndex = 0
+      offsetArr.forEach((item, index) => {
+        if (top + 50 >= item) {
+          curIndex = index
+        }
+      })
+      setActiveCatelog(content[curIndex].innerText)
+    }
+    window.addEventListener('scroll', throttle(handleScroll, 100))
+  }, [])
+  
 
   const navList: NavList[]= []
   /* markdown 各级标题样式自定义 */
@@ -61,7 +84,7 @@ const Detail = (props: IProps) => {
       let last = navList[navList.length - 1]
       last.children.push({ text, level, children: [] })
     }
-    const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title)}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
+    const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title, '_artilce-title')}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
     return markerContents
   }
 
@@ -85,9 +108,8 @@ const Detail = (props: IProps) => {
   return (
     <>
       <Head title={article.title} />
-      <Header/>
       <Row className="main" justify="center">
-        <Col className="main-left" xs={23} sm={23} md={16} lg={17} xl={14} xxl={12}>
+        <Col className="main-left" xs={23} sm={23} md={15} lg={16} xl={13} xxl={11}>
           <Breadcrumb className="card">
             <Breadcrumb.Item>
               <Link href="/" passHref><a >首页</a></Link>
@@ -98,28 +120,29 @@ const Detail = (props: IProps) => {
           </Breadcrumb>
           <div className={cns(styles.article ,'card')}>
             <div className={styles['article-title']}>{article.title}</div>
-            <div className={styles['article-time']}>{getDate(article.createTime)}</div>
+            <div className={styles['article-keys']}>
+              <span className={styles['article-time']}>{getDate(article.createTime)}</span>
+              <span><EyeOutlined /> {article.viewCount || 1230}</span>
+            </div>
             <div className="article-keys">
               <span>{/* {article.keywords} */}</span>
             </div>
-            <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} ></div>
+            <div className="article-content" id="_article-content" dangerouslySetInnerHTML={{ __html: html }} ></div>
+            {/* <div className="article-keys">
+              <span>{article.keywords}</span>
+              <span>{article.viewCount}</span>
+            </div> */}
           </div>
-          <div className="article-keys">
-            <span>{article.keywords}</span>
-            <span>{article.viewCount}</span>
-          </div>
-          <Divider>留言区</Divider>
+          <Comment></Comment>
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
           <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            <MarkdownNavbar data={navList} />
+            <MarkdownNavbar data={navList} current={activeCatelog}/>
           </div>
         </Col>
       </Row>
-      <BackTop />
-      <Footer/>
     </>
   )
 }
@@ -129,12 +152,18 @@ const getArticle = async (params) => {
   const { data } = await $http.getarticle(params)
   return data
 }
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // let loadingStatus  = 0
   const { query: { id } } = context
   const article = await getArticle({ id })
+  setTimeout(() => {
+    // loadingStatus = 1
+  }, 2000)
   return {
     props: {
-      article
+      article,
+      // loadingStatus
     }
   }
 }

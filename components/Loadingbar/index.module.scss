@@ -1,0 +1,28 @@
+@import "./../../styles/var.scss";
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $loadingbar-zIndex;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.line {
+  width: 0;
+  height: 1px;
+  background-color: #7499ff;
+  transition: width 1s ease;
+}
+
+.lineStartActive {
+  width: 80vw;
+}
+
+.lineActive {
+  width: 100vw;
+}

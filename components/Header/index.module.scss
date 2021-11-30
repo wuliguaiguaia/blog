@@ -1,4 +1,4 @@
-@import './../../styles/var.scss';
+@import "./../../styles/var.scss";
 
 .header {
   background: #fff;
@@ -7,12 +7,27 @@
   width: 100%;
   z-index: $header-zIndex;
   border-bottom: 1px solid #f6f6f6;
+}
 
-  .logo {
-    line-height: $header-height;
-    margin-left: 20px;
+.logoActive {
+  animation: rotate 0.4s linear infinite forwards;
+}
+
+.left {
+  line-height: $header-height;
+  margin-left: 20px;
+}
+
+.link {
+  margin: 0 5px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
   }
-  .descrtion {
-    margin-left: 10px;
+
+  to {
+    transform: rotate(360deg);
   }
 }
