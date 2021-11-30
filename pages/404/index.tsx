@@ -7,7 +7,6 @@ import styles from './index.module.scss'
 export default function Custom404() {
   return (
     <div>
-      <Header/>
       <Head title="页面找不到啦" />
       <div className="jusCenter-alignCenter" style={{ marginTop: '100px' }}>
         <h1>
@@ -15,7 +14,6 @@ export default function Custom404() {
         </h1>
         <Link href="/" passHref>返回首页</Link>
       </div>
-      <Footer/>
     </div>
   )
 }

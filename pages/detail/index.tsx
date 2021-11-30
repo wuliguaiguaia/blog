@@ -1,6 +1,4 @@
-import { Col, Row, Breadcrumb, Divider, BackTop, Badge, Avatar } from 'antd'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
+import { Col, Row, Breadcrumb, Divider } from 'antd'
 import Author from '../../components/Author'
 import { renderToString} from 'react-dom/server'
 import { marked } from 'marked'
