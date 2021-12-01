@@ -80,15 +80,25 @@ const getCategory = async () => {
 
 const getArticle = async (params) => {
   const response = await $http.getarticlelist(params)
-  // const { data } = response
-  const { data: { list } } = response
-  return list
+  const { data } = response
+  // const { data: { list } } = response
+  return data
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
-  const { query: { category } } = context
+  const { query: { categories = [], mode = 0 } } = context
+  const cates = decodeURIComponent(categories)
+    .split(',')
+    .filter(v => v)
+    .map(item => +item)
   const categoryList = await getCategory()
-  const acticles = await getArticle({ page: 1, prepage: 10, categories: category ? [category] : [] })
+  const acticles = await getArticle(
+    {
+      page: 1,
+      prepage: 10,
+      categories: cates,
+      type: mode
+    })
   
 
   /* const data = [

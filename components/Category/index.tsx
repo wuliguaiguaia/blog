@@ -14,32 +14,6 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
   const router = useRouter()
   const [mode, setMode] = useState(0)
   const [selected , setSelected] = useState([])
-  const aaaa = [
-    {
-      id: 1,
-      name: 'node',
-      articlesLen: 3
-    },
-    {
-      id: 2,
-      name: 'html&css',
-      articlesLen: 5
-
-    },
-    {
-      id: 4,
-      name: 'vue',
-      articlesLen: 4
-
-    },
-    {
-      id: 5,
-      name: 'reat',
-      articlesLen: 8
-
-    },
-  ]
-
   const prevSelected = usePrevious(selected)
   // 初始化
   useEffect(() => {
@@ -143,7 +117,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
       </div>
       <List
         className={styles.list}
-        dataSource={aaaa}
+        dataSource={data}
         loading={data.length === 0}
         renderItem={item => (
           <List.Item
