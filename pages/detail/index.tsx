@@ -54,6 +54,7 @@ const Detail = (props: IProps) => {
   useEffect(() => {
     const wrapper = document.getElementById('_article-content')
     const content = wrapper?.querySelectorAll('[class*="detail_title-"]') || []
+    const headerHeight = 50
     const offsetArr = []
     const wrapperTop = wrapper?.offsetTop
     content.forEach(el => {
@@ -63,7 +64,7 @@ const Detail = (props: IProps) => {
       const top = window.scrollY
       let curIndex = 0
       offsetArr.forEach((item, index) => {
-        if (top + 50 >= item) {
+        if (top + headerHeight >= item) {
           curIndex = index
         }
       })

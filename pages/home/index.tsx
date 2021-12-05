@@ -81,7 +81,6 @@ const getCategory = async () => {
 const getArticle = async (params) => {
   const response = await $http.getarticlelist(params)
   const { data } = response
-  // const { data: { list } } = response
   return data
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
