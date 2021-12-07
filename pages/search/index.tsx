@@ -8,7 +8,7 @@ import cns from 'classnames'
 import { IArticle } from '../../common/interface'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
-import { getDate } from '../../common/utils'
+import { DateType, getDate } from '../../common/utils'
 import Link from 'next/link'
 
 interface IProps {
@@ -42,9 +42,9 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
     /* 二次加工 */
     articles.forEach(item => {
       let { contentSlice = '', title }= item
-      title = title.replace(q as string, `<span class="red">${q}</span>`)
+      title = title.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
       item.title = title
-      contentSlice = contentSlice.replace(q as string, `<span class="red">${q}</span>`)
+      contentSlice = contentSlice.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
       item.contentSlice = contentSlice
     })
   }, [articles, q])
@@ -77,7 +77,7 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
               <div className={styles['list-title']} dangerouslySetInnerHTML={{ __html: item.title }}></div>
               <div className={cns(styles['list-content'])} dangerouslySetInnerHTML={{ __html: marked.parse(item.contentSlice || '') }}></div>
               <div className={styles['list-keys']}>
-                <span className={styles['item-date']}>{getDate(item.createTime).replaceAll(' ', '')}</span>
+                <span className={styles['item-date']}>{getDate(item.createTime, DateType.line).replaceAll(' ', '')}</span>
                 {
                   item.categories.map(({id, name}) => {
                     return <span className={styles['item-cates']} key={id}>

@@ -10,6 +10,7 @@ export interface IArticle {
   content: string;
   keywords: string;
   createTime: string;
+  updateTime: string;
   viewCount: number;
   categories: ICategory[],
   contentSlice?: string,

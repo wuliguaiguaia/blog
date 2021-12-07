@@ -42,7 +42,7 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength, l
                 <div className="list-title">{item.title}</div>
                 {/* <div className="list-context">{item.content}</div> */}
                 <div className="list-keys">
-                  <span>{item.createTime}</span>
+                  <span>{item.updateTime}</span>
                   <span>{item.keywords}</span>
                 </div>
               </List.Item>

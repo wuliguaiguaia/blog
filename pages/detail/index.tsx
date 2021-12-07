@@ -13,7 +13,7 @@ import cns from 'classnames'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
 import { IArticle } from './../../common/interface'
-import { getDate, throttle } from '../../common/utils/index'
+import { DateType, getDate, throttle } from '../../common/utils/index'
 import { useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
@@ -120,7 +120,7 @@ const Detail = (props: IProps) => {
           <div className={cns(styles.article ,'card')}>
             <div className={styles['article-title']}>{article.title}</div>
             <div className={styles['article-keys']}>
-              <span className={styles['article-time']}>{getDate(article.createTime)}</span>
+              <span className={styles['article-time']}>{getDate(article.updateTime, DateType.text)}</span>
               <span><EyeOutlined /> {article.viewCount || 1230}</span>
             </div>
             <div className="article-keys">
