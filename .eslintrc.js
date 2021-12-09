@@ -1,9 +1,11 @@
 module.exports = {
+  parser: '@typescript-eslint/parser', // 定义 ESLint 的解析器
+  plugins: ['@typescript-eslint'], // 定义所依赖的插件
   env: {
     browser: true,
     es6: true,
   },
-  extends: ['eslint:recommended', 'next/core-web-vitals'],
+  extends: ['eslint:recommended', 'next/core-web-vitals', 'plugin:@typescript-eslint/recommended'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -21,7 +23,7 @@ module.exports = {
     'no-console': 'off',
     'func-names': 'off',
     'no-use-before-define': 'off',
-    'no-unused-vars': 'warn',
+    // 'no-unused-vars': 'warn',
     'import/no-unresolved': [2, { ignore: ['^@'] }],
   },
 }

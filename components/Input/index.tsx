@@ -1,19 +1,19 @@
-import { FunctionComponent, useEffect, useRef, useState } from 'react'
+import { FunctionComponent, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import cns from 'classnames'
 
 interface IProps {
   placeholder: string,
-  handleEnter: Function,
-  handleChange: Function,
+  handleEnter: () => void,
+  handleChange: () => void,
   value: string
 }
 
 const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, handleChange }) => {
   const [active, setActive] = useState(false)
   const inputEl = useRef()
-  const handleClick = (e) => {
+  const handleClick: MouseEventHandler<HTMLSpanElement> = (e) => {
     if(e.type === 'keydown' && e.key !== 'Enter') return
     const value = inputEl.current.value || ''
     if (value.trim() === '') {

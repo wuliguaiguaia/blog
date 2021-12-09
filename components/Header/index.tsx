@@ -1,5 +1,5 @@
 import { Row, Col } from 'antd'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { ChangeEventHandler, FunctionComponent, useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from './index.module.scss'
 import ZInput from '../Input'
@@ -27,7 +27,7 @@ const Header: FunctionComponent<IProps> = function ({loadingStatus}) {
     })
   }
 
-  const handleValueChange = (e) => {
+  const handleValueChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearchValue(e.target.value)
   }
   return (

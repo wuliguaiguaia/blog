@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import { List, Popover, Radio } from 'antd'
+import { List, Popover, Radio, RadioChangeEvent } from 'antd'
 import { useRouter } from 'next/router'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { ICategory } from './../../common/interface'
@@ -13,33 +13,35 @@ interface IProps {
 const Category: FunctionComponent<IProps> = ({ data }) => {
   const router = useRouter()
   const [mode, setMode] = useState(0)
-  const [selected , setSelected] = useState([])
+  const [selected, setSelected] = useState<number[]>([])
   const prevSelected = usePrevious(selected)
   // 初始化
   useEffect(() => {
     const { query: { categories: _curCategory, mode: _curMode } } = router
+    const curMode = Number(_curMode)
+    const curCategory = String(_curCategory)
     if (!_curCategory) {
       setSelected([])
-      setMode([0, 1, 2].includes(_curMode) ? +_curMode : 0)
+      setMode([0, 1, 2].includes(curMode) ? curMode : 0)
       return
     }
     const ids = data.map(item => item.id) 
-    const _data = String(decodeURIComponent(_curCategory))
+    const _data = String(decodeURIComponent(curCategory))
       .split(',')
       .map(item => +item)
-      .filter(item => ids.includes(item))
-    if (+_curMode === 2 && _data.length > 2) {
+      .filter(item => ids.includes(item)) as []
+    if (curMode === 2 && _data.length > 2) {
       setMode(1)
     } else {
-      setMode([0, 1, 2].includes(_curMode) && +_curMode || data.length > 1 ? 1 : 0)
+      setMode([0, 1, 2].includes(curMode) && curMode || data.length > 1 ? 1 : 0)
     }
     setSelected(_data)
-  }, [])
+  }, [data, router])
   
   
   const handleClick = (id: number) => {
     let _selected = JSON.parse(JSON.stringify(selected))
-    let index = _selected.indexOf(id)
+    const index = _selected.indexOf(id)
     switch (mode) {
     case 0:
       _selected = [id]
@@ -74,16 +76,17 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
   }
 
 
-  const handleModeChange = (e) => {
+  const handleModeChange = (e: RadioChangeEvent) => {
+    const value = Number(e.target.value)
     setSelected([])
     router.push({
       pathname: '/',
       query: {
         categories: '',
-        mode:e.target.value
+        mode: value
       }
     })
-    setMode(e.target.value)
+    setMode(value)
   }
  
 
@@ -123,15 +126,15 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
           <List.Item
             className={cns(
               styles.listItem,
-              selected.includes(+item.id) && styles.active,
-              !selected.includes(+item.id) && mode === 2 && selected.length === 2 && styles.disabled
+              selected.includes(item.id) && styles.active,
+              !selected.includes(item.id) && mode === 2 && selected.length === 2 && styles.disabled
             )}
             onClick={() => handleClick(item.id)}
           >
             <span>{item.name} ({item.articlesLen})</span>
             {
               [1, 2].includes(mode) ?
-                selected.includes(+item.id) && <CheckOutlined className={styles.checkIcon} />
+                selected.includes(item.id) && <CheckOutlined className={styles.checkIcon} />
                 : null
             }
           </List.Item>

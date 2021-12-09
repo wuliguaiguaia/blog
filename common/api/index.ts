@@ -12,10 +12,10 @@ import axios from './../plugins/axios'
 
 /* 索引类型 */
 interface IData {
-  [k: string]: any
+  [k: string]: number | string | [] | boolean | IData
 }
-
-const requestRender = (type: string, url: string) => {
+type RequestRender = (type: string, url: string) => (params: IData, config: IData) => Promise<any>;
+const requestRender: RequestRender = (type: string, url:string) => {
   switch (type) {
   case 'get':
   case 'options':
@@ -27,26 +27,41 @@ const requestRender = (type: string, url: string) => {
     return (data: IData, config: IData) => axios[type](url, data, config).then(res => res.data)
   case 'remove':
     return (params: IData, config: IData) => axios.delete(url, { params, ...config }).then(res => res.data)
-  case 'file':
+  // case 'file':
+  default:
     // {headers: {'content-type': 'multipart/form-data}}
     return (data:IData, config:IData) => axios.post(url, data, config).then(res => res.data)
-  case 'ws':
-  default:
-    return
+  // case 'ws':
+  //   return new Promise(() => {1} )
+  // default:
+  //   return new Promise(() => {1})
   }
 }
 
 
-interface IRequest {
-  [k: string]: any
+export function isValidKey(key: string | number | symbol , object: object): key is keyof typeof object {
+  return key in object
 }
 
-const $http: IRequest = Object.keys(apiMap).reduce((res, type:string) => {
+
+interface IRequest {
+  [k: string]:  Promise<any>
+}
+
+const $http: IRequest = Object.keys(apiMap).reduce((res:(IRequest), type: string) => {
+  if (!isValidKey(type, apiMap)) {
+    throw Error('invalid sequence')
+  }
   const apis = apiMap[type]
-  Object.keys(apis).forEach(key => {
-    res[key] = requestRender(type, apis[key])
+  Object.keys(apis).forEach((key) => {
+    if (!isValidKey(key, res)) {
+      throw Error('invalid sequence')
+    }
+    res[key] = requestRender(type, apis[key]) as unknown as Promise<any>
   })
   return res
 }, {})
 
 export default $http
+
+
