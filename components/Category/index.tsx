@@ -5,7 +5,7 @@ import { FunctionComponent, useEffect, useState } from 'react'
 import { ICategory } from './../../common/interface'
 import cns from 'classnames'
 import {QuestionCircleOutlined, CheckOutlined} from '@ant-design/icons'
-import usePrevious from '../../common/utils/hooks/usePrevious'
+import usePrevious from '../../common/hooks/usePrevious'
 interface IProps {
   data: ICategory[],
 }

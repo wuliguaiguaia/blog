@@ -3,11 +3,12 @@ import { apiPrefix } from '../constants/request'
 export const get = {
   getcategorylist: 'http://127.0.0.1:3009/category/list',
   getarticlelist: 'http://127.0.0.1:3009/article/list',
-  getarticle: 'http://127.0.0.1:3009/article'
+  getarticle: 'http://127.0.0.1:3009/article',
+  search: 'http://127.0.0.1:3009/article/search',
 }
 
 export const post = {
-  comment: 'comment'
+  comment: 'comment',
 }
 
 export const remove = {}

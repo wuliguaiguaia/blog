@@ -1,9 +1,18 @@
-export const getDate = (str: string) => {
+export enum DateType {
+  text,
+  line
+}
+
+export const getDate = (str: string, type: DateType = DateType.text) => {
   const date = new Date(str)
   const year = date.getFullYear()
   const month = date.getMonth()
   const day = date.getDate()
-  return `${year} 年 ${month} 月 ${day} 日`
+  if (type === DateType.text) {
+    return `${year} 年 ${month} 月 ${day} 日`
+  } else {
+    return `${year} - ${month} - ${day} `
+  }
 }
 
 
