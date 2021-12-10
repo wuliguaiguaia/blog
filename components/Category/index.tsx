@@ -30,11 +30,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
       .split(',')
       .map(item => +item)
       .filter(item => ids.includes(item)) as []
-    if (curMode === 2 && _data.length > 2) {
-      setMode(1)
-    } else {
-      setMode([0, 1, 2].includes(curMode) && curMode || data.length > 1 ? 1 : 0)
-    }
+    setMode([0, 1, 2].includes(curMode) ? curMode : data.length > 1 ? 1 : 0)
     setSelected(_data)
   }, [data, router])
   
@@ -47,17 +43,9 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
       _selected = [id]
       break
     case 1:
-      if (index === -1) {
-        _selected.push(id)
-      } else {
-        _selected.splice(index,1)
-      }
-      break
     case 2:
       if (index === -1) {
-        if (_selected.length < 2) {
-          _selected.push(id)
-        }
+        _selected.push(id)
       } else {
         _selected.splice(index,1)
       }
@@ -77,16 +65,14 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
 
 
   const handleModeChange = (e: RadioChangeEvent) => {
-    const value = Number(e.target.value)
     setSelected([])
     router.push({
       pathname: '/',
       query: {
         categories: '',
-        mode: value
+        mode: Number(e.target.value)
       }
     })
-    setMode(value)
   }
  
 
@@ -102,7 +88,7 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
           content={<div className={styles.popoverContent}>
             <div>单选 ：就是选择其中一个啦</div>
             <div>多选 ||：包含所选分类的任意一个</div>
-            <div>多选 &&：必须同时包含所选分类（一篇文章最多两种分类:D）</div>
+            <div>多选 &&：必须同时包含所选分类</div>
           </div>}
           placement="bottom">
           <span className={styles.filterTitle}>筛选模式</span>

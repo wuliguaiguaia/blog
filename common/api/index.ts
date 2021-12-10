@@ -54,9 +54,6 @@ const $http: IRequest = Object.keys(apiMap).reduce((res:(IRequest), type: string
   }
   const apis = apiMap[type]
   Object.keys(apis).forEach((key) => {
-    if (!isValidKey(key, res)) {
-      throw Error('invalid sequence')
-    }
     res[key] = requestRender(type, apis[key]) as unknown as Promise<any>
   })
   return res

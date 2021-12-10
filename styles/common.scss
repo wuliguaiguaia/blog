@@ -1,4 +1,4 @@
-@import './var.scss';
+@import "./var.scss";
 
 .main {
   padding-top: calc($header-height + $header-margin);
@@ -15,31 +15,29 @@
   padding: 10px 15px;
   border-radius: 0.3rem;
 
-  @media screen and (max-width: 992px){
+  @media screen and (max-width: 992px) {
     padding: 10px 15px;
   }
 
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 768px) {
     padding: 10px 15px;
-
   }
 
-  @media screen and (max-width: 576px){
+  @media screen and (max-width: 576px) {
     padding: 8px 12px;
   }
-
 }
 
 .list-title {
   font-weight: bold;
-  margin-top: 40px; /* test */
 }
 
 .list-context {
-
 }
 
 .list-keys {
-
 }
 
+.highlight {
+  color: red;
+}

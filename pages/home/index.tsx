@@ -8,7 +8,7 @@ import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle, ICategory } from '../../common/interface'
-import { throttle } from '../../common/utils'
+import { DateType, getDate, throttle } from '../../common/utils'
 
 interface IProps {
   acticles: IArticle[]
@@ -34,21 +34,22 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
   }
   const { query: { categories = [], mode } } = router
   const cates = decodeURIComponent(categories)
+    .split(',')
+    .filter(v => v)
+    .map(item => +item)
   const [page, setPage] = useState(1)
   const [isEnd, setIsEnd] = useState(false)
   const list = useRef(acticles)
+  console.log(cates)
   useEffect(() => {
     const handleScroll = async () => {
       if (isEnd) return
       const scrollTop = window.scrollY
       const el = document.getElementsByClassName('articleList')[0]
       if (!el) return
-      console.log(document.getElementsByClassName('articleList'))
-      
       const headerHeight = 50
       const safeDistance = 50 /* 滚动的安全距离 */
       const fullHeight = el.scrollHeight
-      console.log(scrollTop + window.innerHeight + safeDistance, fullHeight + headerHeight)
       
       if (scrollTop + window.innerHeight + safeDistance > fullHeight + headerHeight) {
         console.log('获取数据, 第', page + 1)
@@ -67,7 +68,6 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
           return
         }
       }
-      
     }
     const throttleScroll = throttle(handleScroll, 0)
     window.addEventListener('scroll', throttleScroll)
@@ -89,10 +89,8 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
                 <div className="list-title">{item.title}</div>
-                {/* <div className="list-context">{item.content}</div> */}
                 <div className="list-keys">
-                  <span>{item.updateTime}</span>
-                  <span>{item.keywords}</span>
+                  <span className={styles.itemDate}>{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
                 </div>
               </List.Item>
             )}
@@ -129,8 +127,8 @@ const getCategory = async () => {
 
 const getArticle = async (params) => {
   const response = await $http.getarticlelist(params)
-  const { data } = response
-  return data
+  const { data: {list} } = response
+  return list
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
@@ -147,16 +145,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       categories: cates,
       type: mode
     })
-  
-
-  /* const data = [
-    { id: 1, value: 'javascript' },
-    { id: 2, value: 'html/css' },
-    { id: 3, value: 'react' },
-    { id: 4, value: 'vue' },
-    { id: 5, value: 'node' },
-    { id: 6, value: 'mysql' }
-  ] */
 
   return {
     props: {

@@ -11,10 +11,19 @@ import hljs from 'highlight.js'
 import { DateType, getDate } from '../../common/utils'
 import Link from 'next/link'
 
+type SearchArticle = {
+    _source: IArticle,
+    _score: number,
+    highlight: {
+      title: string,
+      content: string
+    }
+  }
 interface IProps {
-  articles: IArticle[],
+  articles: SearchArticle[],
   articlesLen: number
 }
+
 const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
   const router = useRouter()
   const {query: {q = ''}} = router
@@ -40,13 +49,13 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
 
   useEffect(() => {
     /* 二次加工 */
-    articles.forEach(item => {
-      let { contentSlice = '', title }= item
-      title = title.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
-      item.title = title
-      contentSlice = contentSlice.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
-      item.contentSlice = contentSlice
-    })
+    // articles.forEach(item => {
+    //   let { contentSlice = '', title }= item
+    //   title = title.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
+    //   item.title = title
+    //   contentSlice = contentSlice.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
+    //   item.contentSlice = contentSlice
+    // })
   }, [articles, q])
 
   return  <>
@@ -69,17 +78,17 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
           className={cns(['card'])}
           dataSource={articles}
           itemLayout="vertical"
-          renderItem={item => (
+          renderItem={ (item) => (
             <List.Item
               className={styles['content-wrapper']}
-              onClick={() => { routeChange(item.id) }}
+              onClick={() => { routeChange(item._source.id) }}
             >
-              <div className={styles['list-title']} dangerouslySetInnerHTML={{ __html: item.title }}></div>
-              <div className={cns(styles['list-content'])} dangerouslySetInnerHTML={{ __html: marked.parse(item.contentSlice || '') }}></div>
+              <div className={styles['list-title']} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
+              <div className={cns(styles['list-content'])} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
               <div className={styles['list-keys']}>
-                <span className={styles['item-date']}>{getDate(item.createTime, DateType.line).replaceAll(' ', '')}</span>
+                <span className={styles['item-date']}>{getDate(item._source.createTime, DateType.line).replaceAll(' ', '')}</span>
                 {
-                  item.categories.map(({id, name}) => {
+                  item._source.categories.map(({id, name}) => {
                     return <span className={styles['item-cates']} key={id}>
                       <Link href={{ pathname: '/', query: {categories: id}}}><a>{name}</a></Link>
                     </span>
