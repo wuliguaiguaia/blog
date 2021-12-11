@@ -10,8 +10,8 @@ import cns from 'classnames'
 import { IArticle, ICategory } from '../../common/interface'
 import { DateType, getDate } from '../../common/utils'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
+import { EyeOutlined, MessageOutlined } from '@ant-design/icons'
 import marked from '../../common/plugins/marked'
-
 
 interface IProps {
   articles: IArticle[]
@@ -65,9 +65,11 @@ const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength })
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
                 <div className="list-title">{item.title}</div>
-                <div className="list-content"></div>
+                <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350)) }}></div>
                 <div className="list-keys">
-                  <span className={styles.itemDate}>{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
+                  <span className="item-date">{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
+                  <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
+                  <span><MessageOutlined /> {item.messages || 222}</span>
                 </div>
               </List.Item>
             )}
@@ -88,7 +90,7 @@ const getCategory = async () => {
   return list
 }
 
-const getArticle = async (params, other = {}, type = 0) => {
+const getArticle = async (params: any, other = {}, type = 0) => {
   params = { ...other, ...params }
   const response = await $http.getarticlelist(params)
   const { data: { list, total } } = response

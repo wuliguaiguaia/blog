@@ -15,5 +15,4 @@ marked.setOptions({
   }
 })
 
-
 export default marked

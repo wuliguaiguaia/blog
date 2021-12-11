@@ -1,5 +1,5 @@
 import { Col, Row, List, Spin } from 'antd'
-import { FunctionComponent, useEffect } from 'react'
+import { FunctionComponent } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
@@ -28,7 +28,7 @@ const prepage = 10
 
 const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
   const router = useRouter()
-  const {query: {q = ''}} = router
+  const {query: {q}} = router
   const routeChange = (id: number) => {
     router.push({
       pathname: '/detail',
@@ -48,7 +48,7 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
       <Col className="main-left articleList" xs={23} sm={23} md={20} lg={17} xl={14} xxl={12}>
         <div className={styles.header}>相关内容<span className={styles.searchText}>为你找到约 {articlesLen} 个结果</span></div>
         {
-          articles.length === 0 ?
+          articlesLen === 0 ?
             <div className={cns([styles.noDate])}>
               <p className={styles.noDateTitle}>找不到和您查询的“{ q }”相符的内容</p>
               建议：
@@ -73,9 +73,9 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
               className={styles['content-wrapper']}
               onClick={() => { routeChange(item._source.id) }}
             >
-              <div className={styles['list-title']} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
-              <div className={cns(styles['list-content'])} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
-              <div className={styles['list-keys']}>
+              <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
+              <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
+              <div className='list-keys'>
                 <span className={styles['item-date']}>{getDate(item._source.createTime, DateType.line).replaceAll(' ', '')}</span>
                 {
                   item._source.categories.map(({id, name}) => {
