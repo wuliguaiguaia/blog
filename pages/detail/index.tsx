@@ -77,10 +77,11 @@ const Detail = (props: IProps) => {
   const navList: NavList[]= []
   /* markdown 各级标题样式自定义 */
   renderer.heading = (text, level) => {
+    /* 每篇文章必须有一个二级标题 */
     if (level === 2) {
       navList.push({ text, level, children: [] })
     } else {
-      let last = navList[navList.length - 1]
+      const last = navList[navList.length - 1]
       last.children.push({ text, level, children: [] })
     }
     const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title, '_artilce-title')}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
@@ -103,7 +104,7 @@ const Detail = (props: IProps) => {
     }
   }, [router.events])
 
-  let html = marked.parse(article.content)
+  const html = marked.parse(article.content)
   return (
     <>
       <Head title={article.title} />

@@ -13,5 +13,4 @@ export interface IArticle {
   updateTime: string;
   viewCount: number;
   categories: ICategory[],
-  contentSlice?: string,
 }

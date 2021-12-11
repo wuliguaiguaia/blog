@@ -12,10 +12,10 @@
   line-height: 1.3;
   width: 100%;
   transition: padding 0.3s ease;
-  padding: 0 20px 0 0;
+  padding: 0 0 0 20px;
 }
 .inputActive {
-  padding: 0 0 0 20px;
+  padding: 0 20px 0 0;
 }
 .searchIcon {
   position: absolute;
@@ -23,8 +23,8 @@
   padding: 3px;
   color: #74b7ff;
   transition: left 0.3s ease;
-  left: calc(100% - 15px);
+  left: 0px;
 }
 .iconActive {
-  left: 0px;
+  left: calc(100% - 15px);
 }

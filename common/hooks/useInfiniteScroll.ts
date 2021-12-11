@@ -1,7 +1,7 @@
 import { throttle } from './../utils/index'
 import { useState, useRef, useEffect } from 'react'
 
-/* 无限滚动  */
+/* 无限滚动 */
 const useInfiniteScroll = (initial: any[], selector: string, cb:any, deps:any[], prepage:number) => {
   const [page, setPage] = useState(1)
   const [isEnd, setIsEnd] = useState(false)

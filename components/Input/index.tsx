@@ -12,9 +12,11 @@ interface IProps {
 
 const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, handleChange }) => {
   const [active, setActive] = useState(false)
+  const [isClick, setIsClick] = useState(false)
   const inputEl = useRef()
   const handleClick: MouseEventHandler<HTMLSpanElement> = (e) => {
-    if(e.type === 'keydown' && e.key !== 'Enter') return
+    if (e.type === 'keydown' && e.key !== 'Enter') return
+    setIsClick(true)
     const value = inputEl.current.value || ''
     if (value.trim() === '') {
       return
@@ -23,7 +25,17 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
   }
   useEffect(() => {
     const handleFocus = () => setActive(true)
-    const handleBlur = () => setActive(false)
+    const handleBlur = () => {
+      if (isClick) {
+        setActive(true)
+        setTimeout(() => {
+          setActive(false)
+        }, 2000)
+      } else {
+        setActive(false)
+      }
+    }
+
     inputEl.current.addEventListener('focus', handleFocus)
     inputEl.current.addEventListener('blur', handleBlur)
     inputEl.current.addEventListener('keydown', handleClick)
@@ -34,6 +46,10 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
     }
   }, [])
   return <div className={styles.inputWrapper}>
+    <SearchOutlined
+      className={cns([styles.searchIcon, active && styles.iconActive])}
+      onClick={handleClick}
+    />
     <input
       ref={inputEl}
       type="text"
@@ -41,10 +57,6 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
       value={value}
       onChange={handleChange}
       className={cns([styles.input, active && styles.inputActive])}
-    />
-    <SearchOutlined
-      className={cns([styles.searchIcon, active && styles.iconActive])}
-      onClick={handleClick}
     />
   </div>
 }
