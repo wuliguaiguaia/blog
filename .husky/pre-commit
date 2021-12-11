@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 
-npx lint-staged --allow-empty
+# npx lint-staged --allow-empty
 
