@@ -113,7 +113,6 @@ const Category: FunctionComponent<IProps> = ({ data }) => {
             className={cns(
               styles.listItem,
               selected.includes(item.id) && styles.active,
-              !selected.includes(item.id) && mode === 2 && selected.length === 2 && styles.disabled
             )}
             onClick={() => handleClick(item.id)}
           >

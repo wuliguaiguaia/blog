@@ -1,4 +1,4 @@
-import { Col, Row, List } from 'antd'
+import { Col, Row, List, Spin } from 'antd'
 import { FunctionComponent, useEffect } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { GetServerSideProps } from 'next'
@@ -6,10 +6,10 @@ import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle } from '../../common/interface'
-import { marked } from 'marked'
-import hljs from 'highlight.js'
+import marked from '../../common/plugins/marked'
 import { DateType, getDate } from '../../common/utils'
 import Link from 'next/link'
+import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 
 type SearchArticle = {
     _source: IArticle,
@@ -24,6 +24,8 @@ interface IProps {
   articlesLen: number
 }
 
+const prepage = 10
+
 const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
   const router = useRouter()
   const {query: {q = ''}} = router
@@ -33,34 +35,17 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
       query: { id }
     })
   }
-  const renderer = new marked.Renderer()
-  marked.setOptions({
-    renderer: renderer,
-    gfm: true,
-    pedantic: false,
-    sanitize: false,
-    breaks: false,
-    smartLists: true,
-    smartypants: false,
-    highlight: function (code: string) {
-      return hljs.highlightAuto(code).value
-    }
+
+  const scrollCb = getArticleFromSearch.bind(undefined, {
+    words: q,
+    prepage
   })
 
-  useEffect(() => {
-    /* 二次加工 */
-    // articles.forEach(item => {
-    //   let { contentSlice = '', title }= item
-    //   title = title.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
-    //   item.title = title
-    //   contentSlice = contentSlice.replace(new RegExp(q as string, 'ig'), `<span class="red">${q}</span>`)
-    //   item.contentSlice = contentSlice
-    // })
-  }, [articles, q])
+  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, [q], prepage)
 
   return  <>
     <Row className="main" justify="center">
-      <Col className="main-left" xs={23} sm={23} md={20} lg={17} xl={14} xxl={12}>
+      <Col className="main-left articleList" xs={23} sm={23} md={20} lg={17} xl={14} xxl={12}>
         <div className={styles.header}>相关内容<span className={styles.searchText}>为你找到约 {articlesLen} 个结果</span></div>
         {
           articles.length === 0 ?
@@ -76,8 +61,13 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
         }
         <List
           className={cns(['card'])}
-          dataSource={articles}
+          dataSource={list.current}
           itemLayout="vertical"
+          footer={
+            <div className="list-bottom">
+              {loading ? 
+                <Spin tip="正在疯狂加载中..." /> : articlesLen > 0 ? <span className="text">没有其他数据啦~</span> : null}
+            </div>}
           renderItem={ (item) => (
             <List.Item
               className={styles['content-wrapper']}
@@ -102,14 +92,15 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
     </Row>
   </>
 }
-const getArticleFromSearch = async (params) => {
+const getArticleFromSearch = async (params: any, other = {}, type = 0) => {
+  params = {...other, ...params}
   const response = await $http.search(params)
-  const { data: { list, total}  } = response
-  return [list, total]
+  const { data: { list, total } } = response
+  return type === 1 ? [list, total] : list
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query: { q } } = context
-  const [articles, articlesLen] = await getArticleFromSearch({ page: 1, prepage: 10, words: q })
+  const [articles, articlesLen] = await getArticleFromSearch({ page: 1, prepage: 10, words: q }, {}, 1)
   return {
     props: {
       articles,

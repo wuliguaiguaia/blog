@@ -1,5 +1,5 @@
-import { Col, Row, List } from 'antd'
-import { FunctionComponent, useEffect, useRef, useState } from 'react'
+import { Col, Row, List, Spin } from 'antd'
+import { FunctionComponent } from 'react'
 import Author from '../../components/Author'
 import { useRouter } from 'next/dist/client/router'
 import Category from '../../components/Category'
@@ -8,10 +8,13 @@ import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle, ICategory } from '../../common/interface'
-import { DateType, getDate, throttle } from '../../common/utils'
+import { DateType, getDate } from '../../common/utils'
+import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
+import marked from '../../common/plugins/marked'
+
 
 interface IProps {
-  acticles: IArticle[]
+  articles: IArticle[]
   category: ICategory[],
   articlesLength: number,
   loadingStatus: number
@@ -22,60 +25,29 @@ const prepage = 10
 // import axios from 'axios'    
 // import dynamic from 'next/dynamic'
 // const Eeader = dynamic(import('../components/Header'))
-const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength }) => {
+const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength }) => {
   console.log('regresh')
-  
   const router = useRouter()
+  const { query: { categories = [], mode } } = router
+  const cates = decodeURIComponent(categories)
+    .split(',')
+    .filter(v => v)
+    .map(item => +item)
+
   const routeChange = (id: number) => {
     router.push({
       pathname: '/detail',
       query: { id }
     })
   }
-  const { query: { categories = [], mode } } = router
-  const cates = decodeURIComponent(categories)
-    .split(',')
-    .filter(v => v)
-    .map(item => +item)
-  const [page, setPage] = useState(1)
-  const [isEnd, setIsEnd] = useState(false)
-  const list = useRef(acticles)
-  console.log(cates)
-  useEffect(() => {
-    const handleScroll = async () => {
-      if (isEnd) return
-      const scrollTop = window.scrollY
-      const el = document.getElementsByClassName('articleList')[0]
-      if (!el) return
-      const headerHeight = 50
-      const safeDistance = 50 /* 滚动的安全距离 */
-      const fullHeight = el.scrollHeight
-      
-      if (scrollTop + window.innerHeight + safeDistance > fullHeight + headerHeight) {
-        console.log('获取数据, 第', page + 1)
-        const data = await getArticle({
-          page: page + 1,
-          prepage,
-          categories: cates,
-          type: mode
-        })
-        list.current = list.current.concat(data)
-        console.log('客户端获取数据：', data)
-        setPage(page + 1)
+  const scrollCb = getArticle.bind(undefined, {
+    categories: cates,
+    type: mode,
+    prepage
+  })
 
-        if (data.length < prepage) {
-          setIsEnd(true)
-          return
-        }
-      }
-    }
-    const throttleScroll = throttle(handleScroll, 0)
-    window.addEventListener('scroll', throttleScroll)
-    return () => {
-      window.removeEventListener('scroll', throttleScroll)
-    }
-  }, [cates, isEnd, mode, page])
-
+  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, [cates, mode], prepage)
+  
   return (
     <>
       <Row className="main" justify="center">
@@ -83,12 +55,17 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
           <List
             className={cns([styles.list, 'card', 'articleList'])}
             header={<div>最新日志</div>}
-            footer={<div className={styles.bottomLine}>----人家是有底线的----</div>}
+            footer={
+              <div className="list-bottom">
+                {loading ? 
+                  <Spin tip="正在疯狂加载中..." /> : articlesLength > 0 ? <span className="text">没有其他数据啦~</span> : null}
+              </div>}
             dataSource={list.current}
             itemLayout="vertical"
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
                 <div className="list-title">{item.title}</div>
+                <div className="list-content"></div>
                 <div className="list-keys">
                   <span className={styles.itemDate}>{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
                 </div>
@@ -105,31 +82,21 @@ const Home: FunctionComponent<IProps> = ({ acticles, category, articlesLength })
   )
 }
 
-// export async function getStaticProps() {
-//   const allPostsData = getSortedPostsData()
-//   console.log('get data')
-//   return {
-//     props: {
-//       allPostsData
-//     }
-//   }
-// }
-
-// https://swr.vercel.app/zh-CN
-
-
 const getCategory = async () => {
   const response = await $http.getcategorylist()
   const { data: { list } } = response
   return list
 }
 
-
-const getArticle = async (params) => {
+const getArticle = async (params, other = {}, type = 0) => {
+  params = { ...other, ...params }
   const response = await $http.getarticlelist(params)
-  const { data: {list} } = response
-  return list
+  const { data: { list, total } } = response
+  console.log(list, total)
+  
+  return type === 1 ? [list, total] : list
 }
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
   const { query: { categories = [], mode = 0 } } = context
@@ -138,20 +105,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .filter(v => v)
     .map(item => +item)
   const categoryList = await getCategory()
-  const acticles = await getArticle(
+  const [articles, articlesLength] = await getArticle(
     {
       page: 1,
       prepage,
       categories: cates,
       type: mode
-    })
+    }, {}, 1)
 
   return {
     props: {
       allPostsData: [],
       category: categoryList,
-      acticles,
-      articlesLength: 10,
+      articles,
+      articlesLength,
     }
   }
 }

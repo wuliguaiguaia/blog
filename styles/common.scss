@@ -32,7 +32,15 @@
   font-weight: bold;
 }
 
-.list-context {
+.list-bottom {
+  text-align: center;
+  .text {
+    font-size: 12px;
+    color: #ccc;
+  }
+}
+
+.list-content {
 }
 
 .list-keys {
