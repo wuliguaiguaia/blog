@@ -1,83 +1,56 @@
-import { FunctionComponent, useEffect, useRef, useState } from 'react'
+import { createRef, FunctionComponent, useEffect } from 'react'
 import { NavList } from '../../pages/detail'
 import styles from './index.module.scss'
 import cns from 'classnames'
-import { useRouter } from 'next/router'
 
 interface IProps {
   data: NavList[],
-  current: string
+  activeCatelog: string,
+  setActiveCatelog: (arg: string) => void,
 }
 
-const MarkdownNavbar: FunctionComponent<IProps> = ({ data, current }) => {
-  const titlesRef = useRef()
-  const router = useRouter()
-  const [active, setActive] = useState(current)
+const MarkdownNavbar: FunctionComponent<IProps> = ({ data, activeCatelog, setActiveCatelog }) => {
+  const titlesRef = createRef<HTMLDivElement>()
   useEffect(() => {
+    if(!titlesRef.current) return
     const handleClick = (e) => {
       const dataset = e.target.dataset
       if (!dataset) return
-      const {hash} = dataset
-      router.push({
-        pathname: '/detail',
-        query: {
-          id: router.query.id
-        },
-        hash: `${hash}`
-      })
-      setActive(hash)
+      const { hash } = dataset
+      if (!hash) return
+      window.location.hash = hash
+      setActiveCatelog(hash)
     }
-    const handleHashChange = () => {
-      const hash = decodeURIComponent(location.hash)
-      const target = document.getElementById(hash)
-      if (!target) return
-      setActive(hash.slice(1))
-    }
-    handleHashChange()
-
     titlesRef.current.addEventListener('click', handleClick)
-    window.addEventListener('hashchange', handleHashChange)
-    router.events.on('hashChangeComplete', handleHashChange)
-    return () => {
-      // titlesRef.current.removeEventListener('click', handleClick)
-      window.removeEventListener('hashchange', handleHashChange)
-      router.events.off('hashChangeComplete', handleHashChange)
-    }
-  }, [router])
+  }, [setActiveCatelog, titlesRef])
 
   useEffect(() => {
-    setActive(current)
-  }, [current])
+    const { hash } = window.location
+    if(!hash) return
+    setActiveCatelog(decodeURIComponent(hash.slice(1)))
+  }, [setActiveCatelog])
 
-  return <div ref={titlesRef}>
+  return <div ref={titlesRef} className={styles.wrapper}>
     <ul className={cns(styles.navbar)}>
       {
-        data.map(item => {
-          const { level, text, children } = item
-          const childrenDOM = children.map(subItem => {
-            const { level: subLevel, text: subText } = subItem
-            return <li
-              key={subText}
-              className={cns(styles[`title-${subLevel}`], 'align-center', active === subText && styles.active)}
-              data-hash={subText}
+        data.map((item, index) => {
+          const {level, text} = item
+          return (
+            <li
+              key={index}
+              className={cns([styles['title-wrapper'], activeCatelog === text && styles.active])}
             >
-              <span className={cns(styles['icon-title'])}></span>
-              <div className={cns(styles.title, 'text-ellipsis')}>{subText}</div>
-            </li>
-          })
-          return <li key={text} className={styles['title-wrapper']}>
-            <div className={styles.line}></div>
-            <div
-              className={cns('align-center', active === text && styles.active)}
+              <div className={cns([
+                styles[`title-${level}`],
+                styles.title,
+                'text-ellipsis',
+              ])}
               data-hash={text}
-            >
-              <div className={styles.circle}></div>
-              <div className={cns(styles[`title-${level}`], styles.title, 'text-ellipsis')}>{text}</div>
-            </div>
-            <ul>
-              {childrenDOM}
-            </ul>
-          </li>
+              >
+                {text}
+              </div>
+            </li>
+          )
         })
       }
     </ul>

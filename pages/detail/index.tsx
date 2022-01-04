@@ -3,7 +3,6 @@ import Author from '../../components/Author'
 import { renderToString} from 'react-dom/server'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/github.css'
 import MarkdownNavbar from './../../components/MarkdownNav'
 import { withRouter, NextRouter } from 'next/router'
 import Link from 'next/link'
@@ -14,14 +13,14 @@ import { GetServerSideProps } from 'next'
 import $http from '../../common/api'
 import { IArticle } from './../../common/interface'
 import { DateType, getDate, throttle } from '../../common/utils/index'
-import { useEffect, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 
 export interface NavList {
   level: number;
   text: string;
-  children: NavList[]
+  children?: NavList[]
 }
 
 interface WithRouterProps {
@@ -38,6 +37,8 @@ const Detail = (props: IProps) => {
   const category = article.categories?.[0]
   const [activeCatelog, setActiveCatelog] = useState('')
   const renderer = new marked.Renderer()
+  const articleContent= createRef<HTMLDivElement>()
+
   marked.setOptions({
     renderer: renderer,
     gfm: true,
@@ -50,61 +51,68 @@ const Detail = (props: IProps) => {
       return hljs.highlightAuto(code).value
     } 
   })
-  /* 滚动监听 */
-  useEffect(() => {
-    const wrapper = document.getElementById('_article-content')
-    const content = wrapper?.querySelectorAll('[class*="detail_title-"]') || []
-    const headerHeight = 50
-    const offsetArr = []
-    const wrapperTop = wrapper?.offsetTop
-    content.forEach(el => {
-      offsetArr.push(el.offsetTop + wrapperTop)
-    })
-    const handleScroll = () => {
-      const top = window.scrollY
-      let curIndex = 0
-      offsetArr.forEach((item, index) => {
-        if (top + headerHeight >= item) {
-          curIndex = index
-        }
-      })
-      setActiveCatelog(content[curIndex].innerText)
-    }
-    window.addEventListener('scroll', throttle(handleScroll, 100))
-  }, [])
-  
-
   const navList: NavList[]= []
   /* markdown 各级标题样式自定义 */
   renderer.heading = (text, level) => {
-    /* 每篇文章必须有一个二级标题 */
-    if (level === 2) {
-      navList.push({ text, level, children: [] })
-    } else {
-      const last = navList[navList.length - 1]
-      last.children.push({ text, level, children: [] })
-    }
-    const markerContents = renderToString(<div className={cns(styles[`title-${level}`], styles.title, '_artilce-title')}><a id={`#${text}`} href={`/detail?id=${router.query.id}#${text}`} >{text}</a></div>)
+    navList.push({ text, level })
+    const markerContents = renderToString(<div id={text} className={cns('_artilce-title', 'md-title', `md-title-${level}`)}><a href={`#${text}`} >{text}</a></div>)
     return markerContents
   }
+  const [html, setHtml] = useState('')
+  useEffect(() => {
+    if (article.content) {
+      setHtml(marked.parse(article.content))
+    }
+  }, [article.content])
+
+  /* 滚动监听 */
+  useEffect(() => {
+    if (!articleContent.current) return
+    const wrapperTop = articleContent.current?.offsetTop
+    const titles: HTMLCollectionOf<Element> = articleContent.current.getElementsByClassName('_artilce-title') || []
+    const headerPadding = 10
+    const offsetArr:number[] = []
+    Array.from(titles).forEach(el => {
+      offsetArr.push(el.offsetTop + headerPadding + wrapperTop)
+    })
+    const handleScroll = () => {
+      const top = Math.ceil(window.scrollY)
+      let curIndex = -1
+      offsetArr.forEach((item, index) => {
+        if (top >= item) {
+          curIndex = index
+        }
+      })
+      if (curIndex > -1 && titles[curIndex]?.innerText) {
+        setActiveCatelog(titles[curIndex].innerText)
+      }
+    }
+    window.addEventListener('wheel', throttle(handleScroll, 0))
+    return () => {
+      window.removeEventListener('wheel', throttle(handleScroll, 0))
+    }
+  }, [articleContent])
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const target = document.getElementById(decodeURIComponent(location.hash))
+    if (!articleContent?.current) return
+    const hashchange = () => {
+      const hash = decodeURIComponent(window.location.hash).slice(1)
+      if(!hash) return
+      const target = document.getElementById(hash)
       if (!target) return
-      const headerPadding = 8
-      document.documentElement.scrollTop = target.offsetTop + headerPadding
+      const headerHeight = 46
+      const headerPadding = 10
+      const wrapperTop = articleContent.current?.offsetTop || 0
+      window.scrollTo(0, target.offsetTop + wrapperTop + headerHeight - headerPadding)
+      setActiveCatelog(hash)
     }
-    handleHashChange()
-    window.addEventListener('hashchange', handleHashChange)
-    router.events.on('hashChangeComplete', handleHashChange) // ???????
+    // hashchange()
+    window.addEventListener('hashchange', hashchange)
     return () => {
-      router.events.off('hashChangeComplete', handleHashChange)
-      window.removeEventListener('hashchange', handleHashChange)
+      window.removeEventListener('hashchange', hashchange)
     }
-  }, [router.events])
+  }, [articleContent])
 
-  const html = marked.parse(article.content)
   return (
     <>
       <Head title={article.title} />
@@ -118,7 +126,7 @@ const Detail = (props: IProps) => {
               <Link href={`/?category=${category.id}`} passHref>{category.name}</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <div className={cns(styles.article ,'card')}>
+          <div className={cns(styles.article ,'card')} ref={articleContent}>
             <div className={styles['article-title']}>{article.title}</div>
             <div className={styles['article-keys']}>
               <span className={styles['article-time']}>{getDate(article.updateTime, DateType.text)}</span>
@@ -127,7 +135,7 @@ const Detail = (props: IProps) => {
             <div className="article-keys">
               <span>{/* {article.keywords} */}</span>
             </div>
-            <div className="article-content" id="_article-content" dangerouslySetInnerHTML={{ __html: html }} ></div>
+            <div className="article-content md-wrapper" dangerouslySetInnerHTML={{ __html: html }} ></div>
             {/* <div className="article-keys">
               <span>{article.keywords}</span>
               <span>{article.viewCount}</span>
@@ -139,7 +147,7 @@ const Detail = (props: IProps) => {
           <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            <MarkdownNavbar data={navList} current={activeCatelog}/>
+            <MarkdownNavbar router={router} data={navList} activeCatelog={activeCatelog} setActiveCatelog={setActiveCatelog}/>
           </div>
         </Col>
       </Row>

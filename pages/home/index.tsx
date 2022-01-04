@@ -65,7 +65,7 @@ const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength })
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
                 <div className="list-title">{item.title}</div>
-                <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350)) }}></div>
+                <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350).replaceAll('\n', '')) }}></div>
                 <div className="list-keys">
                   <span className="item-date">{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
                   <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>

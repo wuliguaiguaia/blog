@@ -4,6 +4,8 @@
 .main {
   padding-top: calc($header-height + $header-margin);
   min-height: calc(100vh - $footer-height);
+  position: sticky;
+  top: 0;
   .main-left {
   }
 
@@ -45,7 +47,13 @@
 .list-content {
   font-size: 15px;
   margin-bottom: 10px;
+  font-weight: normal;
+  line-height: 1.5;
   @include multi-ellipsis(2);
+  * {
+    font-size: 15px;
+    font-weight: normal;
+  }
 }
 
 .list-keys {

@@ -17,122 +17,15 @@
   .article-time {
     margin-right: 10px;
   }
-
-  /* markdown - start */
-  .title {
-    line-height: 3;
-  }
-
-  .title-1 {
-    font-size: 24px;
-  }
-  .title-2 {
-    font-size: 22px;
-  }
-  .title-3 {
-    font-size: 18px;
-  }
-  .title-4 {
-    font-size: 15px;
-  }
-  .title-5 {
-    font-size: 14px;
-  }
-  pre {
-    display: block;
-    background-color: #f3f3f3;
-    padding: 10px;
-    overflow-y: auto;
-    font-weight: 300;
-    font-family: Menlo, monospace;
-    border-radius: 0.3rem;
-    margin: 8px 0;
-  }
-  /* markdown - end */
 }
 
 .article-menu {
   top: calc($header-margin + $header-height);
   margin-top: $header-margin;
-}
+  max-height: calc(100vh - $header-height - $header-margin);
+  overflow: scroll;
 
-@media screen and (max-width: 992px) {
-  .article {
-    .article-title {
-      font-size: 26px;
-      margin-bottom: 0.4em;
-    }
-    .title {
-      line-height: 2.4;
-    }
-    .title-1 {
-      font-size: 24px;
-    }
-    .title-2 {
-      font-size: 22px;
-    }
-    .title-3 {
-      font-size: 18px;
-    }
-    .title-4 {
-      font-size: 15px;
-    }
-    .title-5 {
-      font-size: 14px;
-    }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .article {
-    .article-title {
-      font-size: 24px;
-      margin-bottom: 0.3em;
-    }
-    .title {
-      line-height: 2.4;
-    }
-    .title-1 {
-      font-size: 24px;
-    }
-    .title-2 {
-      font-size: 22px;
-    }
-    .title-3 {
-      font-size: 18px;
-    }
-    .title-4 {
-      font-size: 15px;
-    }
-    .title-5 {
-      font-size: 14px;
-    }
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .article {
-    .article-title {
-      font-size: 20px;
-      margin-bottom: 0.2em;
-    }
-    .title {
-      line-height: 2.4;
-    }
-    .title-1 {
-      font-size: 24px;
-    }
-    .title-2 {
-      font-size: 20px;
-    }
-    .title-3 {
-      font-size: 18px;
-    }
-    .title-4 {
-      font-size: 15px;
-    }
-    .title-5 {
-      font-size: 14px;
-    }
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
