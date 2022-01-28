@@ -11,26 +11,23 @@ interface IProps {
 
 const MarkdownNavbar: FunctionComponent<IProps> = ({ data, activeCatelog, setActiveCatelog }) => {
   const titlesRef = createRef<HTMLDivElement>()
-  useEffect(() => {
-    if(!titlesRef.current) return
-    const handleClick: MouseEventHandler = (e) => {
-      const dataset = e.target.dataset
-      if (!dataset) return
-      const { hash } = dataset
-      if (!hash) return
-      window.location.hash = hash
-      setActiveCatelog(hash)
-    }
-    titlesRef.current.addEventListener('click', handleClick)
-  }, [setActiveCatelog, titlesRef])
-
+ 
+  const handleClick: MouseEventHandler = (e) => {
+    const target = e.target as HTMLElement
+    const dataset = target.dataset
+    if (!dataset) return
+    const { hash } = dataset
+    if (!hash) return
+    window.location.hash = hash
+    setActiveCatelog(hash)
+  }
   useEffect(() => {
     const { hash } = window.location
     if(!hash) return
     setActiveCatelog(decodeURIComponent(hash.slice(1)))
   }, [setActiveCatelog])
 
-  return <div ref={titlesRef} className={styles.wrapper}>
+  return <div ref={titlesRef} className={styles.wrapper} onClick={handleClick}>
     <ul className={cns(styles.navbar)}>
       {
         data.map((item, index) => {
