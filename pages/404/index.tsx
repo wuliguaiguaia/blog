@@ -1,8 +1,8 @@
-import Footer from '../../components/Footer'
-import Header from '../../components/Header'
+// import Footer from '../../components/Footer'
+// import Header from '../../components/Header'
 import Head from '../../components/Head'
 import Link from 'next/link'
-import styles from './index.module.scss'
+// import styles from './index.module.scss'
 
 export default function Custom404() {
   return (
