@@ -1,1 +1,1 @@
-export const apiPrefix = '//orangesolo.cn/api/blog'
+export const apiPrefix = 'https://orangesolo.cn/api/blog'

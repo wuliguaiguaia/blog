@@ -7,6 +7,7 @@
     "start": "next start",
     "lint": "next lint --fix",
     "prepare": "husky install",
+    "server": "npm run build && npm run server",
     "stylelint": "stylelint **/*.{css,less} --fix"
   },
   "dependencies": {
