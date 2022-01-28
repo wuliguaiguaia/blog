@@ -38,7 +38,8 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
 
   const scrollCb = getArticleFromSearch.bind(undefined, {
     words: q,
-    prepage
+    prepage,
+    page: 1
   })
 
   const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage)

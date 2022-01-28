@@ -1,5 +1,6 @@
 
 module.exports = {
+  distDir: 'dist',
   async rewrites() {
     return [
       {

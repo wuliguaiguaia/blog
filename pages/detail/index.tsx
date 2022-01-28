@@ -33,7 +33,7 @@ interface IProps extends WithRouterProps {
 
 
 const Detail = (props: IProps) => {
-  const { router, article } = props
+  const { article } = props
   const category = article.categories?.[0]
   const [activeCatelog, setActiveCatelog] = useState('')
   const renderer = new marked.Renderer()

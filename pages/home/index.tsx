@@ -45,7 +45,8 @@ const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength })
   const scrollCb = getArticle.bind(undefined, {
     categories: cates,
     type: mode,
-    prepage
+    prepage,
+    page: 1
   })
 
   const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage)
