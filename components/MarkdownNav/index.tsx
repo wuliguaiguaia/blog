@@ -1,4 +1,4 @@
-import { createRef, FunctionComponent, useEffect } from 'react'
+import { createRef, FunctionComponent, MouseEventHandler, useEffect } from 'react'
 import { NavList } from '../../pages/detail'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -13,7 +13,7 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data, activeCatelog, setAct
   const titlesRef = createRef<HTMLDivElement>()
   useEffect(() => {
     if(!titlesRef.current) return
-    const handleClick = (e) => {
+    const handleClick: MouseEventHandler = (e) => {
       const dataset = e.target.dataset
       if (!dataset) return
       const { hash } = dataset

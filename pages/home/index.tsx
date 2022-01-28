@@ -28,7 +28,9 @@ const prepage = 10
 const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength }) => {
   console.log('regresh')
   const router = useRouter()
-  const { query: { categories = [], mode } } = router
+  const { query } = router
+  const { mode } = query
+  const categories = query.categories as string
   const cates = decodeURIComponent(categories)
     .split(',')
     .filter(v => v)
@@ -46,8 +48,8 @@ const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength })
     prepage
   })
 
-  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, [cates, mode], prepage)
-  
+  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage)
+  const dataSource: IArticle[] = list.current
   return (
     <>
       <Row className="main" justify="center">
@@ -60,7 +62,7 @@ const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength })
                 {loading ? 
                   <Spin tip="正在疯狂加载中..." /> : articlesLength > 0 ? <span className="text">没有其他数据啦~</span> : null}
               </div>}
-            dataSource={list.current}
+            dataSource={dataSource}
             itemLayout="vertical"
             renderItem={item => (
               <List.Item onClick={() => { routeChange(item.id)}}>
@@ -90,7 +92,7 @@ const getCategory = async () => {
   return list
 }
 
-const getArticle = async (params: any, other = {}, type = 0) => {
+const getArticle = async (params: { page: number; prepage: number; categories: number[]; type: string | string[] | undefined }, other = {}, type = 0) => {
   params = { ...other, ...params }
   const response = await $http.getarticlelist(params)
   const { data: { list, total } } = response
@@ -101,7 +103,8 @@ const getArticle = async (params: any, other = {}, type = 0) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
-  const { query: { categories = [], mode = 0 } } = context
+  const { query } = context
+  const categories = query.categories as string
   const cates = decodeURIComponent(categories)
     .split(',')
     .filter(v => v)
@@ -112,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       page: 1,
       prepage,
       categories: cates,
-      type: mode
+      type: query.mode
     }, {}, 1)
 
   return {

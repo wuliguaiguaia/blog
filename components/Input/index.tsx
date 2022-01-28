@@ -1,26 +1,33 @@
-import { FunctionComponent, MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import cns from 'classnames'
 
 interface IProps {
   placeholder: string,
-  handleEnter: () => void,
-  handleChange: () => void,
+  handleEnter: (value: string) => void,
+  handleChange: ChangeEventHandler,
   value: string
 }
 
 const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, handleChange }) => {
   const [active, setActive] = useState(false)
   const [isClick, setIsClick] = useState(false)
-  const inputEl = useRef()
-  const handleClick: MouseEventHandler<HTMLSpanElement> = (e) => {
-    if (e.type === 'keydown' && e.key !== 'Enter') return
+  const inputEl = createRef<HTMLInputElement>()
+  const handleClick:MouseEventHandler = () => {
     setIsClick(true)
-    const value = inputEl.current.value || ''
-    if (value.trim() === '') {
-      return
-    }
+    if (!inputEl.current) return
+    const value = inputEl.current.value
+    if (value.trim() === '') return
+    handleEnter(value)
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!inputEl.current) return
+    if (e.key !== 'Enter') return
+    setIsClick(true)
+    const value = inputEl.current.value
+    if (value.trim() === '') return
     handleEnter(value)
   }
   useEffect(() => {
@@ -36,15 +43,13 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
       }
     }
 
-    inputEl.current.addEventListener('focus', handleFocus)
-    inputEl.current.addEventListener('blur', handleBlur)
-    inputEl.current.addEventListener('keydown', handleClick)
-    return () => {
-      inputEl.current.removeEventListener('focus', handleFocus)
-      inputEl.current.removeEventListener('blur', handleBlur)
-      inputEl.current.removeEventListener('keydown', handleClick)
+    if (inputEl.current) {
+      inputEl.current.addEventListener('focus', handleFocus)
+      inputEl.current.addEventListener('blur', handleBlur)
+      inputEl.current.addEventListener('keydown', handleKeyDown)
     }
   }, [])
+
   return <div className={styles.inputWrapper}>
     <SearchOutlined
       className={cns([styles.searchIcon, active && styles.iconActive])}

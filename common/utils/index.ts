@@ -20,15 +20,16 @@ export const getDate = (str: string, type: DateType = DateType.text) => {
   节流函数：
   每隔 time 执行一次 cb
 */
-export const throttle = (cb, time: number) => {
+
+export const throttle = (cb: { (e: Event): void}, time: number) => {
   let flag = true
-  let timer: any  = null
-  return (...arg: any[]) => {
+  let timer = 0
+  return (e: Event) => {
     if (!flag) return
-    cb(...arg)
+    cb(e)
     flag = false
-    clearTimeout(timer)
-    timer = setTimeout(() => {
+    if(timer) clearTimeout(timer)
+    timer = window.setTimeout(() => {
       flag = true
     }, time)
   }

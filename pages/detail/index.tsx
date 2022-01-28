@@ -69,10 +69,10 @@ const Detail = (props: IProps) => {
   useEffect(() => {
     if (!articleContent.current) return
     const wrapperTop = articleContent.current?.offsetTop
-    const titles: HTMLCollectionOf<Element> = articleContent.current.getElementsByClassName('_artilce-title') || []
+    const titles = articleContent.current.getElementsByClassName('_artilce-title') as  HTMLCollectionOf<HTMLElement>
     const headerPadding = 10
     const offsetArr:number[] = []
-    Array.from(titles).forEach(el => {
+    Array.from(titles || []).forEach(el => {
       offsetArr.push(el.offsetTop + headerPadding + wrapperTop)
     })
     const handleScroll = () => {
@@ -144,10 +144,10 @@ const Detail = (props: IProps) => {
           <Comment></Comment>
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
-          <Author />
+          <Author articlesLength={0} />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            <MarkdownNavbar router={router} data={navList} activeCatelog={activeCatelog} setActiveCatelog={setActiveCatelog}/>
+            <MarkdownNavbar data={navList} activeCatelog={activeCatelog} setActiveCatelog={setActiveCatelog}/>
           </div>
         </Col>
       </Row>
@@ -155,8 +155,7 @@ const Detail = (props: IProps) => {
   )
 }
 
-
-const getArticle = async (params) => {
+const getArticle = async (params: { id: string | string[] | undefined }) => {
   const { data } = await $http.getarticle(params)
   return data
 }

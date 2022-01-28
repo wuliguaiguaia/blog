@@ -1,8 +1,9 @@
 import { throttle } from './../utils/index'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, MutableRefObject } from 'react'
 
+type useInfiniteScrollType = (initial: any[], selector: string, cb: any, prepage: number) => [MutableRefObject<any>, boolean]
 /* 无限滚动 */
-const useInfiniteScroll = (initial: any[], selector: string, cb:any, deps:any[], prepage:number) => {
+const useInfiniteScroll: useInfiniteScrollType= (initial, selector, cb, prepage) => {
   const [page, setPage] = useState(1)
   const [isEnd, setIsEnd] = useState(false)
   const list = useRef<any[]>(initial)

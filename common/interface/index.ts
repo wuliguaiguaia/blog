@@ -13,4 +13,5 @@ export interface IArticle {
   updateTime: string;
   viewCount: number;
   categories: ICategory[],
+  messages?: number
 }

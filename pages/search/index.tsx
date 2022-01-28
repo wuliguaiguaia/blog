@@ -41,8 +41,8 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
     prepage
   })
 
-  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, [q], prepage)
-
+  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage)
+  const dataSource:SearchArticle[] = list.current
   return  <>
     <Row className="main" justify="center">
       <Col className="main-left articleList" xs={23} sm={23} md={20} lg={17} xl={14} xxl={12}>
@@ -61,7 +61,7 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
         }
         <List
           className={cns(['card'])}
-          dataSource={list.current}
+          dataSource={dataSource}
           itemLayout="vertical"
           footer={
             <div className="list-bottom">
@@ -92,7 +92,7 @@ const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
     </Row>
   </>
 }
-const getArticleFromSearch = async (params: any, other = {}, type = 0) => {
+const getArticleFromSearch = async (params: { page: number; prepage: number; words: string | string[] | undefined }, other = {}, type = 0) => {
   params = {...other, ...params}
   const response = await $http.search(params)
   const { data: { list, total } } = response
