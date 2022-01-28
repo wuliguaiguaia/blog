@@ -48,7 +48,8 @@ interface IRequest {
   [k: string]:  Promise<any>
 }
 
-const $http: IRequest = Object.keys(apiMap).reduce((res:(IRequest), type: string) => {
+// # 此表达式不可调用。类型 "Promise<any>" 没有调用签名
+const $http: any = Object.keys(apiMap).reduce((res:(IRequest), type: string) => {
   if (!isValidKey(type, apiMap)) {
     throw Error('invalid sequence')
   }
