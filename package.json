@@ -4,10 +4,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint --fix",
     "prepare": "husky install",
-    "server": "npm run build && npm run server",
+    "server": "npm run build && npm run start",
     "stylelint": "stylelint **/*.{css,less} --fix"
   },
   "dependencies": {
