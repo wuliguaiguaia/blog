@@ -8,6 +8,10 @@ import cns from 'classnames'
 import styles from './index.module.scss'
 import { FunctionComponent } from 'react'
 import Image from 'next/image'
+import avatar from 'assets/images/avator.jpg'
+import vx from 'assets/images/vx.png'
+
+console.log(vx)
 
 interface IProps {
   articlesLength: number
@@ -16,7 +20,7 @@ const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
   return (
     <div className={cns([styles['author-wrapper'], 'card'])}>
       <div className='jus-center'>
-        <Avatar shape="circle" size={130} src='/images/avator.jpg' />
+        <Avatar shape="circle" size={130} src={avatar.src}/>
       </div>
       <Row gutter={15} className={styles.data}>
         <Col span={12}>
@@ -29,7 +33,7 @@ const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
       <Divider />
       <div className='jus-center'>
         <Popover
-          content={<Image src="/images/vx.png" width="120" height="120" alt="" />}
+          content={<Image src={vx.src} width="120" height="120" alt="" />}
           color="rgb(200, 186, 99)"
           placement="bottom">
           <Avatar className={styles.icon} icon={<WechatOutlined />} />
