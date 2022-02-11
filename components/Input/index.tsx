@@ -1,4 +1,4 @@
-import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -12,12 +12,11 @@ interface IProps {
 
 const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, handleChange }) => {
   const [active, setActive] = useState(false)
-  const [isClick, setIsClick] = useState(false)
   const inputEl = createRef<HTMLInputElement>()
   const handleClick:MouseEventHandler = () => {
-    setIsClick(true)
     if (!inputEl.current) return
     const value = inputEl.current.value
+    inputEl.current.focus()
     if (value.trim() === '') return
     handleEnter(value)
   }
@@ -25,7 +24,6 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!inputEl.current) return
     if (e.key !== 'Enter') return
-    setIsClick(true)
     const value = inputEl.current.value
     if (value.trim() === '') return
     handleEnter(value)
@@ -33,14 +31,7 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
   useEffect(() => {
     const handleFocus = () => setActive(true)
     const handleBlur = () => {
-      if (isClick) {
-        setActive(true)
-        setTimeout(() => {
-          setActive(false)
-        }, 2000)
-      } else {
-        setActive(false)
-      }
+      setActive(false)
     }
 
     if (inputEl.current) {
@@ -48,7 +39,7 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
       inputEl.current.addEventListener('blur', handleBlur)
       inputEl.current.addEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [inputEl])
 
   return <div className={styles.inputWrapper}>
     <SearchOutlined
