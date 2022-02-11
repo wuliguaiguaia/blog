@@ -1,7 +1,6 @@
 import { Col, Row, List, Spin } from 'antd'
-import { FunctionComponent } from 'react'
 import { useRouter } from 'next/dist/client/router'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -26,7 +25,7 @@ interface IProps {
 
 const prepage = 10
 
-const Search: FunctionComponent<IProps> = ({ articles, articlesLen }) => {
+const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
   const router = useRouter()
   const {query: {q}} = router
   const routeChange = (id: number) => {

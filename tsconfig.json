@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "noImplicitAny": true, /* 禁用隐式的 any */
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "strict": true,

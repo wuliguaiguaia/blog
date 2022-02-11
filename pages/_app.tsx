@@ -15,7 +15,7 @@ import Head from '../components/Head'
 React.useLayoutEffect = React.useEffect
 
 const MyApp = function ({ Component, pageProps }: AppProps) {
-  // 我们使用自定义应用程序（页面/ _app.js）为此示例订阅该事件，因为它不会在页面导航时卸载，但您可以订阅应用程序中的任何组件上的路由器事件。
+  // 我们使用自定义应用程序（页面/ _app.js）为此示例订阅该事件，因为`它不会在页面导航时卸载，但您可以订阅应用程序中的任何组件上的路由器事件。
   const Router = useRouter()
   const [loadingStatus, setLoadingStatus] = useState(-1) 
   useEffect(() => {

@@ -9,7 +9,7 @@ import Link from 'next/link'
 import Head from '../../components/Head'
 import styles from './index.module.scss'
 import cns from 'classnames'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import $http from '../../common/api'
 import { IArticle } from './../../common/interface'
 import { DateType, getDate, throttle } from '../../common/utils/index'
@@ -32,7 +32,7 @@ interface IProps extends WithRouterProps {
 }
 
 
-const Detail = (props: IProps) => {
+const Detail:NextPage<IProps> = (props) => {
   const { article } = props
   const category = article.categories?.[0]
   const [activeCatelog, setActiveCatelog] = useState('')

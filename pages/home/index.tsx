@@ -1,9 +1,8 @@
 import { Col, Row, List, Spin } from 'antd'
-import { FunctionComponent } from 'react'
 import Author from '../../components/Author'
 import { useRouter } from 'next/dist/client/router'
 import Category from '../../components/Category'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -25,8 +24,8 @@ const prepage = 10
 // import axios from 'axios'    
 // import dynamic from 'next/dynamic'
 // const Eeader = dynamic(import('../components/Header'))
-const Home: FunctionComponent<IProps> = ({ articles, category, articlesLength }) => {
-  console.log('regresh')
+const Home: NextPage<IProps> = ({ articles, category, articlesLength }) => {
+  console.log('home 组件刷新')
   const router = useRouter()
   const { query } = router
   const { mode } = query
@@ -104,6 +103,7 @@ const getArticle = async (params: { page: number; prepage: number; categories: n
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // query 不变都会重新请求  TODO:
+  console.log('home 重新请求')
   const { query } = context
   const categories = query.categories as string
   const cates = decodeURIComponent(categories)
