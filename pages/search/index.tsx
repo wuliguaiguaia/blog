@@ -40,7 +40,7 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
     page: 1
   })
 
-  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage)
+  const [list, loading] = useInfiniteScroll(articles, 'articleList', scrollCb, prepage, articlesLen)
   const dataSource:SearchArticle[] = list.current
   return  <>
     <Row className="main" justify="center">
@@ -91,15 +91,15 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
     </Row>
   </>
 }
-const getArticleFromSearch = async (params: { page: number; prepage: number; words: string | string[] | undefined }, other = {}, type = 0) => {
-  params = {...other, ...params}
+const getArticleFromSearch = async (params: { page: number; prepage: number; words: string | string[] | undefined }, other = {}) => {
+  params = { ...params, ...other}
   const response = await $http.search(params)
   const { data: { list, total } } = response
-  return type === 1 ? [list, total] : list
+  return[list, total]
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query: { q } } = context
-  const [articles, articlesLen] = await getArticleFromSearch({ page: 1, prepage: 10, words: q }, {}, 1)
+  const [articles, articlesLen] = await getArticleFromSearch({ page: 1, prepage: 10, words: q })
   return {
     props: {
       articles,

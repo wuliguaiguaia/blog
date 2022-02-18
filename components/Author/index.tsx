@@ -11,8 +11,6 @@ import Image from 'next/image'
 import avatar from 'assets/images/avator.jpg'
 import vx from 'assets/images/vx.png'
 
-console.log(vx)
-
 interface IProps {
   articlesLength: number
 }

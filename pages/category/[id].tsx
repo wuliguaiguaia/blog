@@ -2,7 +2,7 @@ import { Col, Row, List, Spin } from 'antd'
 import Author from '../../components/Author'
 import { useRouter } from 'next/dist/client/router'
 import Category from '../../components/Category'
-import { GetStaticProps, NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -22,6 +22,14 @@ const prepage = 10
 
 const Home: NextPage<IProps> = ({ articles, category, articlesLength }) => {
   const router = useRouter()
+  const { query } = router
+  const { mode } = query
+  const categories = query.categories as string
+  const cates = decodeURIComponent(categories)
+    .split(',')
+    .filter(v => v)
+    .map(item => +item)
+
   const routeChange = (id: number) => {
     router.push({
       pathname: '/detail',
@@ -29,8 +37,8 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength }) => {
     })
   }
   const scrollCb = getArticle.bind(undefined, {
-    categories: [],
-    type: '0',
+    categories: cates,
+    type: mode,
     prepage,
     page: 1
   })
@@ -80,21 +88,31 @@ const getCategory = async () => {
 }
 
 const getArticle = async (params: { page: number; prepage: number; categories: number[]; type: string | string[] | undefined }, other = {}) => {
-  params = {...params,...other}
+  params = { ...params,  ...other }
   const response = await $http.getarticlelist(params)
   const { data: { list, total } } = response
   return [list, total]
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  console.log('home 重新请求')
+
+// export async function getStaticPaths() { }
+// export const getStaticProps: GetStaticProps = async () => {}
+
+export const getStaticProps: GetServerSideProps = async (context) => {
+  const { query } = context
+  const categories = query.categories as string
+  const cates = decodeURIComponent(categories)
+    .split(',')
+    .filter(v => v)
+    .map(item => +item)
   const categoryList = await getCategory()
-  const [articles, articlesLength] = await getArticle({
-    page: 1,
-    prepage,
-    categories: [],
-    type: ''
-  })
+  const [articles, articlesLength] = await getArticle(
+    {
+      page: 1,
+      prepage,
+      categories: cates,
+      type: query.mode
+    }, {})
 
   return {
     props: {

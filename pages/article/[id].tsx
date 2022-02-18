@@ -1,7 +1,7 @@
 import { Col, Row, Breadcrumb, Divider } from 'antd'
 import Author from '../../components/Author'
 import { renderToString} from 'react-dom/server'
-import MarkdownNav from './../../components/MarkdownNav'
+import MarkdownNav from '../../components/MarkdownNav'
 import { withRouter, NextRouter } from 'next/router'
 import Link from 'next/link'
 import Head from '../../components/Head'
@@ -9,7 +9,7 @@ import styles from './index.module.scss'
 import cns from 'classnames'
 import { GetServerSideProps, NextPage } from 'next'
 import $http from '../../common/api'
-import { IArticle, NavList } from './../../common/interface'
+import { IArticle, NavList } from '../../common/interface'
 import { throttle } from '../../common/utils/index'
 import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
@@ -133,6 +133,8 @@ const getArticle = async (params: { id: string | string[] | undefined }) => {
   const { data } = await $http.getarticle(params)
   return data
 }
+// export async function getStaticPaths() { }
+// export const getStaticProps: GetStaticProps = async () => {}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // let loadingStatus  = 0

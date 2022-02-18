@@ -1,0 +1,76 @@
+@import "./../../styles/var.scss";
+
+.list-wrapper {
+  top: calc($header-margin + $header-height);
+  margin-top: $header-margin;
+}
+.listItem {
+  cursor: pointer;
+  &:hover {
+    color: #1890ff;
+  }
+}
+.active {
+  color: #1890ff;
+}
+.disabled {
+  cursor: no-drop;
+  color: #cccccc;
+  &:hover {
+    color: #cccccc;
+  }
+}
+
+.header {
+  margin-top: 5px;
+  .title {
+    font-size: 16px;
+  }
+  .line {
+    display: inline-block;
+    flex: 1;
+    height: 1px;
+    margin: 0 15px;
+    background-color: #ebeaea;
+  }
+}
+
+.popoverContent {
+  font-size: 12px;
+  color: #6e6e6e;
+}
+.popoverTitle {
+  width: 80px;
+  font-size: 13px;
+  color: #6e6e6e;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+.filter {
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 10px;
+
+  .filterTitle {
+    color: #939393;
+    margin-right: 3px;
+  }
+  .icon {
+    color: #939393;
+  }
+  .buttonGroup {
+    margin-left: 10px;
+  }
+  .button {
+    font-size: 10px;
+    padding: 0 5px;
+    color: #787878;
+    height: 24px;
+    line-height: 24px;
+  }
+}
+
+.checkIcon {
+  font-size: 10px;
+}

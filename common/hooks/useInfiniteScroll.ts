@@ -1,9 +1,15 @@
 import { throttle } from './../utils/index'
 import { useState, useRef, useEffect, MutableRefObject } from 'react'
 
-type useInfiniteScrollType = (initial: any[], selector: string, cb: any, prepage: number) => [MutableRefObject<any>, boolean]
+type useInfiniteScrollType = (initial: any[],
+  selector: string,
+  cb: any,
+  prepage: number,
+  total: number
+) => [MutableRefObject<any>, boolean]
+
 /* 无限滚动 */
-const useInfiniteScroll: useInfiniteScrollType= (initial, selector, cb, prepage) => {
+const useInfiniteScroll: useInfiniteScrollType= (initial, selector, cb, prepage, total) => {
   const [page, setPage] = useState(1)
   const [isEnd, setIsEnd] = useState(false)
   const list = useRef<any[]>(initial)
@@ -12,14 +18,14 @@ const useInfiniteScroll: useInfiniteScrollType= (initial, selector, cb, prepage)
   useEffect(() => {
     list.current = initial
     setLoading(false)
-    setIsEnd(false)
+    setIsEnd(list.current.length === total)
     setPage(1)
-  }, [initial])
+  }, [initial, total])
 
   useEffect(() => {
     const handleScroll = async () => {
       if (isEnd) return
-      if(loading) return
+      if (loading) return
       const scrollTop = window.scrollY
       const el = document.getElementsByClassName(selector)[0]
       if (!el) return
@@ -30,14 +36,14 @@ const useInfiniteScroll: useInfiniteScrollType= (initial, selector, cb, prepage)
       if (scrollTop + window.innerHeight + safeDistance > fullHeight + headerHeight) {
         console.log('获取数据, 第', page + 1)
         setLoading(true)
-        const data = await cb({
+        const [data, total] = await cb({
           page: page + 1,
         })
         list.current = list.current.concat(data)
         console.log('客户端获取数据：', data)
         setPage(page + 1)
         setLoading(false)
-        if (data.length < prepage) {
+        if (list.current.length ===  total) {
           setIsEnd(true)
           return
         }
