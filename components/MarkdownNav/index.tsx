@@ -1,17 +1,18 @@
 import { createRef, FunctionComponent, MouseEventHandler, useEffect } from 'react'
-import { NavList } from '../../pages/detail'
 import styles from './index.module.scss'
 import cns from 'classnames'
+import { NavList } from 'common/interface'
 
 interface IProps {
   data: NavList[],
-  activeCatelog: string,
-  setActiveCatelog: (arg: string) => void,
+  activeNav: string,
+  setActiveNav: (arg: string) => void,
 }
 
-const MarkdownNavbar: FunctionComponent<IProps> = ({ data, activeCatelog, setActiveCatelog }) => {
+const MarkdownNav: FunctionComponent<IProps> = ({ data = [], activeNav, setActiveNav }) => {
   const titlesRef = createRef<HTMLDivElement>()
- 
+  const levels = data.map((item) => item.level)
+  const maxLevel = Math.min(...levels)
   const handleClick: MouseEventHandler = (e) => {
     const target = e.target as HTMLElement
     const dataset = target.dataset
@@ -19,39 +20,42 @@ const MarkdownNavbar: FunctionComponent<IProps> = ({ data, activeCatelog, setAct
     const { hash } = dataset
     if (!hash) return
     window.location.hash = hash
-    setActiveCatelog(hash)
+    setActiveNav(hash)
   }
   useEffect(() => {
     const { hash } = window.location
     if(!hash) return
-    setActiveCatelog(decodeURIComponent(hash.slice(1)))
-  }, [setActiveCatelog])
+    setActiveNav(decodeURIComponent(hash.slice(1)))
+  }, [setActiveNav])
 
-  return <div ref={titlesRef} className={styles.wrapper} onClick={handleClick}>
-    <ul className={cns(styles.navbar)}>
-      {
-        data.map((item, index) => {
-          const {level, text} = item
-          return (
-            <li
-              key={index}
-              className={cns([styles['title-wrapper'], activeCatelog === text && styles.active])}
-            >
-              <div className={cns([
-                styles[`title-${level}`],
-                styles.title,
-                'text-ellipsis',
-              ])}
-              data-hash={text}
+  return (
+    <div ref={titlesRef} className={styles.wrapper} onClick={handleClick}>
+      { data.length ?(
+        <ul className={cns(styles.navbar)}> {
+          data.map((item, index) => {
+            const { level, text } = item
+            return (
+              <li
+                key={index}
+                className={cns([styles['title-wrapper'], activeNav === text && styles.active])}
               >
-                {text}
-              </div>
-            </li>
-          )
-        })
+                <div className={cns([
+                  styles[`title-${level - maxLevel + 1}`],
+                  styles.title,
+                  'text-ellipsis',
+                ])}
+                data-hash={text}
+                >
+                  {text}
+                </div>
+              </li>
+            )
+          })
+        }</ul>)
+        : <div className={styles.empty}>暂无目录</div>
       }
-    </ul>
-  </div>
+    </div>
+  )
 }
 
-export default MarkdownNavbar
+export default MarkdownNav

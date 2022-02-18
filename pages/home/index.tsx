@@ -7,7 +7,6 @@ import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle, ICategory } from '../../common/interface'
-import { DateType, getDate } from '../../common/utils'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 import { EyeOutlined, MessageOutlined } from '@ant-design/icons'
 import marked from '../../common/plugins/marked'
@@ -69,7 +68,7 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength }) => {
                 <div className="list-title">{item.title}</div>
                 <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350).replaceAll('\n', '')) }}></div>
                 <div className="list-keys">
-                  <span className="item-date">{getDate(item.updateTime, DateType.line).replaceAll(' ', '')}</span>
+                  <span className="item-date">{item.createTime.slice(0,10)}</span>
                   <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
                   <span><MessageOutlined /> {item.messages || 222}</span>
                 </div>

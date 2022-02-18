@@ -15,3 +15,9 @@ export interface IArticle {
   categories: ICategory[],
   messages?: number
 }
+
+export interface NavList {
+  level: number;
+  text: string;
+  children?: NavList[]
+}

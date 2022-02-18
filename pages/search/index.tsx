@@ -6,7 +6,6 @@ import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle } from '../../common/interface'
 import marked from '../../common/plugins/marked'
-import { DateType, getDate } from '../../common/utils'
 import Link from 'next/link'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 
@@ -76,7 +75,7 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
               <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
               <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
               <div className='list-keys'>
-                <span className={styles['item-date']}>{getDate(item._source.createTime, DateType.line).replaceAll(' ', '')}</span>
+                <span className={styles['item-date']}>{item._source.createTime.slice(0, 10)}</span>
                 {
                   item._source.categories.map(({id, name}) => {
                     return <span className={styles['item-cates']} key={id}>

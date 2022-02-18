@@ -1,4 +1,4 @@
-import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import cns from 'classnames'
