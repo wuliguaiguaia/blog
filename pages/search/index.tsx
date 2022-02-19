@@ -1,13 +1,13 @@
 import { Col, Row, List, Spin } from 'antd'
 import { useRouter } from 'next/dist/client/router'
 import { GetServerSideProps, NextPage } from 'next'
-import $http from '../../common/api'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { IArticle } from '../../common/interface'
 import marked from '../../common/plugins/marked'
 import Link from 'next/link'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
+import { getArticleListFromSearch } from 'common/api/utils'
 
 type SearchArticle = {
     _source: IArticle,
@@ -27,14 +27,8 @@ const prepage = 10
 const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
   const router = useRouter()
   const {query: {q}} = router
-  const routeChange = (id: number) => {
-    router.push({
-      pathname: '/detail',
-      query: { id }
-    })
-  }
 
-  const scrollCb = getArticleFromSearch.bind(undefined, {
+  const scrollCb = getArticleListFromSearch.bind(undefined, {
     words: q,
     prepage,
     page: 1
@@ -68,22 +62,21 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
                 <Spin tip="正在疯狂加载中..." /> : articlesLen > 0 ? <span className="text">没有其他数据啦~</span> : null}
             </div>}
           renderItem={ (item) => (
-            <List.Item
-              className={styles['content-wrapper']}
-              onClick={() => { routeChange(item._source.id) }}
-            >
-              <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
-              <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
-              <div className='list-keys'>
-                <span className={styles['item-date']}>{item._source.createTime.slice(0, 10)}</span>
-                {
-                  item._source.categories.map(({id, name}) => {
-                    return <span className={styles['item-cates']} key={id}>
-                      <Link href={{ pathname: '/', query: {categories: id}}}><a>{name}</a></Link>
-                    </span>
-                  })
-                }
-              </div>
+            <List.Item className={styles['content-wrapper']}>
+              <Link href={`/article/${item._source.id}`}><a>
+                <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
+                <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
+                <div className='list-keys'>
+                  <span className={styles['item-date']}>{item._source.createTime.slice(0, 10)}</span>
+                  {
+                    item._source.categories.map(({ id, name }) => {
+                      return <span className={styles['item-cates']} key={id}>
+                        <Link href={`/category/${id}`}><a>{name}</a></Link>
+                      </span>
+                    })
+                  }
+                </div>
+              </a></Link>
             </List.Item>
           )}
         />
@@ -91,15 +84,10 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
     </Row>
   </>
 }
-const getArticleFromSearch = async (params: { page: number; prepage: number; words: string | string[] | undefined }, other = {}) => {
-  params = { ...params, ...other}
-  const response = await $http.search(params)
-  const { data: { list, total } } = response
-  return[list, total]
-}
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query: { q } } = context
-  const [articles, articlesLen] = await getArticleFromSearch({ page: 1, prepage: 10, words: q })
+  const [articles, articlesLen] = await getArticleListFromSearch({ page: 1, prepage: 10, words: q })
   return {
     props: {
       articles,

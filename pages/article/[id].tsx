@@ -7,17 +7,18 @@ import Link from 'next/link'
 import Head from '../../components/Head'
 import styles from './index.module.scss'
 import cns from 'classnames'
-import { GetServerSideProps, NextPage } from 'next'
-import $http from '../../common/api'
+import { GetStaticProps, NextPage } from 'next'
 import { IArticle, NavList } from '../../common/interface'
 import { throttle } from '../../common/utils/index'
 import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
+import { getArticle, getArticleList } from 'common/api/utils'
+import { useRouter } from 'next/router'
+
 
 const marked = Marked()
-
 interface WithRouterProps {
   router: NextRouter
 }
@@ -26,15 +27,20 @@ interface IProps extends WithRouterProps {
   article: IArticle,
 }
 
-const Detail:NextPage<IProps> = (props) => {
-  const {
-    article: { content, title, viewCount, updateTime, categories }
-  } = props
-  const category = categories?.[0]
+const Article: NextPage<IProps> = (props) => {
+  const router = useRouter()
   const [activeNav, setActiveNav] = useState('')
   const [navList, setNavList] = useState<NavList[]>([])
   const [html, setHtml] = useState('')
-  const scrollEl= createRef<HTMLDivElement>()
+  const scrollEl = createRef<HTMLDivElement>()
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
+
+  const { article = {
+    content: '', title: '', viewCount: 0, updateTime: '', categories: [], id: 0
+  } } = props
+
+  const { content, title, viewCount, updateTime, categories, id } = article
+  const category = categories?.[0]
 
   /* 生成导航 */
   useEffect(() => {
@@ -46,11 +52,10 @@ const Detail:NextPage<IProps> = (props) => {
       return markerContents
     }
     setHtml(marked.parse(content))
-  }, [content])
+  }, [id, content])
 
 
   /* 初次监听 */
-  const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   useEffect(() => {
     if (!isFirstRender) return
     if (!scrollEl?.current) return
@@ -87,17 +92,20 @@ const Detail:NextPage<IProps> = (props) => {
     window.addEventListener('wheel', throttle(handleScroll, 0))
   }, [scrollEl])
 
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
   return (
     <>
       <Head title={title} />
-      <Row className="main" justify="center" ref={scrollEl}>
+      <Row className={cns(['main', styles.wrapper])} justify="center" ref={scrollEl}>
         <Col className="main-left" xs={23} sm={23} md={15} lg={16} xl={13} xxl={11}>
           <Breadcrumb className="card">
             <Breadcrumb.Item>
-              <Link href="/" passHref><a >首页</a></Link>
+              <Link href="/" passHref><a className={styles.link}>首页</a></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link href={`/?category=${category.id}`} passHref>{category.name}</Link>
+              <Link href={`/category/${category.id}`} passHref><a className={styles.link}>{category.name}</a></Link>
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className={cns(styles.article ,'card')}>
@@ -129,26 +137,32 @@ const Detail:NextPage<IProps> = (props) => {
   )
 }
 
-const getArticle = async (params: { id: string | string[] | undefined }) => {
-  const { data } = await $http.getarticle(params)
-  return data
+/* 预加载首页列表前20个 */
+export async function getStaticPaths() { 
+  const [articles] = await getArticleList({
+    page: 1,
+    prepage: 20,
+    categories: [],
+  })
+  const paths = articles.map((item: IArticle) => ({ params: { id: item.id + '' } }))
+  return {
+    paths,
+    fallback: true
+  }
 }
-// export async function getStaticPaths() { }
-// export const getStaticProps: GetStaticProps = async () => {}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // let loadingStatus  = 0
-  const { query: { id } } = context
+export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id
   const article = await getArticle({ id })
-  setTimeout(() => {
-    // loadingStatus = 1
-  }, 2000)
+  if (!article) {
+    return {
+      notFound: true,
+    }
+  }
   return {
     props: {
-      article,
-      // loadingStatus
+      article
     }
   }
 }
 
-export default withRouter(Detail)
+export default withRouter(Article)

@@ -1,0 +1,30 @@
+@import '../../styles/var.scss';
+
+.wrapper {
+  height: calc(100vh - $header-height);
+  background-color: #fff;
+  p {
+    margin-bottom: 10px;
+  }
+}
+
+.left {
+  font-size: 50px;
+  color: #999;
+}
+
+.right {
+  margin-left: 20px;
+  padding-left: 20px;
+  font-size: 14px;
+  border-left: 1px solid #ccc;
+}
+
+.input {
+
+}
+
+.btn {
+  margin: 10px 0;
+}
+

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, createRef, FunctionComponent, MouseEventHandler, useCallback, useEffect, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import cns from 'classnames'
@@ -21,13 +21,14 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
     handleEnter(value)
   }
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!inputEl.current) return
     if (e.key !== 'Enter') return
     const value = inputEl.current.value
     if (value.trim() === '') return
     handleEnter(value)
-  }
+  }, [inputEl])
+  
   useEffect(() => {
     const handleFocus = () => setActive(true)
     const handleBlur = () => {
@@ -39,7 +40,7 @@ const ZInput: FunctionComponent<IProps> = ({ placeholder, handleEnter, value, ha
       inputEl.current.addEventListener('blur', handleBlur)
       inputEl.current.addEventListener('keydown', handleKeyDown)
     }
-  }, [inputEl])
+  }, [inputEl, handleKeyDown])
 
   return <div className={styles.inputWrapper}>
     <SearchOutlined

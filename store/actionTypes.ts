@@ -1,0 +1,1 @@
+export const UpdateCurCategory = Symbol('update current category')

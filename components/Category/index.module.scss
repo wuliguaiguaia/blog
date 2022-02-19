@@ -5,7 +5,14 @@
   margin-top: $header-margin;
 }
 .listItem {
+  padding: 10px 0;
+  color: #4b4b4b;
   cursor: pointer;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #ebeaea;
+  }
+  
   &:hover {
     color: #1890ff;
   }
@@ -23,6 +30,7 @@
 
 .header {
   margin-top: 5px;
+  margin-bottom: 15px;
   .title {
     font-size: 16px;
   }

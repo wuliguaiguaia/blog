@@ -1,8 +1,11 @@
-@import "./../../styles/var.scss";
+@import "styles/var.scss";
 
 .list {
   min-height: 100%;
   cursor: pointer;
+}
+.listTitle {
+  font-weight: 600;
 }
 
 .itemDate {

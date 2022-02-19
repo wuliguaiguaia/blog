@@ -10,10 +10,8 @@ import { BackTop } from 'antd'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import Head from '../components/Head'
-// import 'tailwindcss/tailwind.css'
 
 React.useLayoutEffect = React.useEffect
-
 const MyApp = function ({ Component, pageProps }: AppProps) {
   // 我们使用自定义应用程序（页面/ _app.js）为此示例订阅该事件，因为`它不会在页面导航时卸载，但您可以订阅应用程序中的任何组件上的路由器事件。
   const Router = useRouter()
@@ -22,14 +20,12 @@ const MyApp = function ({ Component, pageProps }: AppProps) {
     /* 钩子事件 */
     Router.events.on('routeChangeStart', () => {
       setLoadingStatus(0)
-      console.log('start')
     })
     
     Router.events.on('routeChangeComplete', () => {
       setTimeout(() => {
         setLoadingStatus(-1)
       }, 1000)
-      console.log('end')
       setLoadingStatus(1)
     })
     /* 如果一个路由加载被取消(例如，通过连续快速点击两个链接)，routeChangeError将被触发 */

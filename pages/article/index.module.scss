@@ -1,4 +1,9 @@
 @import "./../../styles/var.scss";
+
+.wrapper span a.link {
+  color: $main-color;
+}
+
 .article {
   margin-top: 10px;
   margin-bottom: 10px;

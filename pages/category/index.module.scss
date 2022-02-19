@@ -3,8 +3,11 @@
 .list {
   min-height: 100%;
   cursor: pointer;
+  margin-top: 10px;
 }
-
+.wrapper .link {
+  color: $main-color;
+}
 .itemDate {
   margin-right: 10px;
   color: #8c8c8c;
