@@ -1,3 +1,4 @@
+import { IMessage } from './../interface/index'
 import $http from '.'
 
 /**
@@ -42,6 +43,14 @@ export const getArticleListFromSearch = async (params: { page: number; prepage: 
  */
 export const getArticle = async (params: { id: string | string[] | undefined }) => {
   const { data } = await $http.getarticle(params)
+  return data
+}
+
+/**
+ * 发表建议
+ */
+export const postMessage = async (body: IMessage) => {
+  const { data } = await $http.postmessage(body)
   return data
 }
 

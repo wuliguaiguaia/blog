@@ -8,7 +8,8 @@ export const get = {
 }
 
 export const post = {
-  comment: `${apiPrefix}/comment`,
+  postcomment: `${apiPrefix}/comment`,
+  postmessage: `${apiPrefix}/message`,
 }
 
 export const remove = {}

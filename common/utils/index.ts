@@ -22,3 +22,12 @@ export const throttle = (cb: { (e: Event): void}, time: number) => {
     }, time)
   }
 }
+
+
+export const getUser = () => {
+  return {
+    username: 'aaa',
+    website: 'fds',
+    email: '11'
+  }
+}

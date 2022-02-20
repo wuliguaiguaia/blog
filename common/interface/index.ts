@@ -21,3 +21,11 @@ export interface NavList {
   text: string;
   children?: NavList[]
 }
+
+
+export interface IMessage {
+  username: string,
+  website: string,
+  email: string,
+  content?: string
+}
