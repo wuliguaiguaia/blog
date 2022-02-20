@@ -1,4 +1,4 @@
-import { IMessage } from './../interface/index'
+import { IComment, IMessage } from './../interface/index'
 import $http from '.'
 
 /**
@@ -51,6 +51,14 @@ export const getArticle = async (params: { id: string | string[] | undefined }) 
  */
 export const postMessage = async (body: IMessage) => {
   const { data } = await $http.postmessage(body)
+  return data
+}
+
+/**
+ * 发表评论
+ */
+export const postComment = async (body: IComment) => {
+  const { data } = await $http.postcomment(body)
   return data
 }
 

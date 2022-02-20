@@ -3,8 +3,8 @@
 .wrapper {
   height: calc(100vh - $header-height);
   background-color: #fff;
-  p {
-    margin-bottom: 10px;
+  p:not(:first-of-type) {
+    margin-top: 10px;
   }
 }
 

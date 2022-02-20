@@ -1,3 +1,6 @@
+import { IUser } from './../interface/index'
+import { localStorage } from './storage'
+
 export enum DateType {
   text,
   line
@@ -24,10 +27,11 @@ export const throttle = (cb: { (e: Event): void}, time: number) => {
 }
 
 
-export const getUser = () => {
-  return {
-    username: 'aaa',
-    website: 'fds',
-    email: '11'
+export const UserUtils = {
+  get() {
+    return localStorage.get('user')
+  },
+  set(data: IUser) {
+    return localStorage.set('user', data)
   }
 }

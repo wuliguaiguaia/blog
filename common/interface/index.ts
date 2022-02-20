@@ -23,9 +23,15 @@ export interface NavList {
 }
 
 
-export interface IMessage {
+export interface IUser { 
   username: string,
   website: string,
   email: string,
-  content?: string
+}
+export interface IMessage extends IUser{
+  content: string
+}
+
+export interface IComment extends IMessage{
+  articleId: number
 }

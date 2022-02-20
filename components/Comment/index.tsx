@@ -1,24 +1,25 @@
-import { Avatar, Divider, Comment as AComment, Input, Button } from 'antd'
+import { Avatar, Divider, Comment as AComment, Input, Button, message } from 'antd'
 import styles from './index.module.scss'
 import cns from 'classnames'
-const { TextArea } = Input
+import { postComment } from 'common/api/utils'
+import { IComment } from 'common/interface'
+import CommentBox from 'components/CommentBox'
 
 const Comment = () => {
+  const callback = () => {
+    message.success('发表成功')
+  }
+  const postMessage = (data: IComment) => {
+    return postComment(data)
+  }
   return <div className="card">
     <Divider>留言区</Divider>
-    <TextArea
-      className={cns([styles.input])}
-      placeholder="输入评论（Enter换行，⌘ / Ctrl + Enter发送）"
-      autoSize={{ minRows: 2, maxRows: 6 }}
+    {/* 表情，图片 slot */}
+    <CommentBox callback={callback}
+      addMessage={postMessage}
+      btnPosition="right"
+      btnText="提交评论"
     />
-    {/* 姓名，个人网址 */}
-    <div className={cns(['jusBetween-alignCenter'])}>
-      <div>
-        <span>表情</span>
-        <span>图片</span>
-      </div>
-      <Button type="primary" loading={false}>发表评论</Button>
-    </div>
     <div className={cns([styles.commentWrapper])}>
       <AComment
         actions={[<span key="comment-nested-reply-to">回复</span>]}

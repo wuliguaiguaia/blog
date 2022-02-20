@@ -1,0 +1,11 @@
+.inputWrapper {
+  display: flow-root;
+}
+.input {
+  margin-bottom: 10px;
+}
+.btn {
+  &.right {
+    float: right;
+  }
+}

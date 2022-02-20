@@ -1,9 +1,11 @@
 .row {
   display: flex;
-  margin-bottom: 10px;
   align-items: center;
+  margin-bottom: 10px;
+  > input {
+    flex: 1;
+  }
 }
-.title {
-  width: 6rem;
-  text-align: right;
+.tip {
+  margin-left: 10px;
 }
