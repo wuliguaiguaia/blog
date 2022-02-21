@@ -20,12 +20,12 @@ const Comment: FunctionComponent<IProps> = ({ id }) => {
     const data = await getCommentList(id)
     setList(data)
     const users:Set<string> = new Set()
-    const maps = data.reduce((res, item) => {
-      res[item.id] = item
+    const maps = data.reduce((res:IComment[], item:IComment) => {
+      res[item.id!] = item
       users.add(item.username)
       if (item.replyInfo?.length) {
-        item.replyInfo.forEach((_item) => {
-          res[_item.id] = _item
+        item.replyInfo.forEach((_item: IComment) => {
+          res[_item.id!] = _item
           users.add(_item.username)
         })
       }
@@ -33,8 +33,8 @@ const Comment: FunctionComponent<IProps> = ({ id }) => {
     }, {})
     setIdMap(maps)
     setUserImgs(() => {
-      const imgs = {}
-      users.forEach(item => {
+      const imgs: { [str: string]: string } = {}
+      users.forEach((item) => {
         imgs[item] = `https://joeschmoe.io/api/v1/${item}`
       })
       return imgs
@@ -104,7 +104,7 @@ const Comment: FunctionComponent<IProps> = ({ id }) => {
                       styles={styles}
                       articleId={id}
                       userImg={userImgs[_item.username]}
-                      replyItem={ _item.replyToReplyId !== item.id ?idMap[_item.replyToReplyId]: null}
+                      replyItem={ _item.replyToReplyId !== item.id ? idMap[_item.replyToReplyId!]: undefined}
                       showInput={showInput?.id === _item.id}
                       setShowInput={setShowInput}
                       callback={callback}
