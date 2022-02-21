@@ -117,7 +117,7 @@ const Article: NextPage<IProps> = (props) => {
             <div className="article-keys">
               <span>{/* {article.keywords} */}</span>
             </div>
-            <div className="article-content md-wrapper" dangerouslySetInnerHTML={{ __html: html }} ></div>
+            <div className={cns([styles['article-content'],'md-wrapper'])} dangerouslySetInnerHTML={{ __html: html }} ></div>
             {/* <div className="article-keys">
               <span>{article.keywords}</span>
               <span>{article.viewCount}</span>

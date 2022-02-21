@@ -10,11 +10,16 @@ import { FunctionComponent } from 'react'
 import Image from 'next/image'
 import avatar from 'assets/images/avator.jpg'
 import vx from 'assets/images/vx.png'
-
+import useSWR from 'swr'
+import { get } from 'common/api/api'
 interface IProps {
   articlesLength: number
 }
-const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
+const Author: FunctionComponent<IProps> = () => {
+  const fetcher = (url: string) => fetch(url).then((res) => res.json())
+  const { data, error } = useSWR(get.getcount, fetcher)
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
   return (
     <div className={cns([styles['author-wrapper'], 'card'])}>
       <div className='jus-center'>
@@ -22,13 +27,13 @@ const Author: FunctionComponent<IProps> = ({ articlesLength }) => {
       </div>
       <Row gutter={15} className={styles.data}>
         <Col span={12}>
-          <Statistic title="Article" value={articlesLength} />
+          <Statistic title="Article" value={data.data.articleLen} />
         </Col>
         <Col span={12}>
-          <Statistic title="Message" value={112893} />
+          <Statistic title="Message" value={data.data.messageLen} />
         </Col>
       </Row>
-      <Divider />
+      <div className={styles.divider} />
       <div className='jus-center'>
         <Popover
           content={<Image src={vx.src} width="120" height="120" alt="" />}

@@ -1,4 +1,5 @@
 .author-wrapper {
+  padding: 30px 20px 20px;
   .icon {
     margin: 0 12px;
   }
@@ -6,7 +7,23 @@
   .data-number {
     font-size: 1.3rem;
   }
+
+  .divider {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: "tnum", "tnum";
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    margin: 18px 0;
+  }
+
   .data {
-    padding: 20px;
+    margin-top: 20px;
+    padding: 0 20px;
   }
 }

@@ -6,6 +6,7 @@ export const get = {
   getcommentlist: `${apiPrefix}/comment/list`,
   getarticle: `${apiPrefix}/article`,
   search: `${apiPrefix}/article/search`,
+  getcount: `${apiPrefix}/article/count`
 }
 
 export const post = {

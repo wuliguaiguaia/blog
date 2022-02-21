@@ -41,3 +41,8 @@ export interface IComment extends IMessage{
   replyToReplyId?: number
   replyInfo?: IComment[]
 }
+
+export interface ICount { 
+  articleLen: number
+  messageLen: number
+}
