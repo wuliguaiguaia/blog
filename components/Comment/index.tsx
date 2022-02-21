@@ -1,42 +1,123 @@
-import { Avatar, Divider, Comment as AComment, Input, Button, message } from 'antd'
-import styles from './index.module.scss'
-import cns from 'classnames'
-import { postComment } from 'common/api/utils'
-import { IComment } from 'common/interface'
+import { Divider, message } from 'antd'
+import { getCommentList, postComment } from 'common/api/utils'
+import { IComment, IMessage } from 'common/interface'
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
+import CommentItem from './Item'
 import CommentBox from 'components/CommentBox'
+import cns from 'classnames'
+import styles from './index.module.scss'
+interface IProps {
+  id: number
+}
 
-const Comment = () => {
+const Comment: FunctionComponent<IProps> = ({ id }) => {
+  const [list, setList] = useState<IComment[]>([])
+  const [idMap, setIdMap] = useState<{ [id: string]: IComment }>({})
+  const [userImgs, setUserImgs] = useState<{[str: string]: string}>({})
+  const [showInput, setShowInput] = useState<IComment | null>()
+
+  const fetchData = useCallback(async () => {
+    const data = await getCommentList(id)
+    setList(data)
+    const users:Set<string> = new Set()
+    const maps = data.reduce((res, item) => {
+      res[item.id] = item
+      users.add(item.username)
+      if (item.replyInfo?.length) {
+        item.replyInfo.forEach((_item) => {
+          res[_item.id] = _item
+          users.add(_item.username)
+        })
+      }
+      return res
+    }, {})
+    setIdMap(maps)
+    setUserImgs(() => {
+      const imgs = {}
+      users.forEach(item => {
+        imgs[item] = `https://joeschmoe.io/api/v1/${item}`
+      })
+      return imgs
+    })
+  }, [id])
+
   const callback = () => {
     message.success('发表成功')
+    fetchData()
+    setShowInput(null)
   }
-  const postMessage = (data: IComment) => {
-    return postComment(data)
+
+  const postMessage = (data: IMessage) => {
+    if (!showInput) {
+      return postComment({
+        ...data,
+        articleId: id
+      })
+    }
+    const { id: commitId, replyId } = showInput
+    return postComment({
+      ...data,
+      articleId: id,
+      replyId: replyId || commitId,
+      replyToReplyId: commitId
+    })
   }
+
+  const handleFocus = () => {
+    setShowInput(null)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
   return <div className="card">
     <Divider>留言区</Divider>
     {/* 表情，图片 slot */}
     <CommentBox callback={callback}
       addMessage={postMessage}
       btnPosition="right"
-      btnText="提交评论"
+      btnText="发表评论"
+      handleFocus={handleFocus}
     />
     <div className={cns([styles.commentWrapper])}>
-      <AComment
-        actions={[<span key="comment-nested-reply-to">回复</span>]}
-        author={<a>Han Solo</a>}
-        avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
-        content={
-          <p>
-        We supply a series of design principles, practical patterns and high quality design
-        resources (Sketch and Axure).
-          </p>
-        }
-      >
-        {/* {children} */}
-      </AComment>
-
+      {
+        list.map((item) => 
+          <CommentItem
+            item={item}
+            key={item.id}
+            styles={styles}
+            articleId={id}
+            userImg={userImgs[item.username]}
+            showInput={showInput?.id === item.id}
+            setShowInput={setShowInput}
+            callback={callback}
+            addMessage={postMessage}
+          >
+            {
+              item.replyInfo?.length ? 
+                <div className={styles.secondWrapper}> 
+                  { item.replyInfo.map((_item) => (
+                    <CommentItem
+                      item={_item}
+                      key={_item.id}
+                      styles={styles}
+                      articleId={id}
+                      userImg={userImgs[_item.username]}
+                      replyItem={ _item.replyToReplyId !== item.id ?idMap[_item.replyToReplyId]: null}
+                      showInput={showInput?.id === _item.id}
+                      setShowInput={setShowInput}
+                      callback={callback}
+                      addMessage={postMessage}
+                    ></CommentItem> 
+                  ))}
+                </div>
+                : null
+            }
+          </CommentItem>
+        )
+      }
     </div>
-   
   </div>
 }
 export default Comment

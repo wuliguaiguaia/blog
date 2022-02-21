@@ -123,7 +123,7 @@ const Article: NextPage<IProps> = (props) => {
               <span>{article.viewCount}</span>
             </div> */}
           </div>
-          <Comment></Comment>
+          <Comment id={id}></Comment>
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
           <Author articlesLength={0} />

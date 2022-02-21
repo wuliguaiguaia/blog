@@ -3,6 +3,7 @@ import { apiPrefix } from '../constants/request'
 export const get = {
   getcategorylist: `${apiPrefix}/category/list`,
   getarticlelist: `${apiPrefix}/article/list`,
+  getcommentlist: `${apiPrefix}/comment/list`,
   getarticle: `${apiPrefix}/article`,
   search: `${apiPrefix}/article/search`,
 }

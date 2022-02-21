@@ -13,11 +13,13 @@ interface IProps {
   addMessage: (data: any) => void
   btnPosition?: 'left' | 'right'
   btnText?: string
+  handleFocus?: () => void
 }
 
 const CommentBox: FunctionComponent<IProps> = ({
   callback,
   addMessage,
+  handleFocus,
   btnPosition = 'left',
   btnText = '提交'
 }) => {
@@ -25,7 +27,7 @@ const CommentBox: FunctionComponent<IProps> = ({
     username: '',
     email: '',
     website: '',
-    content: ''
+    content: '',
   })
   const [confirmLoading, setConfirmLoading] = useState(false)
   const [dialogVisible, setDialogVisible] = useState<boolean>(false)
@@ -57,7 +59,7 @@ const CommentBox: FunctionComponent<IProps> = ({
         username: '',
         email: '',
         website: '',
-        content: ''
+        content: '',
       })
       callback()
     } else {
@@ -78,6 +80,7 @@ const CommentBox: FunctionComponent<IProps> = ({
         autoSize={{ minRows: 2, maxRows: 6 }}
         value={formData.content}
         onChange={handleChange}
+        onFocus={handleFocus}
       />
       <Button className={cns([styles.btn, styles[btnPosition]])} type="primary" onClick={handleSubmit}>{btnText}</Button>
     </div>

@@ -29,9 +29,15 @@ export interface IUser {
   email: string,
 }
 export interface IMessage extends IUser{
+  id?: number
   content: string
+  createTime?: string;
 }
 
 export interface IComment extends IMessage{
-  articleId: number
+  id?: number,
+  articleId?: number
+  replyId?: number
+  replyToReplyId?: number
+  replyInfo?: IComment[]
 }
