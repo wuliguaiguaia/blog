@@ -1,6 +1,5 @@
-import { Avatar, Comment, message, Tooltip } from 'antd'
+import { Avatar, Comment } from 'antd'
 import { IComment, IMessage, IUser } from 'common/interface'
-import moment from 'moment'
 import { FunctionComponent, useState, } from 'react'
 import cns from 'classnames'
 import CommentBox from 'components/CommentBox'
