@@ -59,6 +59,9 @@
 
 .listContent {
   font-size: 14px;
+  > * {
+    display: inline-block;
+  }
 }
 
 .item-cates {

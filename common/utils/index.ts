@@ -1,3 +1,4 @@
+import marked from 'common/plugins/marked'
 import { IUser } from './../interface/index'
 import { localStorage } from './storage'
 
@@ -34,4 +35,10 @@ export const UserUtils = {
   set(data: IUser) {
     return localStorage.set('user', data)
   }
+}
+
+export const getValidText = (str:string) => {
+  let text = marked.parse(str)
+  text = text.replace(/<[^>]+>/g, '').replaceAll('\n', '')
+  return text
 }

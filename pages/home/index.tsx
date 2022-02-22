@@ -7,9 +7,10 @@ import cns from 'classnames'
 import { IArticle, ICategory } from '../../common/interface'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 import { EyeOutlined, MessageOutlined } from '@ant-design/icons'
-import marked from '../../common/plugins/marked'
 import { getArticleList, getCategory } from 'common/api/utils'
 import Link from 'next/link'
+import { getValidText } from 'common/utils'
+
 interface IProps {
   articles: IArticle[]
   category: ICategory[],
@@ -46,7 +47,7 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength }) => {
               <List.Item>
                 <Link href={`/article/${item.id}`}><a>
                   <div className="list-title">{item.title}</div>
-                  <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350).replaceAll('\n', '')) }}></div>
+                  <div className="list-content" dangerouslySetInnerHTML={{ __html: getValidText(item.content.substr(0, 350))}}></div>
                   <div className="list-keys">
                     <span className="item-date">{item.createTime.slice(0, 10)}</span>
                     <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
