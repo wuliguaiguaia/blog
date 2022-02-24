@@ -42,3 +42,5 @@ export const getValidText = (str:string) => {
   text = text.replace(/<[^>]+>/g, '').replaceAll('\n', '')
   return text
 }
+
+export const isBrowser = typeof window !== 'undefined'

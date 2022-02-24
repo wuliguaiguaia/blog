@@ -1,3 +1,4 @@
+import { wsSend } from './../plugins/ws'
 import { IComment, IMessage } from './../interface/index'
 import $http from '.'
 
@@ -51,6 +52,7 @@ export const getArticle = async (params: { id: string | string[] | undefined }) 
  */
 export const postMessage = async (body: IMessage) => {
   const { data } = await $http.postmessage(body)
+  wsSend({ type: 'message', id: data.id })
   return data
 }
 
@@ -59,11 +61,12 @@ export const postMessage = async (body: IMessage) => {
  */
 export const postComment = async (body: IComment) => {
   const { data } = await $http.postcomment(body)
+  wsSend({ type: 'comment', id: data.id })
   return data
 }
 
 /**
- * 发表评论
+ * 获取评论
  */
 export const getCommentList = async (articleId: number) => {
   const { data } = await $http.getcommentlist({articleId})

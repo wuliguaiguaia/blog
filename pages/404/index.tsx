@@ -16,7 +16,7 @@ const NotFound = () => {
   const callback = () => {
     message.success('感谢您的反馈，即将为你跳转到首页~')
     setTimeout(() => {
-      router.push('/')
+      // router.push('/')
     }, 2000)
   }
 
