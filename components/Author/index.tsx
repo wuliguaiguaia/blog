@@ -1,4 +1,3 @@
-import { Divider, Avatar, Statistic, Row, Col, Popover, Tooltip  } from 'antd'
 import {
   WechatOutlined,
   ZhihuOutlined,
@@ -12,10 +11,9 @@ import avatar from 'assets/images/avator.jpg'
 import vx from 'assets/images/vx.png'
 import useSWR from 'swr'
 import { get } from 'common/api/api'
-interface IProps {
-  articlesLength: number
-}
-const Author: FunctionComponent<IProps> = () => {
+import { Avatar, Statistic, Row, Col, Popover, Tooltip } from 'antd'
+
+const Author: FunctionComponent = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json())
   const { data, error } = useSWR(get.getcount, fetcher)
   if (error) return <div>failed to load</div>
@@ -23,7 +21,7 @@ const Author: FunctionComponent<IProps> = () => {
   return (
     <div className={cns([styles['author-wrapper'], 'card'])}>
       <div className='jus-center'>
-        <Avatar shape="circle" size={130} src={avatar.src}/>
+        <Avatar shape="circle" size={130} src={avatar.src} />
       </div>
       <Row gutter={15} className={styles.data}>
         <Col span={12}>

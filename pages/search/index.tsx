@@ -8,6 +8,7 @@ import marked from '../../common/plugins/marked'
 import Link from 'next/link'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 import { getArticleListFromSearch } from 'common/api/utils'
+import { formatDate } from 'common/utils'
 
 type SearchArticle = {
     _source: IArticle,
@@ -67,7 +68,7 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
                 <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
                 <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
                 <div className='list-keys'>
-                  <span className={styles['item-date']}>{item._source.createTime.slice(0, 10)}</span>
+                  <span className={styles['item-date']}>{formatDate(+item._source.createTime).slice(0, 9)}</span>
                   {
                     item._source.categories.map(({ id, name }) => {
                       return <span className={styles['item-cates']} key={id}>

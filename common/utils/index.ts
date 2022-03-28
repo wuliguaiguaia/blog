@@ -7,6 +7,7 @@ export enum DateType {
   line
 }
 
+export const formatDate = (timstamp: number) => new Date(timstamp).toLocaleString()
 
 /* 
   节流函数：

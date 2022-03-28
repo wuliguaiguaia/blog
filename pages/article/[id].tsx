@@ -9,13 +9,14 @@ import styles from './index.module.scss'
 import cns from 'classnames'
 import { GetStaticProps, NextPage } from 'next'
 import { IArticle, NavList } from '../../common/interface'
-import { throttle } from '../../common/utils/index'
+import { formatDate, throttle } from '../../common/utils/index'
 import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
 import { getArticle, getArticleList } from 'common/api/utils'
 import { useRouter } from 'next/router'
+import { create } from 'domain'
 
 
 const marked = Marked()
@@ -36,11 +37,18 @@ const Article: NextPage<IProps> = (props) => {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
 
   const { article = {
-    content: '', title: '', viewCount: 0, updateTime: '', categories: [], id: 0
+    content: '', title: '', viewCount: 0, createTime: '', categories: [], id: 0
   } } = props
 
-  const { content, title, viewCount, updateTime, categories, id } = article
+  const { content, title, viewCount, createTime, categories, id } = article
   const category = categories?.[0]
+
+  const [time, setTime] = useState('')
+  useEffect(() => {
+    if(!createTime) return
+    const temp = new Date(+createTime).toLocaleDateString()
+    setTime(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1 年 $2 月 $3 日'))
+  }, [createTime])
 
   /* 生成导航 */
   useEffect(() => {
@@ -111,7 +119,7 @@ const Article: NextPage<IProps> = (props) => {
           <div className={cns(styles.article ,'card')}>
             <div className={styles['article-title']}>{title}</div>
             <div className={styles['article-keys']}>
-              <span className={styles['article-time']}>{updateTime.slice(0, 10).replace('-', ' 年 ').replace('-', ' 月 ') + ' 日 '}</span>
+              <span className={styles['article-time']}>{time}</span>
               <span><EyeOutlined /> {viewCount || 1230}</span>
             </div>
             <div className="article-keys">
@@ -126,7 +134,7 @@ const Article: NextPage<IProps> = (props) => {
           <Comment id={id}></Comment>
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
-          <Author articlesLength={0} />
+          <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
             <MarkdownNav data={navList} activeNav={activeNav} setActiveNav={setActiveNav}/>

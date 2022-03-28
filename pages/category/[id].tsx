@@ -11,6 +11,7 @@ import { EyeOutlined, MessageOutlined } from '@ant-design/icons'
 import marked from '../../common/plugins/marked'
 import { getArticleList, getCategory } from 'common/api/utils'
 import Link from 'next/link'
+import { formatDate } from 'common/utils'
 
 interface IProps {
   articles: IArticle[]
@@ -61,7 +62,7 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength, curCategor
                   <div className="list-title">{item.title}</div>
                   <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350).replaceAll('\n', '')) }}></div>
                   <div className="list-keys">
-                    <span className="item-date">{item.createTime.slice(0, 10)}</span>
+                    <span className="item-date">{item.createTime ? formatDate(+item.createTime).slice(0, 9) : ''}</span>
                     <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
                     <span><MessageOutlined /> {item.messages || 222}</span>
                   </div>
@@ -71,7 +72,7 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength, curCategor
           />
         </Col>
         <Col className="main-right" xs={0} sm={0} md={7} lg={6} xl={5} xxl={4}>
-          <Author articlesLength={articlesLength} />
+          <Author />
           <Category data={category} curCategoryId={curCategory.id}/>
         </Col>
       </Row>

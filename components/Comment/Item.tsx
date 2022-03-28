@@ -3,6 +3,7 @@ import { IComment, IMessage, IUser } from 'common/interface'
 import { FunctionComponent, useState, } from 'react'
 import cns from 'classnames'
 import CommentBox from 'components/CommentBox'
+import { formatDate } from 'common/utils'
 
 interface IProps {
   item: IComment,
@@ -70,7 +71,7 @@ const CommentItem: FunctionComponent<IProps> = ({
         }
       </>
     }
-    datetime={<span>{item.createTime?.slice(0, -5).replace('T', ' ')}</span>}
+    datetime={<span>{item.createTime ? formatDate(+item.createTime) : ''}</span>}
   >
     {
       showInput ?
