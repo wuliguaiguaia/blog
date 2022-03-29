@@ -8,15 +8,14 @@ import Head from '../../components/Head'
 import styles from './index.module.scss'
 import cns from 'classnames'
 import { GetStaticProps, NextPage } from 'next'
-import { IArticle, NavList } from '../../common/interface'
-import { formatDate, throttle } from '../../common/utils/index'
+import { IArticle, ICategory, NavList } from '../../common/interface'
+import { throttle } from '../../common/utils/index'
 import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
-import { getArticle, getArticleList } from 'common/api/utils'
+import { getArticle, getArticleList, getCategory } from 'common/api/utils'
 import { useRouter } from 'next/router'
-import { create } from 'domain'
 
 
 const marked = Marked()
@@ -41,7 +40,6 @@ const Article: NextPage<IProps> = (props) => {
   } } = props
 
   const { content, title, viewCount, createTime, categories, id } = article
-  const category = categories?.[0]
 
   const [time, setTime] = useState('')
   useEffect(() => {
@@ -112,9 +110,14 @@ const Article: NextPage<IProps> = (props) => {
             <Breadcrumb.Item>
               <Link href="/" passHref><a className={styles.link}>首页</a></Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link href={`/category/${category.id}`} passHref><a className={styles.link}>{category.name}</a></Link>
-            </Breadcrumb.Item>
+            {
+              categories.map((item) => {
+                const { id, name } = item as unknown as ICategory
+                return (<Breadcrumb.Item key={id}>
+                  <Link href={`/category/${id}`} passHref><a className={styles.link}>{name}</a></Link>
+                </Breadcrumb.Item>)
+              })
+            }
           </Breadcrumb>
           <div className={cns(styles.article ,'card')}>
             <div className={styles['article-title']}>{title}</div>
@@ -168,7 +171,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   return {
     props: {
-      article
+      article,
     }
   }
 }

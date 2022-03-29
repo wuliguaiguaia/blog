@@ -60,7 +60,7 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength, curCategor
               <List.Item>
                 <Link href={`/article/${item.id}`}><a>
                   <div className="list-title">{item.title}</div>
-                  <div className="list-content" dangerouslySetInnerHTML={{ __html: marked.parse(item.content.substr(0, 350).replaceAll('\n', '')) }}></div>
+                  <div className="list-content">{item.desc}</div>
                   <div className="list-keys">
                     <span className="item-date">{item.createTime ? formatDate(+item.createTime).slice(0, 9) : ''}</span>
                     <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>

@@ -3,11 +3,11 @@ import { useRouter } from 'next/dist/client/router'
 import { GetServerSideProps, NextPage } from 'next'
 import styles from './index.module.scss'
 import cns from 'classnames'
-import { IArticle } from '../../common/interface'
+import { IArticle, ICategory } from '../../common/interface'
 import marked from '../../common/plugins/marked'
 import Link from 'next/link'
 import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
-import { getArticleListFromSearch } from 'common/api/utils'
+import { getArticleListFromSearch, getCategory } from 'common/api/utils'
 import { formatDate } from 'common/utils'
 
 type SearchArticle = {
@@ -20,12 +20,13 @@ type SearchArticle = {
   }
 interface IProps {
   articles: SearchArticle[],
-  articlesLen: number
+  articlesLen: number,
+  categoryList: ICategory[]
 }
 
 const prepage = 10
 
-const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
+const Search: NextPage<IProps> = ({ articles, articlesLen, categoryList }) => {
   const router = useRouter()
   const {query: {q}} = router
 
@@ -66,11 +67,12 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
             <List.Item className={styles['content-wrapper']}>
               <Link href={`/article/${item._source.id}`}><a>
                 <div className={cns(['list-title'], styles.listTitle)} dangerouslySetInnerHTML={{ __html: item.highlight.title }}></div>
-                <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div>
+                {item.highlight.content ? <div className={cns(['list-content'], styles.listContent)} dangerouslySetInnerHTML={{ __html: marked.parse(item.highlight.content || '') }}></div> : null}
                 <div className='list-keys'>
                   <span className={styles['item-date']}>{formatDate(+item._source.createTime).slice(0, 9)}</span>
                   {
-                    item._source.categories.map(({ id, name }) => {
+                    item._source.categories.map((id: number) => {
+                      const name = categoryList.find(i => i.id === id)?.name
                       return <span className={styles['item-cates']} key={id}>
                         <Link href={`/category/${id}`}><a>{name}</a></Link>
                       </span>
@@ -88,11 +90,13 @@ const Search: NextPage<IProps> = ({ articles, articlesLen }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query: { q } } = context
+  const categoryList = await getCategory() /* TODO：改为 reducer */
   const [articles, articlesLen] = await getArticleListFromSearch({ page: 1, prepage: 10, words: q })
   return {
     props: {
       articles,
-      articlesLen
+      articlesLen,
+      categoryList
     }
   }
 }

@@ -8,12 +8,12 @@ export interface IArticle {
   id: number;
   title: string;
   content: string;
-  keywords: string;
   createTime: string;
   updateTime: string;
   viewCount: number;
-  categories: ICategory[],
+  categories: number[],
   messages?: number
+  desc: string
 }
 
 export interface NavList {
