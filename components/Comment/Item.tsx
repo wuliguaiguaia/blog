@@ -40,7 +40,7 @@ const CommentItem: FunctionComponent<IProps> = ({
     return <span className={styles.username}>
       {
         website ? 
-          <a href={website} target="_blank" rel="noreferrer">{username}</a> : {username}
+          <a href={website} target="_blank" rel="noreferrer">{username}</a> : username
       }
     </span>
   }

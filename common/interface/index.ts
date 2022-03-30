@@ -35,7 +35,6 @@ export interface IMessage extends IUser{
 }
 
 export interface IComment extends IMessage{
-  id?: number,
   articleId?: number
   replyId?: number
   replyToReplyId?: number

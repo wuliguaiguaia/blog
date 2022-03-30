@@ -66,7 +66,7 @@ export const postComment = async (body: IComment) => {
  * 发表评论
  */
 export const getCommentList = async (articleId: number) => {
-  const { data } = await $http.getcommentlist({articleId})
+  const { data } = await $http.getcommentlist({ articleId })
   return data
 }
 
