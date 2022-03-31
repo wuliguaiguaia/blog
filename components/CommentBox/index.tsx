@@ -69,7 +69,7 @@ const CommentBox: FunctionComponent<IProps> = ({
 
   const handleChange: ChangeEventHandler = (e) => {
     const target = e.target as HTMLInputElement
-    setFormData({ ...formData, content: target.value.trim() })
+    setFormData({ ...formData, content: target.value })
   }
 
   return <>

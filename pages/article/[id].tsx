@@ -14,7 +14,7 @@ import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
-import { getArticle, getArticleList, getCategory } from 'common/api/utils'
+import { getArticle, getArticleList } from 'common/api/utils'
 import { useRouter } from 'next/router'
 
 

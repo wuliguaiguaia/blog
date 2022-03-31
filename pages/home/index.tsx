@@ -9,7 +9,7 @@ import useInfiniteScroll from '../../common/hooks/useInfiniteScroll'
 import { EyeOutlined, MessageOutlined } from '@ant-design/icons'
 import { getArticleList, getCategory } from 'common/api/utils'
 import Link from 'next/link'
-import { formatDate, getValidText } from 'common/utils'
+import { formatDate } from 'common/utils'
 
 interface IProps {
   articles: IArticle[]
