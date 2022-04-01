@@ -5,7 +5,7 @@ import $http from '.'
  * 获取分类
  */
 export const getCategory = async () => {
-  const response = await $http.getcategorylist()
+  const response = await $http.getcategorylist({published: 1})
   const { data: { list } } = response
   return list
 }
@@ -23,7 +23,7 @@ export const getArticleList = async (
   other = {}
 ) => {
   params = { ...params, ...other }
-  const response = await $http.getarticlelist(params)
+  const response = await $http.getarticlelist({ ...params, published: 1 })
   const { data: { list, total } } = response
   return [list, total]
 }
@@ -33,7 +33,7 @@ export const getArticleList = async (
  */
 export const getArticleListFromSearch = async (params: { page: number; prepage: number; words: string | string[] | undefined }, other = {}) => {
   params = { ...params, ...other }
-  const response = await $http.search(params)
+  const response = await $http.search({ ...params, published: 1 })
   const { data: { list, total } } = response
   return [list, total]
 }
@@ -42,7 +42,7 @@ export const getArticleListFromSearch = async (params: { page: number; prepage: 
  * 获取文章详情
  */
 export const getArticle = async (params: { id: string | string[] | undefined }) => {
-  const { data } = await $http.getarticle(params)
+  const { data } = await $http.getarticle({ ...params, published: 1 })
   return data
 }
 
@@ -63,7 +63,7 @@ export const postComment = async (body: IComment) => {
 }
 
 /**
- * 发表评论
+ * 获取评论
  */
 export const getCommentList = async (articleId: number) => {
   const { data } = await $http.getcommentlist({ articleId })
