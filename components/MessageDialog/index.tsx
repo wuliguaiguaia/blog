@@ -73,7 +73,7 @@ const MessageDialog: FunctionComponent<IProps> = ({
   >
     <div className={styles.row}>
       <span className={styles.title}><span className="red">*</span>昵称：</span>
-      <Input maxLength={20} data-field="username" onChange={onChange} value={formData.username}/>
+      <Input maxLength={20} data-field="username" onChange={onChange} value={formData.username} placeholder="求求起个能叫得上来的名字~"/>
     </div>
     <div className={styles.row}>
       <span className={styles.title}><span className="red">*</span>邮箱：</span>
