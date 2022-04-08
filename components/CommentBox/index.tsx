@@ -76,7 +76,7 @@ const CommentBox: FunctionComponent<IProps> = ({
     <div className={styles.inputWrapper}>
       <TextArea
         className={styles.input}
-        placeholder="给咱也整点评论吧~"
+        placeholder="给咱也整两句吧~"
         autoSize={{ minRows: 2, maxRows: 6 }}
         value={formData.content}
         onChange={handleChange}
