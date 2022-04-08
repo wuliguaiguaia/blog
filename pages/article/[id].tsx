@@ -164,6 +164,7 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
   const id = context.params?.id
   const article = await getArticle({ id })
+  console.log(id, '数据拉取')
   if (!article) {
     return {
       notFound: true,
@@ -172,7 +173,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       article,
-    }
+    },
   }
 }
 

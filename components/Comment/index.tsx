@@ -42,7 +42,7 @@ const Comment: FunctionComponent<IProps> = ({ id }) => {
   }, [id])
 
   const callback = () => {
-    message.success('发表成功')
+    message.success('发表成功,正在审核中...')
     fetchData()
     setShowInput(null)
   }

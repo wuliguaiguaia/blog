@@ -77,11 +77,11 @@ const MessageDialog: FunctionComponent<IProps> = ({
     </div>
     <div className={styles.row}>
       <span className={styles.title}><span className="red">*</span>邮箱：</span>
-      <Input value={formData.email} data-field="email" onChange={onChange}/>
+      <Input value={formData.email} data-field="email" onChange={onChange} placeholder="绝不会泄漏，仅用于必要时联系您~"/>
     </div>
     <div className={styles.row}>
       <span className={styles.title}>&nbsp; 网站：</span>
-      <Input value={formData.website} data-field="website" onChange={onChange}/>
+      <Input value={formData.website} data-field="website" onChange={onChange} placeholder="填入后点击您的昵称将会跳转至您的网站，请礼貌填写~"/>
     </div>
     {
       showTipText ? <div className={styles.tip}>
