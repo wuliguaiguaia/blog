@@ -1323,13 +1323,10 @@ export class SessionStrategy extends PassportStrategy(
 
 在写的过程中还有一些的疑问得记录下：
 
-1 passport 是怎么拿到session然后从redis获取用户信息附加到request对象上的，这个环节蛮重要但是代码里看不到哎
-
-2 nest 用的是 express 中间件，为啥行为就不一致呢
-
-3 啊对，洋葱模型怎么实现的
-
-4 cls-hooked 是如何实现的
+1. passport 是怎么拿到session然后从redis获取用户信息附加到request对象上的，这个环节蛮重要但是代码里看不到哎
+2. nest 用的是 express 中间件，为啥行为就不一致呢
+3. 啊对，洋葱模型怎么实现的
+4. cls-hooked 是如何实现的
 
 ## 附录
 
