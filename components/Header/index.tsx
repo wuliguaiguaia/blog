@@ -46,8 +46,8 @@ const Header: FunctionComponent<IProps> = function ({loadingStatus}) {
               height={18}
             />
           </div>
-          <Link href="/" passHref><a className={styles.link}>小橘子</a></Link>
-          <span className={styles.descrtion}>哈密瓜花蜜瓜</span>
+          <Link href="/" passHref><a className={styles.link}>寒冬里一</a></Link>
+          <span className={styles.desc}>生命如尘，岁月如歌。</span>
         </Col>
         <Col xs={10} sm={10} md={10} lg={6} xl={6} >
           <ZInput placeholder="搜索如：我的第一篇" value={searchValue} handleChange= {handleValueChange} handleEnter={handleSearch}></ZInput>
