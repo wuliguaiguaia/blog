@@ -49,7 +49,7 @@ const MyApp = function ({ Component, pageProps }: AppProps) {
   }, [Router.events])
 
   return <div>
-    <Head title={'寒冬里一1'} />
+    <Head title={'寒冬里一'} />
     <Header loadingStatus={loadingStatus}/>
     <LoadingBar status={loadingStatus}/>
     <Component {...pageProps} loadingStatus={loadingStatus} />
