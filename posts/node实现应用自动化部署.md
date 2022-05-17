@@ -1,22 +1,22 @@
-## 背景
+## 前言
 
 前端开发者通常面临着较长的打包时间，每次代码修改都得走一次测试， 构建，部署，步骤虽不复杂但很繁琐，如果这一流程可以实现实现自动化，将大大提升工作效率，目前市面上也有很多实现方式，如 Jenkins，Travis，github actions，github webhook 等，不仅是前端项目，任意项目都可以进行自动化。
 
-后面会简单介绍下CI/CD，以及涉及到几个自动化工具，使用webhook实现自动化部署可直接跳到 <a href="#webhook 实现">webhook 实现</a>
+后面会简单介绍下CI/CD及几个自动化工具，并详细介绍webhook的使用和node脚本的实现，github actions yml 文件的编写。
 
 ### CI/CD
 
-关于自动化常会听到 CI/CD 的用词，CI（Continuous Integration）持续集成，CD（Continuous Delivery）持续交付，有时也指持续部署（Continuous Deployment），他们三个的区别借鉴网络上的一张图表示：
+关于自动化常会听到 CI/CD 的用词，CI（Continuous Integration）持续集成，CD（Continuous Delivery）持续交付，有时也指持续部署（Continuous Deployment），它们三个的区别借鉴网络上的一张图表示：
 
-tu
+<img src="https://orangesolo.cn/assets/image/51864e4d7c616dc3201625a85196b228.png" alt="" class="md-img" loading="lazy" width="627" height="138"/>
 
 三种不同的自动化：
 
-1. 监测到开发者将代码合并后到主分支时，触发自动化测试，如果有一个测试用例失败就不能合并成功，持续集成可以理解持续的将质量合格的代码集成到主分支，解决太多的分支相互冲突或者某分支大幅偏离主干的问题，目的都在于提前发现错误。
+1. 当监测到开发者将代码合并后到主分支时，触发自动化测试，如果有一个测试用例失败就不能合并成功，持续集成可以理解为持续的将质量合格的代码集成到主分支，解决太多的分支相互冲突或者某分支大幅偏离主干的问题，目的在于提前发现错误。
 
-2. 自动化测试通过的代码可以交给质量团队，以供评审/验证，如果验证有问题就需要修改重新走上一步骤，持续交付是持续集成的下一步，强调软件随时随时都是可交付的
+2. 自动化测试通过的代码可以交给质量团队，以供评审/验证，如果验证有问题就需要修改重新走上一步骤，持续交付是持续集成的下一步，强调软件随时随时都是可交付的。
 
-3. 代码经过相关人员验证后，可以部署到生产环境了，持续部署指自动的将代码部署到生产环境，
+3. 代码经过相关人员验证后，可以部署到生产环境了，持续部署指自动的将代码部署到生产环境，提升运维效率。
 
 CI/CD 既可能仅指持续集成和持续交付构成的关联环节，也可以指持续集成、持续交付和持续部署这三项构成的关联环节。有时“持续交付”也包含了持续部署流程。归根结底，我们没必要纠结于这些语义，只需记得 CI/CD 其实就是一个流程，用于实现应用开发中的高度持续自动化和持续监控。
 
@@ -36,7 +36,7 @@ Travis 也提供持续集成服务，它绑定 Github 上面的项目，只要�
 
 ### github webhook
 
-webhook 可以实现当开发者进行指定操作时，向指定服务器发送 http 请求，这意味着我们可以在接受请求后做任何事情。相较于Jenkins、Travis、github的actions，webhook显然灵活度更高。
+webhook 可以实现当开发者进行指定操作时，向指定服务器发送 http 请求，这意味着我们可以在接受请求后做任何事情。相较于Jenkins、Travis、github的actions，webhook灵活度更高。
 
 ## webhook 使用
 
@@ -44,7 +44,7 @@ webhook 可以实现当开发者进行指定操作时，向指定服务器发送
 
 使用 webhook 必须进行配置，在 setting/webhooks，一个项目可配置多个 webhook
 
-tu
+<img src="https://orangesolo.cn/assets/image/5e763900ab8865821e81396af827a7bf.png" alt="" class="md-img" loading="lazy" width="627" height="774"/>
 
 ### 请求详情
 
@@ -71,14 +71,14 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
 
 ```json
 {
-  "ref": "refs/heads/test-actions", // 当前分支
+  "ref": "refs/heads/master", // 当前分支
   "before": "0000000000000000000000000000000000000000", // 前一次commit id
   "after": "73abb7a9d75f911cc42945dd1af50227d1833952", // 本次commit id
   "repository": { // 该仓库的一些细节
     "id": 111,
     "node_id": "SSSS",
-    "name": "blog-admin", // 仓库名
-    "full_name": "wuliguaiguaia/blog-admin",
+    "name": "blog", // 仓库名
+    "full_name": "wuliguaiguaia/blog",
     "private": false,
     "owner": { // 仓库所有者信息
       "name": "wuliguaiguaia",
@@ -88,10 +88,10 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
       "node_id": "SSSS",
       ... 各种url，比如头像...
     },
-    "html_url": "https://github.com/wuliguaiguaia/blog-admin",
+    "html_url": "https://github.com/wuliguaiguaia/blog",
     "description": null,
     "fork": false,
-    "url": "https://github.com/wuliguaiguaia/blog-admin",
+    "url": "https://github.com/wuliguaiguaia/blog",
     ... 各种url
     "created_at": 1638854235,
     "updated_at": "2022-01-06T11:34:05Z",
@@ -128,7 +128,7 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
   },
   "pusher": { // 进行push事件的用户
     "name": "wuliguaiguaia",
-    "email": "1944063509@qq.com"
+    "email": "1111111111@qq.com"
   },
   "sender": { // 进行此次事件的用户详情，这里还是自己 
     "login": "wuliguaiguaia",
@@ -142,7 +142,7 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
   "deleted": false,
   "forced": false,
   "base_ref": "refs/heads/master", // 该仓库主分支
-  "compare": "https://github.com/wuliguaiguaia/blog-admin/compare/test-actions",
+  "compare": "https://github.com/wuliguaiguaia/blog/compare/master",
   "commits": [
 
   ],
@@ -152,7 +152,7 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
     "distinct": true,
     "message": "test", // commit 信息
     "timestamp": "2022-05-09T18:45:42+08:00",
-    "url": "https://github.com/wuliguaiguaia/blog-admin/commit/73abb7a9d75f911cc42945dd1af50227d1833952",
+    "url": "https://github.com/wuliguaiguaia/blog/commit/73abb7a9d75f911cc42945dd1af50227d1833952",
     "author": {
       "name": "",// git用户名
       "email": "",// git用户邮箱
@@ -176,7 +176,7 @@ X-Hub-Signature-256: sha256=fdsafasdfafasdfa423412dsfafasft3453fsa # 使用 sha2
 }
 ```
 
-主要分为三种：该仓库的详细信息，仓库owner的详细信息，本次commit相关的详细信息。
+主要分为三种：该仓库的详细信息，仓库owner的详细信息，本次commit相关的详细信息，开始时按需使用。
 
 ### 处理请求
 
@@ -213,11 +213,9 @@ function result2String(str, errNo) {
 
 #### 2 部署细节
 
-项目部署时会涉及到 拉取代码、安装依赖、测试、构建、没问题的话就将打包后的代码放到服务器上，后端项目需要启动服务。这里涉及到有git操作，npm操作，文件夹操作等，一般是放在终端进行的，现在这些命令都需要在 node 上执行。
+项目部署时会涉及到 拉取代码、安装依赖、测试、构建、没问题的话就将打包后的代码放到服务器上，后端项目需要启动服务。这里涉及到有git操作，npm操作，文件夹操作等，一般是放在终端进行的，现在这些命令都需要在 node 执行。
 
-node 提供了 child_process 模块，可以创建一个子进程，也即是说使用 node 命令创建一个进程后，我们可以使用 child_process 模块提供的方法创建多个子进程来运行其他命令
-
-child_process 提供四个方法：
+node 提供了 child_process 模块，可以创建一个子进程，它提供四个方法：
 
 1. spawn(), 启动一个子进程运行命令
 2. exec()，启动一个子进程运行命令，和 spawn() 不同的是，它有一个回调可以知道子进程的状况
@@ -238,9 +236,7 @@ cp.exec('npm install', (err, stdout, stderr) => {})
 cp.execFile(path.join(__dirname, 'install.sh'), (err, stdout, stderr) => {})
 ```
 
-尽管有四种创建子进程的方法，但实际后三种都是spawn的封装，具有很多更加底层的属性可供使用，因此首选还是它。
-
-因为我们可能有多条命令，因此直接都写到一个shell文件里
+尽管有四种创建子进程的方法，但实际后三种都是spawn的封装，具有很多更加底层的属性可供使用，因此首选还是它。在部署项目时，我们可能有多条命令，因此直接都写到一个shell文件里
 
 以一个前端项目为例：(sh/blog-admin.sh)
 
@@ -314,19 +310,22 @@ req.on('end', () => {
   ... 执行shell
 }
 
-function sign(buffer, secret) {
-  const body = buffer.toString();
+function sign(payload, secret) {
+  const crypto = require('crypto')
+  const body = JSON.stringify(payload)
   // 对比的是 x-hub-signature，所以必须是sha1算法
-  const hmac = crypto.createHmac('sha1', secret);
-  // github 加密的是请求体，这里同样
-  const up = hmac.update(body);
+  const hmac = crypto.createHmac('sha1', secret)
+  // github 加密的数据体，这里同样
+  const up = hmac.update(body)
   // 使用 digest 方法生成加密内容(必须是hex格式)
-  const signature = up.digest('hex');
-  return signature;
+  const signature = up.digest('hex')
+  return signature
 };
 ```
 
 #### 4 增加条件控制
+
+比如只支持配置了shell的项目才可自动化，只支持一个统一的分支，比如master，只支持push事件，虽然前面已经配置了仅在push时发送，但接口是可扩展的，webhook可能也会有修改，事先加上为好。
 
 ```js
 req.on('end', () => {
@@ -354,9 +353,9 @@ req.on('end', () => {
 
 #### 5 人为控制与超时处理
 
-当前只支持github自动发起请求，如果有时候需要人为的触发某项目的重新构建及部署，比如服务端渲染的项目，页面的数据在打包的那一刻已经填充进去了，如果数据发生变化，按现在的情况只能触发一次无用的push才能重新打包构建。
+当前只支持github自动发起请求，如果有时候需要人为的触发某项目的重新构建及部署，比如服务端渲染的项目，页面的数据在打包的那一刻已经填充进去了，如果数据发生变化，按现在的情况只能进行一次无用的push才能触发重新打包部署。
 
-这里扩展出 /webhook/manual 请求，并构造类似于 github 发出的请求体，可以**在另一个项目点击按钮发出**。
+这里扩展出 /webhook/manual 请求，可以**在另一个项目点击按钮发出**。
 
 ```js
 const secret = process.env.WEBHOOK_SECRET
@@ -398,16 +397,19 @@ const comparePass = (originPass, pass) => {
 };
 ```
 
-需要注意的是，前端axios请求通常有超时时间，我们刚刚增加了 timeout，此外还有nginx
+还需要进行 nginx 超时配置，一般部署的时间会有好几分钟
 
-
-
+```text
+location ^~/webhook/ {
+  proxy_read_timeout 600s; 页面等待服务器响应时间
+}
+```
 
 #### 6 进程杀死
 
 如果连续触发了两次部署，则需要杀死前一个，否则两个进程同时开始部署会有冲突，但是函数在执行时无法在外部中断，所以采用创建子进程，请求的处理细节在子进程中执行，一旦发现有重复部署的项目，就杀死正在运行的，重新创建进程。
 
-前面说过node创建子进程有四种方式，这里选择 fork，因为fork会在父进程与子进程之间，建立一个通信管道，用于进程之间的通信，我们在获取到请求 payload 的时候需要将其传给子进程，在子进程运行完成后需要将结果发送给主进程。
+前面说过node创建子进程有四种方式，这里选择 fork，因为fork会在父进程与子进程之间建立一个通信管道，用于进程之间的通信，我们在获取到请求 payload 的时候需要将其传给子进程，在子进程运行完成后需要将结果发送给主进程。
 
 ```js
 const status = {} // 保存项目对应的子进程与res的引用
@@ -469,7 +471,7 @@ function killWorker(name) {
 }
 ```
 
-在子进程中接收：
+在子进程中接收并执行：
 
 ```js
 process.on('message', async (m) => {
@@ -478,14 +480,14 @@ process.on('message', async (m) => {
   switch (action) {
     case 'load': 
       // 条件校验与权限判断
-      const errorString = await conditionJudge(payload, headers, isManual) 
-        || await authJudge(payload, headers, isManual, name)
+      const errorString = conditionJudge(payload, headers, isManual) 
+        || authJudge(payload, headers, isManual, name)
       if (errorString) {
         return process.send({ action: 'end', payload: errorString}) // 向主进程发送数据
       }
       // 执行脚本
       await executeScript(name)
-      const result = await result2String('success', 0, name)
+      const result = result2String('success', 0, name)
       return process.send({ action: 'end', payload: result }) // 向主进程发送数据
     case 'exit':
       process.exit()
@@ -559,20 +561,20 @@ logger.error('blog', '邮件发送失败')
 
 就可以在 blog.log 下查看
 
-tu
+<img src="https://orangesolo.cn/assets/image/f36ceb2ee4ae275c56e2df5e892a82af.png" alt="" class="md-img" loading="lazy" width="567" height="59"/>
 
 当然目前的日志还是有一些优化空间大的，比如按时间和大小拆分，定时删除等，先跑上去再说。
 
 ##### 邮件通知
 
-至此所有的部署结果都只能在服务器查看，成功与失败我们只能在日志里看，或者直接访问，还是太麻烦了，这里选择qq邮件通知
+至此所有的部署结果都只能在服务器查看，成功与失败我们只能在服务器的日志里看，或者直接访问，还是太麻烦了，这里选择qq邮件通知
 
 ```js
 const nodemailer = require('nodemailer')
 const prefix = '[orange部署]'
 
 const options = {
-  from: `${prefix}<${process.env.EMAIL}>`, // 比如 111111@qq.com
+  from: `${prefix}<${process.env.EMAIL}>`, // 如 <[orange部署]>111111@qq.com
   to: process.env.EMAIL, // 自己发自己
 }
 
@@ -581,7 +583,7 @@ const mailTransport = nodemailer.createTransport({
   secure: true,
   auth: { // 授权
     user: process.env.EMAIL,
-    // 需要进入邮箱设置启用 SMTP后获取（设置->服务->开启服务）
+    // 需要进入邮箱设置启用 SMTP 后获取（设置->服务->开启服务）
     pass: process.env.EMAIL_TOKEN 
   }
 })
@@ -620,11 +622,11 @@ sendMail('blog', '启动部署')
 
 就会收到一条如下邮件：
 
-tu
+<img src="https://orangesolo.cn/assets/image/4b8ef3889b9f14839e9a594334dfc470.png" alt="" class="md-img" loading="lazy" width="375" height="345"/>
 
 #### 完整代码
 
-[github 地址](https://github.com/wuliguaiguaia/webhook)
+[github 地址](https://github.com/wuliguaiguaia/webhook)，会有些许改动
 
 ## github actions 实现
 
@@ -688,23 +690,30 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
           pm2 start process.json
 ```
 
-当前只有一个job，job 里有添加了四个step，执行共分为8个步骤，可在项目的workflow里查看执行细节，
+当前只有一个job，job 里有添加了四个step，执行共分为8个步骤，可在项目的workflow里查看，
 
-tu
+<img src="https://orangesolo.cn/assets/image/6cd298a03138f202f694874b39a31cc8.png" alt="" class="md-img" loading="lazy" width="577" height="378"/ >
 
-对于其他项目，webhook 纯手动实现确实需要一些 node 基础，所以都可以尝试使用一下 github actions，和前面使用webhook的项目一样，使用actions的项目部署如果失败也会有邮件通知，这个是 github 自动发的，将它们一起归组：
+对于其他项目，webhook 纯手动实现确实需要一些 node 基础，所以都可以尝试使用一下 github actions，和前面使用webhook的项目一样，使用actions的项目部署如果失败或取消也会有邮件通知，这个是 github 自动发的，将它们一起归组：
 
-tu
+<img src="https://orangesolo.cn/assets/image/d775b81a9cb779ff9371fd963f49615b.png" alt="" class="md-img" loading="lazy" width="577" height="301"/>
 
 如此，相对重要的项目部署情况也都会有及时的反馈。
 
 ## 总结
 
-优缺点
+本文通过借助github提供的webhook和actions实现了应用的自动化部署，着重介绍了node脚本的实现，包括权限校验、创建子进程运行部署细节、增加了人为控制、封装日志等，每个项目的部署细节可在对应的日志文件里查看，邮件通知可及时获取部署结果，必要的时候可一键部署。当然也存在一些问题，比如日志文件过大，可优化进行拆分与定时删除；邮件通知的结果会影响最终响应输出，对于非必要的部署任务，最好还是异步进行，因为想在杀死进程前把邮件发出去，进行了 await，所以邮件发送的时间在整个部署时间范围内，如果失败了也会导致响应有问题，慢慢优化吧。。
 
-webhook 不足
+相比较， github actions 就很简单，可能也没涉及到复杂的操作，如果部署重复了，可选择取消上次workflow，部署的细节都可以查看，但还是前面所说的，webhook发请求的方式相对灵活，有很大扩展空间，当然webhook也不是完美的，比如你如果不自己加日志的话可能就不知道本次到底是成功还是失败了，因为它有时不会准确的获取到响应结果。。。
 
-cicd总结
+<img src="https://orangesolo.cn/assets/image/27baf61f690a2dccbdc89e396e88d29c.png" alt="" class="md-img" loading="lazy" width="559" height="283"/>
+
+正常是这样的：
+
+<img src="https://orangesolo.cn/assets/image/449ecf6868fccc71acffaf215b15be75.png" alt="" class="md-img" loading="lazy" width="559" height="352"/>
+ 
+（这两天几乎都是 timeout...，几乎都没有见过正常的Response 200了 ）
+
 
 ## 附录
 

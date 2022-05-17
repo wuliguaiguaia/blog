@@ -50,7 +50,7 @@ const Header: FunctionComponent<IProps> = function ({loadingStatus}) {
           <span className={styles.desc}>生命如尘，岁月如歌。</span>
         </Col>
         <Col xs={10} sm={10} md={10} lg={6} xl={6} >
-          <ZInput placeholder="搜索如：我的第一篇" value={searchValue} handleChange= {handleValueChange} handleEnter={handleSearch}></ZInput>
+          <ZInput placeholder="搜索如：模块" value={searchValue} handleChange= {handleValueChange} handleEnter={handleSearch}></ZInput>
         </Col>
       </Row>
     </div>
