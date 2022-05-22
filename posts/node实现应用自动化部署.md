@@ -333,7 +333,9 @@ req.on('end', () => {
   const payload = JSON.parse(buffers);
   const { name } = payload.repository;
   console.log('^^^项目名', name);
-  const allSh = fs.readdirSync('./sh').map(item => item.slice(0, -3)); // shell文件名为项目名
+  const allSh = fs.readdirSync(path.join(__dirname, './sh')).map(item => {
+    return path.basename(item, path.extname(item)) // 获取不带后缀的文件名
+  })
   if (!allSh.includes(name)) { // 如果不包含该项目
     return res.end(result2String('该项目不支持自动化', 2));
   }

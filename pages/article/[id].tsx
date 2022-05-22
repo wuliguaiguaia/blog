@@ -36,17 +36,23 @@ const Article: NextPage<IProps> = (props) => {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
 
   const { article = {
-    content: '', title: '', viewCount: 0, createTime: '', categories: [], id: 0
+    content: '', title: '', viewCount: 0, createTime: '', updateTime: '', categories: [], id: 0
   } } = props
 
-  const { content, title, viewCount, createTime, categories, id } = article
+  const { content, title, viewCount, createTime, updateTime, categories, id } = article
 
   const [time, setTime] = useState('')
+  const [time2, setTime2] = useState('')
   useEffect(() => {
-    if(!createTime) return
-    const temp = new Date(+createTime).toLocaleDateString()
-    setTime(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1 年 $2 月 $3 日'))
-  }, [createTime])
+    if (createTime) {
+      const temp = new Date(+createTime).toLocaleDateString()
+      setTime(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1 年 $2 月 $3 日'))
+    }
+    if (updateTime) {
+      const temp = new Date(+updateTime).toLocaleDateString()
+      setTime2(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3'))
+    }
+  }, [createTime, updateTime])
 
   /* 生成导航 */
   useEffect(() => {
@@ -133,6 +139,8 @@ const Article: NextPage<IProps> = (props) => {
               <span>{article.keywords}</span>
               <span>{article.viewCount}</span>
             </div> */}
+            <div className={styles['divide-line']}></div>
+            <div className={styles['update-time']}>最后修改于 <span>{time2}</span></div>
           </div>
           <Comment id={id}></Comment>
         </Col>
