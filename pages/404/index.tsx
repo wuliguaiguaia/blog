@@ -25,7 +25,9 @@ const NotFound = () => {
     <div className={styles.right}>
       <p>啊哦，您访问的页面不存在 T_T</p>
       <p>您可以向我提点建议：</p>
-      <CommentBox addMessage={addMessage} callback={callback}></CommentBox>
+      <div className={styles.boxWrapper}>
+        <CommentBox addMessage={addMessage} callback={callback}></CommentBox>
+      </div>
       <p>或者去<Link href="/"><a>首页</a></Link>发现更多美好的事情 :D</p>
     </div>
   </div>
