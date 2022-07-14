@@ -34,17 +34,23 @@
     list-style: decimal;
   }
 
-  /* 表格 */
-  table {
-    margin: 0 0 1em 0;
-    min-width: 80%;
-
-    th,
-    td {
-      border: 1px solid #d9d9d9;
-      padding: 4px 8px;
+    /* 表格 */
+    table {
+      margin: 0 0 1em;
+      min-width: 50%;
+      width: fit-content;
+  
+      th,
+      td {
+        padding: 4px 8px;
+        border: 1px solid #d9d9d9;
+      }
+  
+      th {
+        background: #f2f2f2;
+        text-align: left;
+      }
     }
-  }
 
   /* 引用 */
   blockquote {
