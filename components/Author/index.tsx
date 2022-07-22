@@ -40,11 +40,11 @@ const Author: FunctionComponent = () => {
           <Avatar className={styles.icon} icon={<WechatOutlined />} />
         </Popover>
         <Tooltip
-          title={<a href="https://www.zhihu.com/people/da-da-da-xiao-jie-82" target="_blank" rel="noreferrer">知乎跳转</a>}
+          title={<a href="https://www.zhihu.com/people/da-da-da-xiao-jie-82/posts" target="_blank" rel="noreferrer">知乎跳转</a>}
           placement="bottom"
           color="#fff"
         >
-          <a href="https://www.zhihu.com/people/da-da-da-xiao-jie-82" target="_blank" rel="noreferrer">
+          <a href="https://www.zhihu.com/people/da-da-da-xiao-jie-82/posts" target="_blank" rel="noreferrer">
             <Avatar className={styles.icon} icon={<ZhihuOutlined />} />
           </a>
         </Tooltip>
