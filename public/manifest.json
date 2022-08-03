@@ -3,6 +3,7 @@
   "short_name": "orange's home",
   "display": "standalone",
   "background_color": "#fff",
+  "theme_color": "#fff",
   "description": "寒冬里一的私密空间",
   "orientation": "portrait",
   "scope": "/",
@@ -10,7 +11,7 @@
   "icons": [
     {
       "src": "./favicon.svg",
-      "sizes": "72x72 96x96 128x128 256x256"
+      "sizes": "72x72 96x96 128x128 256x256 512x512"
     }
   ]
 }
