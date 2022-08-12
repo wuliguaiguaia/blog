@@ -16,6 +16,7 @@ import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
 import { getArticle, getArticleList } from 'common/api/utils'
 import { useRouter } from 'next/router'
+import Mask from 'components/Mask'
 
 
 const marked = Marked()
@@ -104,6 +105,27 @@ const Article: NextPage<IProps> = (props) => {
     window.addEventListener('wheel', throttle(handleScroll, 0))
   }, [scrollEl])
 
+  // 图片放大
+  const [imgVisible, setImgVisible] = useState(false)
+  const [imgBigSrc, seImgBigSrc] = useState('')
+  useEffect(() => {
+    console.log(111)
+
+    // if (editWatchMode === EditWatchMode.edit) return () => {}
+    const clickFn = (e) => {
+      if (e.target.tagName !== 'IMG') return
+      console.log(e.target.src)
+
+      setImgVisible(true)
+      seImgBigSrc(e.target.src)
+    }
+    const el = document.getElementsByClassName('md-wrapper')[0]
+    el.addEventListener('click', clickFn)
+    return () => {
+      el.removeEventListener('click', clickFn)
+    }
+  }, [])
+
   if (router.isFallback) {
     return <div>Loading...</div>
   }
@@ -152,6 +174,18 @@ const Article: NextPage<IProps> = (props) => {
           </div>
         </Col>
       </Row>
+      <Mask
+        visible={imgVisible}
+        setVisible={setImgVisible}
+        content={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imgBigSrc}
+            alt="放大图片"
+            style={{ maxWidth: '90%', maxHeight: '80%' }}
+          />
+        }
+      />
     </>
   )
 }
