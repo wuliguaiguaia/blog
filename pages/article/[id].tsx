@@ -10,7 +10,7 @@ import cns from 'classnames'
 import { GetStaticProps, NextPage } from 'next'
 import { IArticle, ICategory, NavList } from '../../common/interface'
 import { throttle } from '../../common/utils/index'
-import { createRef, useEffect, useState } from 'react'
+import { createRef, MouseEvent, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
@@ -112,12 +112,11 @@ const Article: NextPage<IProps> = (props) => {
     console.log(111)
 
     // if (editWatchMode === EditWatchMode.edit) return () => {}
-    const clickFn = (e) => {
-      if (e.target.tagName !== 'IMG') return
-      console.log(e.target.src)
-
+    const clickFn = (e: Event) => {
+      const target = e.target as HTMLImageElement
+      if (target.tagName !== 'IMG') return
       setImgVisible(true)
-      seImgBigSrc(e.target.src)
+      seImgBigSrc(target.src)
     }
     const el = document.getElementsByClassName('md-wrapper')[0]
     el.addEventListener('click', clickFn)
