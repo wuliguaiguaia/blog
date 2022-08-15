@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { message } from 'antd'
 
+
+axios.defaults.withCredentials = true
 axios.interceptors.request.use((config) => {
   // loading start
   // loadingUtil.start()
