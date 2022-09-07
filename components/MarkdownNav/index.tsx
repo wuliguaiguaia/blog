@@ -21,6 +21,9 @@ const MarkdownNav: FunctionComponent<IProps> = ({ data = [], activeNav, setActiv
     if (!hash) return
     window.location.hash = hash
     setActiveNav(hash)
+    const el = document.getElementById(hash) as HTMLDivElement
+    const headerHeight = 40
+    window.scrollTo(0, el.offsetTop + headerHeight)
   }
   useEffect(() => {
     const { hash } = window.location

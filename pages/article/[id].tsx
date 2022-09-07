@@ -10,13 +10,14 @@ import cns from 'classnames'
 import { GetStaticProps, NextPage } from 'next'
 import { IArticle, ICategory, NavList } from '../../common/interface'
 import { throttle } from '../../common/utils/index'
-import { createRef, MouseEvent, useEffect, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import Comment from '../../components/Comment'
 import { EyeOutlined } from '@ant-design/icons'
 import { Marked, renderer } from '../../common/utils/marked'
 import { getArticle, getArticleList } from 'common/api/utils'
 import { useRouter } from 'next/router'
 import Mask from 'components/Mask'
+import { useImgLoad } from 'common/hooks/useImgLoad'
 
 
 const marked = Marked()
@@ -40,11 +41,14 @@ const Article: NextPage<IProps> = (props) => {
     content: '', title: '', viewCount: 0, createTime: '', updateTime: '', categories: [], id: 0
   } } = props
 
-  const { content, title, viewCount, createTime, updateTime, categories, id } = article
+  const { title, viewCount, createTime, updateTime, categories, id } = article
+  const [content, setContent] = useState(article.content)
+  const [imgLoaded] = useImgLoad(content)
 
   const [time, setTime] = useState('')
   const [time2, setTime2] = useState('')
   useEffect(() => {
+    if (!isFirstRender) return
     if (createTime) {
       const temp = new Date(+createTime).toLocaleDateString()
       setTime(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1 年 $2 月 $3 日'))
@@ -53,7 +57,11 @@ const Article: NextPage<IProps> = (props) => {
       const temp = new Date(+updateTime).toLocaleDateString()
       setTime2(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3'))
     }
-  }, [createTime, updateTime])
+    if (content) {
+      const contentChanged = content.replace(/(?<=<img.*)height="\d+"(?=.*\/>)/g, '')
+      setContent(contentChanged)
+    }
+  }, [createTime, updateTime, content, isFirstRender])
 
   /* 生成导航 */
   useEffect(() => {
@@ -61,7 +69,7 @@ const Article: NextPage<IProps> = (props) => {
     renderer.heading = (text: string, level: number) => {
       list.push({ text, level })
       setNavList(list)
-      const markerContents = renderToString(<div id={text} className={cns('_artilce-title', 'md-title', `md-title-${level}`)}><a href={`#${text}`}>{text}</a></div>)
+      const markerContents = renderToString(<div id={text} className={cns('_artilce-title', 'md-title', `md-title-${level}`)}>{text}</div>)
       return markerContents
     }
     setHtml(marked.parse(content))
@@ -109,9 +117,6 @@ const Article: NextPage<IProps> = (props) => {
   const [imgVisible, setImgVisible] = useState(false)
   const [imgBigSrc, seImgBigSrc] = useState('')
   useEffect(() => {
-    console.log(111)
-
-    // if (editWatchMode === EditWatchMode.edit) return () => {}
     const clickFn = (e: Event) => {
       const target = e.target as HTMLImageElement
       if (target.tagName !== 'IMG') return
@@ -169,7 +174,7 @@ const Article: NextPage<IProps> = (props) => {
           <Author />
           <div className={cns(styles['article-menu'], 'position-sticky', 'card')}>
             <Divider orientation="left">Directory</Divider>
-            <MarkdownNav data={navList} activeNav={activeNav} setActiveNav={setActiveNav}/>
+            {imgLoaded ? <MarkdownNav data={navList} activeNav={activeNav} setActiveNav={setActiveNav} /> : null}
           </div>
         </Col>
       </Row>
