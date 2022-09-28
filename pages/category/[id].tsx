@@ -62,8 +62,8 @@ const Home: NextPage<IProps> = ({ articles, category, articlesLength, curCategor
                   <div className="list-content">{item.desc}</div>
                   <div className="list-keys">
                     <span className="item-date">{item.createTime ? formatDate(+item.createTime).slice(0, 9) : ''}</span>
-                    <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
-                    <span><MessageOutlined /> {item.messages || 222}</span>
+                    {/* <span className="item-view"><EyeOutlined /> {item.viewCount || 1230}</span>
+                    <span><MessageOutlined /> {item.messages || 222}</span> */}
                   </div>
                 </a></Link>
               </List.Item>
