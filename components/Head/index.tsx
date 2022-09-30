@@ -15,6 +15,7 @@ const MyHead :FunctionComponent<IProps>= (props) => {
       <link rel="manifest" href={mainfest} />
       <link rel="apple-touch-icon" href={icon} />
       <meta charSet="UTF-8" />
+      <meta httpEquiv="Cache-Control" content="no-cache" />
       <meta name="theme-color" content="#fff"/>
       <meta name="author" content="Alias" />
       <meta name="keywords" content="HTML, CSS, JavaScript, Node, Next, Nest" />
