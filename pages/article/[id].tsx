@@ -155,7 +155,7 @@ const Article: NextPage<IProps> = (props) => {
             <div className={styles['article-title']}>{title}</div>
             <div className={styles['article-keys']}>
               <span className={styles['article-time']}>{time}</span>
-              <span><EyeOutlined /> {viewCount || 1230}</span>
+              {/* <span><EyeOutlined /> {viewCount || 1230}</span> */}
             </div>
             <div className="article-keys">
               <span>{/* {article.keywords} */}</span>

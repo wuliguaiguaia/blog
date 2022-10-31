@@ -77,7 +77,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      allPostsData: [],
       category: categoryList,
       articles,
       articlesLength,
