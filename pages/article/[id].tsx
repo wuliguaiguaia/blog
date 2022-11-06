@@ -113,15 +113,28 @@ const Article: NextPage<IProps> = (props) => {
     window.addEventListener('wheel', throttle(handleScroll, 0))
   }, [scrollEl])
 
-  // 图片放大
+  // 点击事件：图片放大、链接跳转
   const [imgVisible, setImgVisible] = useState(false)
   const [imgBigSrc, seImgBigSrc] = useState('')
   useEffect(() => {
     const clickFn = (e: Event) => {
-      const target = e.target as HTMLImageElement
-      if (target.tagName !== 'IMG') return
-      setImgVisible(true)
-      seImgBigSrc(target.src)
+      const target = e.target as HTMLElement
+      const tagName = target.tagName.toLowerCase()
+      let data: string | null
+      switch (tagName) {
+      case 'img':
+        data = target.getAttribute('src')
+        if (!data) break 
+        setImgVisible(true)
+        seImgBigSrc(data)
+        break
+      case 'a':
+        e.preventDefault()
+        data = target.getAttribute('href')
+        if (!data) break
+        window.open(data)
+        break
+      }
     }
     const el = document.getElementsByClassName('md-wrapper')[0]
     el.addEventListener('click', clickFn)
