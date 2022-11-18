@@ -58,7 +58,11 @@ const Article: NextPage<IProps> = (props) => {
       setTime2(temp.replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3'))
     }
     if (content) {
-      const contentChanged = content.replace(/(?<=<img.*)height="\d+"(?=.*\/>)/g, '')
+      // 删除图片的 height 属性
+      // Safari 不支持 ?<=
+      const contentChanged = content.replace(/<img .+(height="?\d+"?)[^>]+/g, (str, val) => {
+        return str.replace(val, '')
+      })
       setContent(contentChanged)
     }
   }, [createTime, updateTime, content, isFirstRender])
