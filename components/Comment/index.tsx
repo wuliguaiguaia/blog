@@ -1,11 +1,12 @@
 import { Divider, message } from 'antd'
-import { getCommentList, postComment } from 'common/api/utils'
+import { getCommentList } from 'common/api/utils'
 import { IComment, IMessage } from 'common/interface'
 import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import CommentItem from './Item'
 import CommentBox from 'components/CommentBox'
 import cns from 'classnames'
 import styles from './index.module.scss'
+import $http from 'common/api'
 interface IProps {
   id: number
 }
@@ -49,13 +50,13 @@ const Comment: FunctionComponent<IProps> = ({ id }) => {
 
   const postMessage = (data: IMessage) => {
     if (!showInput) {
-      return postComment({
+      return $http.postcomment({
         ...data,
         articleId: id
       })
     }
     const { id: commitId, replyId } = showInput
-    return postComment({
+    return $http.postcomment({
       ...data,
       articleId: id,
       replyId: replyId || commitId,

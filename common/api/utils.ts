@@ -1,4 +1,3 @@
-import { IComment, IMessage } from './../interface/index'
 import $http from '.'
 
 /**
@@ -43,22 +42,6 @@ export const getArticleListFromSearch = async (params: { page: number; prepage: 
  */
 export const getArticle = async (params: { id: string | string[] | undefined }) => {
   const { data } = await $http.getarticle({ ...params, published: 1 })
-  return data
-}
-
-/**
- * 发表建议
- */
-export const postMessage = async (body: IMessage) => {
-  const { data } = await $http.postmessage(body)
-  return data
-}
-
-/**
- * 发表评论
- */
-export const postComment = async (body: IComment) => {
-  const { data } = await $http.postcomment(body)
   return data
 }
 

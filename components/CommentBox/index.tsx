@@ -51,7 +51,7 @@ const CommentBox: FunctionComponent<IProps> = ({
     setConfirmLoading(true)
     const res: any = await addMessage(idata)
     setConfirmLoading(false)
-    if (res) {
+    if (!res.errNo) {
       setDialogVisible(false)
       const { username, email, website } = idata
       localStorage.set('user', { username, email, website })
@@ -63,7 +63,7 @@ const CommentBox: FunctionComponent<IProps> = ({
       })
       callback()
     } else {
-      message.error('反馈失败，请重试')
+      message.error(res.errStr)
     }
   }
 

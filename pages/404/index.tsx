@@ -4,14 +4,14 @@ import cns from 'classnames'
 import { message } from 'antd'
 import { IMessage } from 'common/interface'
 import { useRouter } from 'next/router'
-import { postMessage } from 'common/api/utils'
 import CommentBox from 'components/CommentBox'
+import $http from 'common/api'
 
 const NotFound = () => {
   const router = useRouter()
   /* 游戏？ */
   const addMessage = (data:IMessage) => {
-    return postMessage(data)
+    return $http.postmessage(data)
   }
   const callback = () => {
     message.success('感谢您的反馈，即将为你跳转到首页~')
