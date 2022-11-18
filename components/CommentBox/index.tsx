@@ -90,6 +90,7 @@ const CommentBox: FunctionComponent<IProps> = ({
       data={formData}
       handleConfirm={handleConfirm}
       confirmLoading={confirmLoading}
+      setConfirmLoading={setConfirmLoading}
     ></MessageDialog>
   </>
 }
