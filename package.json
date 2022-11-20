@@ -11,6 +11,7 @@
     "stylelint": "stylelint **/*.{css,less} --fix"
   },
   "dependencies": {
+    "@sentry/nextjs": "^7.20.0",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
     "classnames": "^2.2.6",

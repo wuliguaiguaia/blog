@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const isDev = process.env.NODE_ENV === 'development'
 
 const defaultConfig = {
@@ -25,20 +26,25 @@ module.exports = (function () {
       }
     }
   } else {
+    const { withSentryConfig } = require('@sentry/nextjs')
     const withPWA = require('next-pwa')
     const runtimeCaching = require('next-pwa/cache')
-
-    return withPWA({
+    return withSentryConfig(withPWA({
       ...defaultConfig,
       ... {
         env: {
           requestUrl: 'https://orangesolo.cn'
+        },
+        sentry: {
+          hideSourceMaps: true,
         },
         pwa: {
           dest: 'public',
           runtimeCaching,
         },
       },
+    }),{
+      silent: true, // Suppresses all logs
     })
   }
 })() 
