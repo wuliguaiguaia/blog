@@ -15,13 +15,17 @@ const defaultConfig = {
   ]
 }
 
-module.exports = (function () {
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig =  (function () {
   if (isDev) {
     return {
       ...defaultConfig,
       ... {
         env: {
           requestUrl: 'http://127.0.0.1:3009'
+          // requestUrl: 'https://orangesolo.cn'
         }
       }
     }
@@ -29,12 +33,12 @@ module.exports = (function () {
     const { withSentryConfig } = require('@sentry/nextjs')
     const withPWA = require('next-pwa')
     const runtimeCaching = require('next-pwa/cache')
-    return withSentryConfig(withPWA({
+    return {
       ...defaultConfig,
-      ... {
-        env: {
-          requestUrl: 'https://orangesolo.cn'
-        },
+      env: {
+        requestUrl: 'https://orangesolo.cn'
+      },
+      ...withSentryConfig(withPWA({
         sentry: {
           hideSourceMaps: true,
         },
@@ -42,9 +46,12 @@ module.exports = (function () {
           dest: 'public',
           runtimeCaching,
         },
-      },
-    }),{
-      silent: true, // Suppresses all logs
-    })
+      }),{
+        silent: true, // Suppresses all logs
+        authToken: process.env.NEXT_BLOG_SENTRY_TOKEN
+      })
+    }
   }
 })() 
+
+module.exports = nextConfig 

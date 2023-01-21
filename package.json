@@ -7,10 +7,11 @@
     "start": "next start -p 3001",
     "lint": "next lint --fix",
     "prepare": "husky install",
-    "server": "npm run build && npm run start",
+    "server": "pnpm run build && pnpm run start",
     "stylelint": "stylelint **/*.{css,less} --fix"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@sentry/nextjs": "^7.20.0",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
