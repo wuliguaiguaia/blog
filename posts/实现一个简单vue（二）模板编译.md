@@ -70,7 +70,7 @@ console.log(data);
 
 返回的 render 是个用 with 包起来的字符串，那怎么执行字符串呢？我猜是 new Function()，就算不是。。。
 
-<img src="https://orangesolo.cn/assets/image/7515de54f3ed5caa7029be957e9edb9b.png" alt="" class="md-img" loading="lazy" width="234" height="158"/>
+<img src="https://mini-orange.cn/assets/image/7515de54f3ed5caa7029be957e9edb9b.png" alt="" class="md-img" loading="lazy" width="234" height="158"/>
 
 render 格式化一下，长这样：
 

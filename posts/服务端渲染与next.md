@@ -330,11 +330,11 @@ module.exports = merge(baseConfig, {
 
 可以看到的是返回的html 是带有数据的
 
-<img src="https://orangesolo.cn/assets/image/image-1542690352884.png" alt="" class="md-img" loading="lazy" width="660" height="191"/>
+<img src="https://mini-orange.cn/assets/image/image-1542690352884.png" alt="" class="md-img" loading="lazy" width="660" height="191"/>
 
 并且可以响应事件
 
-<img src="https://orangesolo.cn/assets/image/ssr-1-510753141959.gif" alt="" class="md-img" loading="lazy" width="288" height="155"/>
+<img src="https://mini-orange.cn/assets/image/ssr-1-510753141959.gif" alt="" class="md-img" loading="lazy" width="288" height="155"/>
 
 流程图如下：
 
@@ -502,7 +502,7 @@ export async function getStaticProps() {
 
 此时npm run build 生成初始页面，npm run start 后打开浏览器可以看到
 
-<img src="https://orangesolo.cn/assets/image/image-140543866528.png" alt="" loading="lazy" class="md-img" width="615" height="395"/>
+<img src="https://mini-orange.cn/assets/image/image-140543866528.png" alt="" loading="lazy" class="md-img" width="615" height="395"/>
 
 > [Cache-Control](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control)
    >
@@ -513,7 +513,7 @@ export async function getStaticProps() {
 
 启用了revalidate，初次请求到的是预渲染的页面，n秒后再次请求js会在后台触发重新生成页面，如果页面生成返回新页面，如果失败，保持不变，依旧是上次生成的页面。
 
-<img src="https://orangesolo.cn/assets/image/image-1443522105399.png" alt="" loading="lazy" class="md-img" width="660" height="335"/>
+<img src="https://mini-orange.cn/assets/image/image-1443522105399.png" alt="" loading="lazy" class="md-img" width="660" height="335"/>
 
 #### 增强 SSR
 
@@ -648,15 +648,15 @@ export default function User({ user }) {
 
 此时请求 /users/3 ，浏览器返回
 
-<img src="https://orangesolo.cn/assets/image/image-339581017362.png" alt="" class="md-img" loading="lazy" width="382" height="112"/>
+<img src="https://mini-orange.cn/assets/image/image-339581017362.png" alt="" class="md-img" loading="lazy" width="382" height="112"/>
 
 然后 请求数据再更新页面
 
-<img src="https://orangesolo.cn/assets/image/image-512224651483.png" alt="" class="md-img" loading="lazy" width="530" height="218"/>
+<img src="https://mini-orange.cn/assets/image/image-512224651483.png" alt="" class="md-img" loading="lazy" width="530" height="218"/>
 
 而请求 getStaticPaths 指定的页面, 如/users/1，是直接返回已生成的html
 
-<img src="https://orangesolo.cn/assets/image/image-820763761876.png" alt="" class="md-img" loading="lazy" width="365" height="131"/>
+<img src="https://mini-orange.cn/assets/image/image-820763761876.png" alt="" class="md-img" loading="lazy" width="365" height="131"/>
 
 3 fallback: 'blocking'，和 true 很像，新页面不会导致 404，不同的是 blocking 没有备用页面，请求新页面时会将浏览器挂起，后台生成html后返回，类似于 ssr
 
@@ -795,7 +795,7 @@ export async function getServerSideProps() {
 
 #### npm run build
 
-<img src="https://orangesolo.cn/assets/image/image-638409781613.png" alt="" class="md-img" loading="lazy" width="636" height="307"/>
+<img src="https://mini-orange.cn/assets/image/image-638409781613.png" alt="" class="md-img" loading="lazy" width="636" height="307"/>
 
 ### 获取数据的渠道
 
@@ -828,7 +828,7 @@ export async function getStaticProps() {
 
 可以在 [next-code-elimination](https://next-code-elimination.vercel.app/) 上测试，会发现客户端用不上的代码都被剔除了
 
-<img src="https://orangesolo.cn/assets/image/image-1631853929004.png" alt="" loading="lazy" class="md-img" width="660" height="271"/>
+<img src="https://mini-orange.cn/assets/image/image-1631853929004.png" alt="" loading="lazy" class="md-img" width="660" height="271"/>
 
 #### 外部API
 

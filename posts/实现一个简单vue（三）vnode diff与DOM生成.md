@@ -34,7 +34,7 @@ class Vue {
 }
 ```
 
-<img src="https://orangesolo.cn/assets/image/09ce584ac3ba6cc39069c084e3985230.png" alt="" class="md-img" width="628" height="372"/>
+<img src="https://mini-orange.cn/assets/image/09ce584ac3ba6cc39069c084e3985230.png" alt="" class="md-img" width="628" height="372"/>
 
 ### 跨平台
 
@@ -203,7 +203,7 @@ export function removeVnodes(parentElm, vnodes, startIdx, endIdx) {
 
 新旧节点进行比较一定会涉及到两棵树的遍历，树的遍历分为深度遍历和广度遍历，考虑到频繁触发更新及计算的复杂度，采用广度遍历，一层一层的对比
 
-<img src="https://orangesolo.cn/assets/image/382242d251f3726f4f20a30e68359729.png" alt="" class="md-img" loading="lazy" width="628" height="214"/>
+<img src="https://mini-orange.cn/assets/image/382242d251f3726f4f20a30e68359729.png" alt="" class="md-img" loading="lazy" width="628" height="214"/>
 
 模拟简写：
 
@@ -408,15 +408,15 @@ const vm = new Vue({
 });
 ```
 
-<img src="https://orangesolo.cn/assets/image/965e4497cc6c651ee8dbaacafad595de.gif" alt="" class="md-img"  style="border: 1px solid #e3e3e3" loading="lazy" width="247" height="163" />
+<img src="https://mini-orange.cn/assets/image/965e4497cc6c651ee8dbaacafad595de.gif" alt="" class="md-img"  style="border: 1px solid #e3e3e3" loading="lazy" width="247" height="163" />
 
 vnode：
 
-<img src="https://orangesolo.cn/assets/image/c5eaa3dfad39c4291d2074cf559e7c87.png" alt="" class="md-img"  loading="lazy" width="628" height="534"/>
+<img src="https://mini-orange.cn/assets/image/c5eaa3dfad39c4291d2074cf559e7c87.png" alt="" class="md-img"  loading="lazy" width="628" height="534"/>
 
 render函数：
 
-<img src="https://orangesolo.cn/assets/image/a4a7d5d10c7f1f40e812904644e06bf2.png" alt="" class="md-img"  loading="lazy" width="628" height="55"/>
+<img src="https://mini-orange.cn/assets/image/a4a7d5d10c7f1f40e812904644e06bf2.png" alt="" class="md-img"  loading="lazy" width="628" height="55"/>
 
 ### 总结
 

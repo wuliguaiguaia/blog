@@ -22,7 +22,7 @@ URL(Uniform Resource Locator), 统一资源定位符，就是给我们一个地�
 
 URL的常见组成如下:
 
-<img src="https://orangesolo.cn/assets/image/e87734cebcf567e1fcf70de33c87000e.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/e87734cebcf567e1fcf70de33c87000e.png" alt="" class="md-img" loading="lazy"/>
 
 ### DNS（Domain Name System域名系统）
 
@@ -47,7 +47,7 @@ HTTP 的作用就是指导浏览器和服务器如何进行沟通，响应成功
 
 服务器有很多接口，每个接口有固定的用法。
 
-<img src="https://orangesolo.cn/assets/image/29d04f97851406f5a45cf88ef4754877.png" alt="" class="md-img"/>
+<img src="https://mini-orange.cn/assets/image/29d04f97851406f5a45cf88ef4754877.png" alt="" class="md-img"/>
 
 ### curl 命令 与 请求和响应
 

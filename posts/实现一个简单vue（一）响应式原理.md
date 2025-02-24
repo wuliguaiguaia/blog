@@ -12,7 +12,7 @@ vue  的 响应式实现实际就是 代理拦截 + 观察者模式
 
 update 方法对于watch，那就是执行watch函数，computed就是触发设置的get，组件级watcher就是重新触发diff渲染更新，当然要执行的具体的这些 update，也是在一开始进行初始化 Watcher类时设置的
 
-<img src="https://orangesolo.cn/assets/image/497c1b28e797900020501dc86d987270.png" alt="" class="md-img" loading="lazy" width="796" height="474"/>
+<img src="https://mini-orange.cn/assets/image/497c1b28e797900020501dc86d987270.png" alt="" class="md-img" loading="lazy" width="796" height="474"/>
 
 对应到源码的整个流程就是；
 

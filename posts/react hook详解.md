@@ -840,16 +840,16 @@ export function renderWithHooks<Props, SecondArg>(
 
 可以看看 ReactDOM 调用 render 方法后整个执行栈
 
-<img src="https://orangesolo.cn/assets/image/c620938fd48de8d82007400a760af221.png" alt="" class="md-img"/>
+<img src="https://mini-orange.cn/assets/image/c620938fd48de8d82007400a760af221.png" alt="" class="md-img"/>
 
 
 回来再看 renderWithHook，它区分了不同阶段的dispatcher
 
-<img src="https://orangesolo.cn/assets/image/efd2514e3a9ffc1baa269710c0448a9b.png" alt="" class="md-img"/>
+<img src="https://mini-orange.cn/assets/image/efd2514e3a9ffc1baa269710c0448a9b.png" alt="" class="md-img"/>
 
 每个阶段使用 不同的 hook:
 
-<img src="https://orangesolo.cn/assets/image/ef684797966d7cee479d12c8ea803074.png" alt="" class="md-img"/>
+<img src="https://mini-orange.cn/assets/image/ef684797966d7cee479d12c8ea803074.png" alt="" class="md-img"/>
 
 对于 useState，mount 阶段 使用 mountState，update 阶段使用updateState，rerender阶段使用 rerenderState，所以我们使用的 useState 并不是一成不变的，而是会赋予不同的方法
 

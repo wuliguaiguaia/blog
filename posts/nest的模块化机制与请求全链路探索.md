@@ -154,7 +154,7 @@ nest 内置控制器会在实例化 UserService 后，将其分别注入到认�
 - 模块相关， @Module 定义一个模块，@Global 则标识一个模块为全局模块，通常为根模块
 - 其他核心的装饰器，@Controller 修饰路由控制器，@Injectable修饰服务等
 
-<img src="https://orangesolo.cn/assets/image/ddf752e4926b9e243028a272efa6e5f4.png" alt="" class="md-img" width="600" height="515" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/ddf752e4926b9e243028a272efa6e5f4.png" alt="" class="md-img" width="600" height="515" loading="lazy"/>
 
 除此之外，我们也可以根据需要定义自己的装饰器
 
@@ -258,7 +258,7 @@ export function Module(metadata: ModuleMetadata): ClassDecorator {
 
 当然我们也可以使用 Reflect.getMetadata 获取
 
-<img src="https://orangesolo.cn/assets/image/6d344af6e759a6dc9e12c3fbc4112480.png" alt="" class="md-img" loading="lazy" width="600"/>
+<img src="https://mini-orange.cn/assets/image/6d344af6e759a6dc9e12c3fbc4112480.png" alt="" class="md-img" loading="lazy" width="600"/>
 
 关于 metadata 的操作，可查看 [Metadata Proposal - ECMAScript](https://rbuckton.github.io/reflect-metadata/)
 
@@ -1311,11 +1311,11 @@ export class SessionStrategy extends PassportStrategy(
 
 1 nest 提供了模块化的结构，以class为载体，使用装饰器（@Module）结合元数据（imports/exports/controller/provider)来识别模块及其依赖，在nest中，以<code>@Injectable</code>修饰的class皆可成为提供者（provider），controller下的service是提供者，guard pipe interceptor 也是。支撑模块及其依赖正确运作的原理是控制反转与依赖注入，它们也只是一个思想而已，具体有很多实现方法。相对于其他的node框架，在nest里各个功能，各个业务模块可以有良好的划分，虽然在起初有像守卫，管道等模糊的概念，但一番了解下来会发现他们所承载的功能是应用里必不可少的一部分，nest对一个后台应用所需的内容进行了功能划分（拆解出如管道，守卫，拦截器，异常过滤器的东西），概念虽繁杂，可从整体来看，它们又可以统一叫做提供者（provider）。
 
-<img src="https://orangesolo.cn/assets/image/5ca4836f44bba4711d90c18638baec5a.png" width="796" height="478" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/5ca4836f44bba4711d90c18638baec5a.png" width="796" height="478" alt="" class="md-img" loading="lazy"/>
 
 2 执行链关系图如下，任意环节出现 exception，都将终止后续流程，以exception filter结束
 
-<img src="https://orangesolo.cn/assets/image/15acc044712ed958fd22835b0bfadf2a.png" width="796" height="198" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/15acc044712ed958fd22835b0bfadf2a.png" width="796" height="198" alt="" class="md-img" loading="lazy"/>
 
 另外的，guard,intercptor，exception filter 在用到上下文的时候，都取自ExecutionContext ，它是对 request，response，next的封装，贯穿整个执行链。
 

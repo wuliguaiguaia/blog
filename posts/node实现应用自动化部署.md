@@ -8,7 +8,7 @@
 
 关于自动化常会听到 CI/CD 的用词，CI（Continuous Integration）持续集成，CD（Continuous Delivery）持续交付，有时也指持续部署（Continuous Deployment），它们三个的区别借鉴网络上的一张图表示：
 
-<img src="https://orangesolo.cn/assets/image/51864e4d7c616dc3201625a85196b228.png" alt="" class="md-img" loading="lazy" width="627" height="138"/>
+<img src="https://mini-orange.cn/assets/image/51864e4d7c616dc3201625a85196b228.png" alt="" class="md-img" loading="lazy" width="627" height="138"/>
 
 三种不同的自动化：
 
@@ -44,7 +44,7 @@ webhook 可以实现当开发者进行指定操作时，向指定服务器发送
 
 使用 webhook 必须进行配置，在 setting/webhooks，一个项目可配置多个 webhook
 
-<img src="https://orangesolo.cn/assets/image/5e763900ab8865821e81396af827a7bf.png" alt="" class="md-img" loading="lazy" width="627" height="774"/>
+<img src="https://mini-orange.cn/assets/image/5e763900ab8865821e81396af827a7bf.png" alt="" class="md-img" loading="lazy" width="627" height="774"/>
 
 ### 请求详情
 
@@ -563,7 +563,7 @@ logger.error('blog', '邮件发送失败')
 
 就可以在 blog.log 下查看
 
-<img src="https://orangesolo.cn/assets/image/f36ceb2ee4ae275c56e2df5e892a82af.png" alt="" class="md-img" loading="lazy" width="567" height="59"/>
+<img src="https://mini-orange.cn/assets/image/f36ceb2ee4ae275c56e2df5e892a82af.png" alt="" class="md-img" loading="lazy" width="567" height="59"/>
 
 当然目前的日志还是有一些优化空间大的，比如按时间和大小拆分，定时删除等，先跑上去再说。
 
@@ -624,7 +624,7 @@ sendMail('blog', '启动部署')
 
 就会收到一条如下邮件：
 
-<img src="https://orangesolo.cn/assets/image/4b8ef3889b9f14839e9a594334dfc470.png" alt="" class="md-img" loading="lazy" width="375" height="345"/>
+<img src="https://mini-orange.cn/assets/image/4b8ef3889b9f14839e9a594334dfc470.png" alt="" class="md-img" loading="lazy" width="375" height="345"/>
 
 #### 完整代码
 
@@ -694,11 +694,11 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
 
 当前只有一个job，job 里有添加了四个step，执行共分为8个步骤，可在项目的workflow里查看，
 
-<img src="https://orangesolo.cn/assets/image/6cd298a03138f202f694874b39a31cc8.png" alt="" class="md-img" loading="lazy" width="577" height="378"/ >
+<img src="https://mini-orange.cn/assets/image/6cd298a03138f202f694874b39a31cc8.png" alt="" class="md-img" loading="lazy" width="577" height="378"/ >
 
 对于其他项目，webhook 纯手动实现确实需要一些 node 基础，所以都可以尝试使用一下 github actions，和前面使用webhook的项目一样，使用actions的项目部署如果失败或取消也会有邮件通知，这个是 github 自动发的，将它们一起归组：
 
-<img src="https://orangesolo.cn/assets/image/d775b81a9cb779ff9371fd963f49615b.png" alt="" class="md-img" loading="lazy" width="577" height="301"/>
+<img src="https://mini-orange.cn/assets/image/d775b81a9cb779ff9371fd963f49615b.png" alt="" class="md-img" loading="lazy" width="577" height="301"/>
 
 如此，相对重要的项目部署情况也都会有及时的反馈。
 
@@ -708,11 +708,11 @@ jobs: # 一个 workflow 由一个或多个 jobs 构成，表示有多个任务
 
 相比较， github actions 就很简单，可能也没涉及到复杂的操作，如果部署重复了，可选择取消上次workflow，部署的细节都可以查看，但还是前面所说的，webhook发请求的方式相对灵活，有很大扩展空间，当然webhook也不是完美的，比如你如果不自己加日志的话可能就不知道本次到底是成功还是失败了，因为它有时不会准确的获取到响应结果。。。
 
-<img src="https://orangesolo.cn/assets/image/27baf61f690a2dccbdc89e396e88d29c.png" alt="" class="md-img" loading="lazy" width="559" height="283"/>
+<img src="https://mini-orange.cn/assets/image/27baf61f690a2dccbdc89e396e88d29c.png" alt="" class="md-img" loading="lazy" width="559" height="283"/>
 
 正常是这样的：
 
-<img src="https://orangesolo.cn/assets/image/449ecf6868fccc71acffaf215b15be75.png" alt="" class="md-img" loading="lazy" width="559" height="352"/>
+<img src="https://mini-orange.cn/assets/image/449ecf6868fccc71acffaf215b15be75.png" alt="" class="md-img" loading="lazy" width="559" height="352"/>
  
 （这两天几乎都是 timeout...，几乎都没有见过正常的Response 200了 ）
 

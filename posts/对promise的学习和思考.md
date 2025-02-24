@@ -110,7 +110,7 @@ class MyPromise{
 
 对 try catch的分析：Promise是一个承诺，无论出现那种异常都必须给调用者一个交代，即使是调用者出错，比如下面浏览器会报出一个语法错误，但是不会退出进程，继续catch可以打印出错误，再继续then还会执行
 
-<img src="https://orangesolo.cn/assets/image/9a8fa5374744bb62a07c1043d9e57908.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/9a8fa5374744bb62a07c1043d9e57908.png" alt="" class="md-img" loading="lazy"/>
 
 这就是因为Promise内部都是使用try catch来捕获错误的，try catch可以捕获到同步和异步错误，发生错误时，catch 会将错误反馈给 reject
 
@@ -191,7 +191,7 @@ then(onFulfilled, onRejected) {
 
 因此当 resolve 被同步调用时，紧跟着的then会立即执行
 
-<img src="https://orangesolo.cn/assets/image/3806a14bdca2c136dba07848c1bca3d4.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/3806a14bdca2c136dba07848c1bca3d4.png" alt="" class="md-img" loading="lazy"/>
 
 如果是异步代码，状态不会立即变更，调用then会将回调 push到 _fulfilledQueues_rejectedQueues，它们会在 _resolve 或_reject 里被执行，直到【任务队列】为空
 
@@ -237,11 +237,11 @@ _reject(err) {
 
 2、 Promise规范里then的参数可选，所以会有onRejected不存在的情况 比如下面的代码，所以需要引导【结果值】向下传递，像下面这样：
 
-<img src="https://orangesolo.cn/assets/image/97755e2cd0adc54f9a86315e71bda037.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/97755e2cd0adc54f9a86315e71bda037.png" alt="" class="md-img" loading="lazy"/>
 
 3、【结果值】仍是promise的情况
 
-<img src="https://orangesolo.cn/assets/image/410ef8e6fb89990b9c83496f168d98e7.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/410ef8e6fb89990b9c83496f168d98e7.png" alt="" class="md-img" loading="lazy"/>
 
 下面对then进行补充，分别封装then内部执行回调并向下传递处理结果的成功方法和失败方法
 
@@ -307,7 +307,7 @@ then(onFulfilled, onRejected) {
 
 但还有返回的依旧是 promise 的情况：
 
-<img src="https://orangesolo.cn/assets/image/8fba67f3ded835451fcc1848a91268b7.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/8fba67f3ded835451fcc1848a91268b7.png" alt="" class="md-img" loading="lazy"/>
 
 所以现在需要做的是，在resolve里加一层判断，如果参数是 Promise类型就需要特殊处理
 
@@ -448,11 +448,11 @@ Promise简易版本实现就到这了
 
 1、 未被捕获的 promise 错误将在浏览器出现 Uncaught (in promise)  错误提示：
 
-<img src="https://orangesolo.cn/assets/image/d9393d479f292d1df4322bb802396563.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/d9393d479f292d1df4322bb802396563.png" alt="" class="md-img" loading="lazy"/>
 
 在node中会有 UnhandledPromiseRejection 错误提示：
 
-<img src="https://orangesolo.cn/assets/image/89eab20a9c4733690c9cccb584eb8bd7.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/89eab20a9c4733690c9cccb584eb8bd7.png" alt="" class="md-img" loading="lazy"/>
 
 **Promise 中的异常不能被 try-catch 和 window.onerror 捕获** ，浏览器和node都可以通过监听 unhandledrejection  事件来达到目的
 

@@ -6,7 +6,7 @@
 
 不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的Network选项中可以看到该请求返回200的状态码，并且size显示from disk cache或from memory cache两种（灰色表示缓存）。
 
-<img src="https://orangesolo.cn/assets/image/5a107780646c853eda8214bdfa00b758.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/5a107780646c853eda8214bdfa00b758.png" alt="" class="md-img" loading="lazy"/>
 
 可以看到加载时间都是几毫秒。
 
@@ -91,19 +91,19 @@ Last-Modified是该资源文件最后一次更改时间,服务器会在response 
 
 第一次访问（通过地址栏）
 
-<img src="https://orangesolo.cn/assets/image/a208c6eb8094f63b4ed2d525689912f3.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/a208c6eb8094f63b4ed2d525689912f3.png" alt="" class="md-img" loading="lazy"/>
 
 返回 etag 和 last-modified
 
 第二次访问 （刷新按钮）
 
-<img src="https://orangesolo.cn/assets/image/e3989248734d6caefab59598dfc2a6ec.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/e3989248734d6caefab59598dfc2a6ec.png" alt="" class="md-img" loading="lazy"/>
 
 请求头包含 if-modified-since 和 if-none-match，命中协商缓存，返回 304
 
 第三次访问（刷新按钮 ：硬性重新加载）
 
-<img src="https://orangesolo.cn/assets/image/d8559125b4c77179969d26ab6fee98ba.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/d8559125b4c77179969d26ab6fee98ba.png" alt="" class="md-img" loading="lazy"/>
 
 请求头不包含之前缓存的  if-modified-since 和 if-none-match，返回 200，请求过程与初次请求一样
 
@@ -163,7 +163,7 @@ HTTP2 后增加了 **Push Cache**，当以上三种缓存都没有命中时，�
 - 浏览器可以拒绝接受已经存在的资源推送
 - 可以给其他域名推送资源
 
-<img src="https://orangesolo.cn/assets/image/f6dd554268e87b1d67addabfde96e0c8.png" alt="" class="md-img" loading="lazy"/>
+<img src="https://mini-orange.cn/assets/image/f6dd554268e87b1d67addabfde96e0c8.png" alt="" class="md-img" loading="lazy"/>
 
 在命中强缓存的情况下，进程会从内存读取资源(字体，图片，脚本)，从磁盘里读取css部分js
 

@@ -25,7 +25,7 @@ const nextConfig =  (function () {
       ... {
         env: {
           requestUrl: 'http://127.0.0.1:3009'
-          // requestUrl: 'https://orangesolo.cn'
+          // requestUrl: 'https://mini-orange.cn'
         }
       }
     }
@@ -36,7 +36,7 @@ const nextConfig =  (function () {
     return {
       ...defaultConfig,
       env: {
-        requestUrl: 'https://orangesolo.cn'
+        requestUrl: 'https://mini-orange.cn'
       },
       ...withSentryConfig(withPWA({
         sentry: {
